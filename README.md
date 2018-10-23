@@ -1,4 +1,4 @@
-![alt text](resources/images/heroban.png "Sigma-UI")
+![alt text](resources/images/heroban.png "SOC Workflow App CE")
 Helps SOC Analysts and Threat Hunters explore suspicious events, look into raw events arriving at Elastic stack and view Saved Searches saved by teammates. Carry out investigations based on automatically generated alerts from SIEM, EDR, IDS arriving at Elastic stack, Elastic Machine Learning alerts and Threat Intelligence data enrichments from Anomali ThreatStream & MISP.
 # SOC Workflow Installation
 To install SOC Workflow for your Kibana:
@@ -7,7 +7,7 @@ Copy the file soc_workflow-xxxxx.zip to Kibana server and run the command:
 /usr/share/kibana/bin/./kibana-plugin install file:///PATH_TO_FILE/soc_workflow-xxxxx.zip
 ```
 
-![alt text](resources/images/heroban2.png "Sigma-UI")
+![alt text](resources/images/heroban2.png "SOC Workflow App CE")
 Wait until the installation finishes, it may take a few minutes to optimize and cache browser bundles. 
 > If you get the error: "Plugin installation was unsuccessful due to error "Incorrect Kibana version in plugin [soc_workflow]. Expected [6.2.4]; found [6.2.2]", please open zip archive and modify file
 `"./kibana/soc_workflow/package.json": `
@@ -23,17 +23,17 @@ SOC Workflow Application is using indices:
  - "case_ecs*" - is used to store cases;
  - "case_logs*" - for case stages and comments history;
  - "sigma_doc" - is used for storing SIGMA documents for data enrichment
- - "playbooks" - for playbooks.
+ - "playbook" - for playbooks.
 
 Create index templates for these indices from files:
 
- - index_template_alerts_case_logs.txt
- - index_template_case_ecs.txt
- - index_template_alerts_ecs.txt
- - index_template_playbook.txt
- - index_template_sigma_doc.txt
+ - [index_template_alerts_case_logs.txt](/resources/templates/index_template_alerts_case_logs.txt)
+ - [index_template_case_ecs.txt](/resources/templates/index_template_case_ecs.txt)
+ - [index_template_alerts_ecs.txt](/resources/templates/index_template_alerts_ecs.txt)
+ - [index_template_playbook.txt](/resources/templates/index_template_playbook.txt)
+ - [index_template_sigma_doc.txt](/resources/templates/index_template_sigma_doc.txt)
 
-Add playbooks to the index from the application or add your own ones in the same format. Run commands in Dev Tools Kibana console from the file `playbooks_to_elastic.txt`.
+Add playbooks to the index from the application or add your own ones in the same format. Run commands in Dev Tools Kibana console from the file [`playbooks_to_elastic.txt`](/resources/templates/playbooks_to_elastic.txt).
 
 Playbook format: 
 `"@timestamp": "1530687175111",`
