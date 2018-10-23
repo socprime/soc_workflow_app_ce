@@ -1,0 +1,51 @@
+<h3>Application License Agreement</h3>
+
+<p>This Application License Agreement (“Agreement”) is a binding legal agreement between you, a legal entity (“User”) and SOC Prime Inc., a legal entity under the laws of the State of Delaware, United States, having a principal place of business at: 1201 Orange str., Suite 600, Wilmington, 19899, Delaware, USA and its affiliates and subsidiaries (collectively, “SOC Prime” or “Company”).</p>
+<p>SOC Prime is a copyright owner (owner of the exclusive rights) of SOC Workflow Application (“Application”) - the subject to this Agreement. If you are entering into this Agreement on behalf of an entity, you represent that you have the authority to bind such entity to the Agreement and are agreeing to the Agreement for that entity.</p>
+<p>Please read this Agreement carefully before you use the Application.</p>
+<p>By installing, downloading or otherwise using the Application, you agree to be bound by the terms of this Agreement on behalf of yourself and any entity or individual you represent or for whose device you acquire the Application.</p>
+<p>IF YOU DO NOT AGREE TO THE TERMS OF THIS AGREEMENT, YOU MUST NOT INSTALL, DOWNLOAD OR OTHERWISE USE THE APPLICATION.</p>
+
+<h3>License Grant</h3>
+<p>You are hereby granted a non-exclusive, non-sublicensable, nontransferable, royalty-free license to use Application as core for your managed services portal only. License may be limited from time to time in accordance with the terms of this Agreement.</p>
+
+<h3>License Restrictions</h3>
+<p>Except to the extent permitted by this Agreement you agree not to: (i) copy, reproduce, display, perform, exploit, use, distribute, transmit, sublicense, transfer or assign the Applications; (ii) decompile, reverse engineer, disassemble or modify the Applications, (iii) reproduce, prepare derivative works of, distribute and sublicense the program examples and sample applications.</p>
+
+<h3>No Warranties</h3>
+<p>The Sample Applications contained herein are provided on an "AS IS" basis and to the maximum extent permitted by applicable law, this material is provided AS IS AND WITH ALL FAULTS, and the authors and developers of this material and WS-I hereby disclaim all other warranties and conditions, either express, implied or statutory, including, but not limited to, any (if any) implied warranties, duties or conditions of merchantability, of fitness for a particular purpose, of accuracy or completeness of responses, of results, of workmanlike effort, of lack of viruses, and of lack of negligence. ALSO, THERE IS NO WARRANTY OR CONDITION OF TITLE, QUIET ENJOYMENT, QUIET POSSESSION, CORRESPONDENCE TO DESCRIPTION OR NON-INFRINGEMENT WITH REGARD TO THIS MATERIAL.</p>
+
+<h3>Limitation of Liability</h3>
+<p>IN NO EVENT WILL ANY AUTHOR, DEVELOPER, LICENSOR, OR DISTRIBUTOR OF THIS MATERIAL OR WS-I BE LIABLE TO ANY OTHER PARTY FOR THE COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS OF USE, LOSS OF DATA, OR ANY INCIDENTAL, CONSEQUENTIAL, DIRECT, INDIRECT, PUNITIVE, OR SPECIAL DAMAGES WHETHER UNDER CONTRACT, TORT, WARRANTY, OR OTHERWISE, ARISING IN ANY WAY OUT OF THIS OR ANY OTHER AGREEMENT RELATING TO THIS MATERIAL, WHETHER OR NOT SUCH PARTY HAD ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+
+<h3>Terms</h3>
+<p>All SOC Prime licenses may be provided as annual or other term subscription valid from the date of delivery.</p>
+
+<h3>Deployment and Support</h3>
+<p>User is fully responsible for installation, deployment and support of Predictive Maintenance virtual machine at User premises or private cloud located in the User's country. Company shall provide information support, knowledge base and Application updates.</p>
+
+<h3>Intellectual Property</h3>
+<p>The Company is the sole owner of all intellectual property rights pertaining to the Application (such as copyright, patent and trademark) and to the Application not expressly granted to User in this Agreement. The Application is protected by copyright and other intellectual property laws and treaties. The  User does not acquire any rights of ownership in the Application hereunder.</p>
+<p>User is prohibited from creating any Adaptation that in any manner infringes the patents, trademarks, copyrights, trade secret rights or other rights of the Company or any third party.</p>
+<p>“Adaptation” means (a) reproduction or modification any part of the Application, creating a derivative work of any part of the Application or incorporate it into or with other software; (b) decompilation, disassemblion, or otherwise reversion engineer the Application or attempt to reconstruct or discover any source code, underlying ideas, algorithms, file formats or programming interfaces of the Application by any means whatsoever, - except to the extent expressly authorized in writing by SOC Prime.</p>
+
+<h3>Trade marks</h3>
+<p>Company or other third party names and logos and all related product and Application names, design marks, trademarks and slogans that our displayed on or through the Application or used in connection with the Application, are our sole property or the property of our affiliates or licensors (collectively, “Marks”). You are not authorized to use any of the Marks in any advertising, publicity or any other commercial manner without our prior written consent.</p>
+
+<h3>Deployment and Support</h3>
+<p>SOC Prime shall provide information support, knowledge base and Application updates.</p>
+
+<h3>Copyright notice</h3>
+<p>All rights reserved. Application are protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties. No part of the Application may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the SOC Prime, except permitted by copyright law.</p>
+<p>SOC Prime does not guarantee the stable and correct operation of the Application in case of exceeding the license, incompatibility with hardware requirements and settings.</p>
+
+<h3>General</h3>
+<p>No other rights are granted by implication, estoppel or otherwise.</p>
+<p>If any provision of this Agreement is invalid or unenforceable under applicable law, it shall not affect the validity or enforceability of the remainder of the terms of this Agreement, and without further action by the parties hereto, such provision shall be reformed to the minimum extent necessary to make such provision valid and enforceable.</p>
+<p>Your rights under this Agreement shall terminate if you fail to comply with any of the material terms or conditions of this Agreement and do not cure such failure in a reasonable period of time after becoming aware of such noncompliance.  If all your rights under this Agreement terminate, you agree to cease use of the Sample Applications and any derivative works thereof immediately.</p>
+<p>This Agreement and all matters relating to your access or use of the Application, including all disputes, shall be governed by and construed under the laws of the United States and of the state of Delaware, without regard to the principles thereof relating to conflicts of laws.</p>
+<p>The State and Federal courts in the City of Wilmington, Delaware shall have exclusive jurisdiction over any Action arising out of the Agreement.</p>
+
+<b>SOC Prime Inc. 1201 Orange street, Suite 600, Wilmington, 19899, Delaware, USA</b><br>
+<a href="mailto:legal@socprime.com">legal@socprime.com</a><br>
+<a href="https://socprime.com" target="_blank">https://socprime.com</a>

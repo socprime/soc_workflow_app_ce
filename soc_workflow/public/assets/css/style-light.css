@@ -1,0 +1,553 @@
+.light-body {
+    background-color: #ebeff2;
+}
+
+.light-body .global-nav-link__anchor {
+    display: block;
+    height: 100%;
+    color: #616161 !important;
+}
+
+.light-body .application {
+    background-color: #f0f0f1;
+}
+
+/* --------------------------------
+
+Main Components
+
+-------------------------------- */
+.light-body .cd-filter-right.is-visible {
+    background: #e8e8e8;
+}
+
+.light-body a.right-close {
+    color: #ffffff !important;
+    background: #ea553d;
+    border-left: 2px solid #343d42;
+}
+
+.light-body a.right-close:hover {
+    background-color: #de4129;
+}
+
+.light-body .half-1 {
+    width: 70%;
+    background: #ffffff;
+}
+
+.light-body .half-2 {
+    background: #f8f8f8;
+    border-left: 1px solid #ffffff;
+}
+
+/* Kibana Layout Start */
+.light-body .global-nav__logo,
+.light-body .cd-tab-filter-wrapper {
+    color: #565b60;
+    background-color: #ffffff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    transition: transform 450ms cubic-bezier(0.860, 0.000, 0.070, 1.000);
+    transition-timing-function: cubic-bezier(0.860, 0.000, 0.070, 1.000);
+}
+
+.light-body .cd-tab-filter-wrapper .form-field_label {
+    color: #565b60;
+}
+
+.light-body .card {
+    box-shadow: none;
+}
+
+.light-body .footer {
+    background-color: #ebeff2;
+}
+
+.light-body .footer .text-muted {
+    color: #6c757d!important;
+}
+
+.light-body .global-nav-link__icon-image,
+.light-body .cd-tab-filter .logo {
+    -webkit-filter: invert(70%);
+    -moz-filter: invert(70%);
+    -ms-filter: invert(70%);
+    -o-filter: invert(70%);
+    filter: invert(70%);
+}
+
+.light-body .global-nav {
+    background-color: #ffffff !important;
+}
+
+.light-body .global-nav-link:hover,
+.light-body .global-nav-link.active {
+    background-color: #e6e6e6 !important;
+}
+
+.light-body .global-nav .logo-small.kibana,
+.light-body .global-nav .logo.kibana {
+    background-color: #ffffff !important;
+    background-image: url(../img/kibana-light-logo.svg);
+}
+/* Kibana Layout End */
+
+/* --------------------------------
+
+xtab-filter
+
+-------------------------------- */
+.light-body .cd-tab-filter .btn {
+    color: #616161 !important;
+}
+
+/* --------------------------------
+
+xfilter
+
+-------------------------------- */
+.light-body .dataTable td.select-checkbox > label {
+    background-color: transparent;
+}
+
+.light-body .page-link,
+.light-body .dataTables_paginate .page-link {
+    color: #ea553d !important;
+    background-color: #ffffff !important;
+    border: 1px solid rgb(204, 204, 204) !important;
+}
+
+.light-body .page-link:focus,
+.light-body .page-link:hover,
+.light-body .dataTables_paginate .page-item.active a,
+.light-body .dataTables_paginate .page-link:focus,
+.light-body .dataTables_paginate .page-link:hover {
+    color: #ffffff !important;
+    background-color: #ea553d !important;
+}
+
+.light-body .page-item.disabled .page-link,
+.light-body .dataTables_paginate .page-item.disabled .page-link {
+    color: #656565 !important;
+    background-color: transparent !important;
+    border-color: #435865 !important;
+}
+
+/*
+ *  STYLE 4
+ */
+
+.light-body .scrollbar-slim-line::-webkit-scrollbar-track {
+    background-color: #e8e8e8;
+}
+
+.light-body .scrollbar-slim-line::-webkit-scrollbar-thumb {
+    background-color: #a9a9a9;
+}
+
+.light-body .opener > a {
+    color: #8c8c8c;
+}
+
+/*
+ Template Name: Admiria - Bootstrap 4 Admin Dashboard
+ Author: Themesbrand
+ File: Main Style css
+ */
+/* ==============
+  General
+===================*/
+.light-body .modal-content,
+.light-body .ui-dialog,
+.light-body {
+    color: #555555;
+}
+
+/* ==============
+  Menu
+===================*/
+
+.light-body .cd-main-content .nav > li > a.btn {
+    border-color: #e84126;
+}
+
+.light-body .cd-main-content .nav > li > a.btn:hover,
+.light-body .cd-main-content .nav > li > a.btn.active {
+    background-color: #e84126;
+}
+
+
+/* ==============
+  Waves Effect
+===================*/
+/*!
+ * Waves v0.6.0
+ * http://fian.my.id/Waves
+ *
+ * Copyright 2014 Alfiana E. Sibuea and other contributors
+ * Released under the MIT license
+ * https://github.com/fians/Waves/blob/master/LICENSE
+ */
+
+/* ==============
+  Buttons
+===================*/
+
+/* button Outline */
+.light-body .btn-outline-danger {
+    color: #525252 !important;
+    border-color: #ea553d !important;
+}
+
+.light-body .btn-danger:active,
+.light-body .btn-danger:focus,
+.light-body .btn-danger:hover,
+.light-body .btn-danger.active,
+.light-body .btn-danger.focus,
+.light-body .btn-danger:active,
+.light-body .btn-danger:focus,
+.light-body .btn-danger:hover,
+.light-body .open > .dropdown-toggle.btn-danger,
+.light-body .btn-outline-danger.active,
+.light-body .btn-outline-danger:active,
+.light-body .show > .btn-outline-danger.dropdown-toggle,
+.light-body .btn-outline-danger:hover,
+.light-body .btn-danger.active, .btn-danger:active,
+.light-body .show > .btn-danger.dropdown-toggle {
+    background-color: #e84126;
+    border: 1px solid #e84126;
+    color: #ffffff !important;
+}
+
+.light-body .refresh-switcher-wrap .dropdown-menu .dropdown-item.active,
+.light-body .refresh-switcher-wrap .dropdown-menu .dropdown-item:hover {
+    background-color: #a0a0a0;
+    color: #ffffff;
+}
+
+/* ==============
+  Card
+===================*/
+.light-body .card {
+    border: none;
+    background-color: #ffffff;
+    color: #555555 !important;
+}
+
+.light-body .card .card-header,
+.light-body .card .card-footer {
+    background-color: #fdfdfd;
+    border-bottom: 1px solid rgb(230, 230, 230) !important;
+}
+
+/* ==============
+  Tables
+===================*/
+.light-body #kibana-body .table thead th {
+    border-bottom: 1px solid rgb(206, 206, 206);
+    border-top: 1px solid #c1c1c1 !important;
+}
+
+/* ==============
+  Form-elements
+===================*/
+.light-body .form-control {
+    color: #435865;
+    background-color: #ffffff;
+    border: 1px solid rgb(214, 214, 214);
+}
+
+.light-body .form-control:focus {
+    border-color: #828282;
+}
+
+.light-body .form-control:disabled,
+.light-body .form-control[readonly] {
+    font-family: "Source Sans Pro", sans-serif;
+    color: #435865;
+    background-color: #f8f8f8;
+    border: 1px solid rgb(214, 214, 214);
+}
+
+.light-body g.c3-legend-item text {
+    font-size: 15px !important;
+    fill: #444444 !important;
+}
+
+/* ==============
+  Form-Advanced
+===================*/
+/* Select 2 */
+.light-body .select2-results {
+    display: block;
+    color: #5b5a5f;
+}
+
+/* ==============
+  Timeline
+===================*/
+/* Activity */
+.light-body .activity-feed .feed-item::after {
+    background: #f8f8f8;
+    border: 2px solid #ea553d;
+}
+
+.light-body #alertCommentText.activity-text,
+.light-body .activity-feed .feed-item .activity-text {
+    background: #dddddd;
+    color: #555555;
+}
+
+.light-body .fixed-menu-cd-nav.is-fixed ul {
+    box-shadow: 0 0 10px rgba(16, 16, 16, 0.4);
+}
+
+/*mine*/
+.light-body table.dataTable thead .sorting:before,
+.light-body table.dataTable thead .sorting:after,
+.light-body table.dataTable thead .sorting_asc:before,
+.light-body table.dataTable thead .sorting_asc:after,
+.light-body table.dataTable thead .sorting_desc:before,
+.light-body table.dataTable thead .sorting_desc:after,
+.light-body table.dataTable thead .sorting_asc_disabled:before,
+.light-body table.dataTable thead .sorting_asc_disabled:after,
+.light-body table.dataTable thead .sorting_desc_disabled:before,
+.light-body table.dataTable thead .sorting_desc_disabled:after {
+    opacity: 1;
+}
+
+/* C3 chart */
+/* C3 chart */
+
+.light-body .c3-chart-arc path {
+    stroke: #eaeaea !important;
+}
+
+.light-body .c3-tooltip-container .module-triangle-bottom {
+    background-color: #FFFFFF;
+    border-color: #5e5e5e;
+}
+
+.light-body .c3-tooltip {
+    background-color: #fff;
+    -webkit-box-shadow: 7px 7px 12px -9px #777777;
+    -moz-box-shadow: 7px 7px 12px -9px #777777;
+    box-shadow: 7px 7px 12px -9px #777777;
+    border: 1px solid #5e5e5e;
+}
+
+.light-body .c3-tooltip tr {
+    border: 1px solid #CCC;
+}
+
+.light-body .c3-tooltip td {
+    background-color: #fff;
+    border-top: 1px solid #999;
+}
+
+.light-body .c3 path.domain,
+.light-body .c3 g.tick line {
+    stroke: rgba(0, 0, 0, 0.5) !important;
+}
+
+.light-body .c3-chart-arc path {
+    stroke: #fff;
+}
+
+.light-body .c3-chart-arc text {
+    fill: #fff;
+}
+
+.light-body .c3-grid line {
+    stroke: #bbb;
+}
+
+.light-body .c3-grid text {
+    fill: #aaa;
+}
+
+.light-body .c3-text.c3-empty {
+    fill: #525252;
+}
+
+.light-body .c3-circle._expanded_ {
+    stroke: white;
+}
+
+.light-body .c3-selected-circle {
+    fill: white;
+}
+
+.light-body g.tick text {
+    font-size: 8pt;
+    fill: #222222;
+}
+
+.light-body text.c3-chart-arcs-title {
+    fill: #525252 !important;
+}
+
+/*ModalMain*/
+.light-body .modal-content,
+.light-body .ui-dialog {
+    background-color: #ffffff;
+}
+
+/*ModalMainEnd*/
+
+/*NEW STYLES*/
+.light-body .btn-outline-danger {
+    color: #525252;
+    border-color: #ea553d;;
+}
+
+.light-body .form-field_label {
+    color: #fff;
+}
+
+.light-body .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(125, 125, 125, 0.05) !important;
+}
+
+.light-body .dataTable th.select-checkbox > label, .light-body .dataTable td.select-checkbox > label {
+    background-color: #ffffff;
+}
+
+.light-body .dataTable td.select-checkbox > label.active {
+    background-color: #ed563f !important;
+}
+
+/* Select 2 */
+.light-body .select2-container .select2-selection--single {
+    border: 1px solid rgb(187, 187, 187) !important;
+    height: 38px !important;
+    color: #565a5f;
+}
+
+.light-body .select2-container .select2-selection--single:hover,
+.light-body .select2-container .select2-selection--single:focus {
+    border: 1px solid #48555c;
+}
+
+.light-body .select2-hidden-accessible:hover {
+    border: 1px solid #48555c;
+}
+
+.light-body .select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 36px !important;
+    padding-left: 12px !important;
+}
+
+.light-body .select2-container .select2-selection--single .select2-selection__arrow {
+    height: 34px;
+    width: 34px;
+    right: 3px;
+}
+
+.light-body .select2-container .select2-selection--single .select2-selection__arrow b {
+    border-color: #999 transparent transparent transparent;
+    border-width: 6px 6px 0 6px;
+}
+
+.light-body .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #5b5a5f;
+}
+
+.light-body .select2-container.select2-container--open {
+    z-index: 1051;
+}
+
+.light-body .select2-container--open .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent transparent #999 transparent !important;
+    border-width: 0 6px 6px 6px !important;
+}
+
+.light-body .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #898e91 !important;
+}
+
+.light-body .select2-results__option {
+    padding: 6px 12px;
+}
+
+.light-body .select2-dropdown {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, .15) !important;
+    background-color: #fff;
+    color: #292b2c;
+}
+
+.light-body .select2-search input {
+    border: 1px solid rgb(187, 187, 187) !important;
+    background-color: #ffffff;
+
+}
+
+.light-body .select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid #cacaca !important;
+    margin-bottom: 4px;
+    background: #ffffff;
+    color: #435865;
+}
+
+.light-body .select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #898e91 !important;
+}
+
+.light-body .select2-container .select2-selection--multiple {
+    min-height: 38px !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    background-color: #ffffff;
+}
+
+.light-body .select2-container .select2-selection--multiple .select2-selection__rendered {
+    padding: 2px 10px;
+}
+
+.light-body .select2-container .select2-selection--multiple .select2-search__field {
+    margin-top: 7px;
+    border: 0 !important;
+    color: #435865;
+}
+
+.light-body .select2-container .select2-selection--multiple .select2-selection__choice {
+    background-color: #a4aaac;
+    border: 1px solid #a4aaac;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.light-body .select2-container--default .select2-selection--single .select2-selection__clear {
+    margin-right: 20px;
+}
+
+.light-body .select2-container .select2-selection--single {
+    border: 1px solid rgb(187, 187, 187) !important;
+    height: 38px !important;
+    color: #565a5f;
+    background-color: #fdfdfd !important;
+}
+
+.light-body .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    color: #fff !important;
+}
+
+.light-body select > option {
+    color: #313131;
+}
+
+.light-body button.close {
+    color: #717171;
+}
+
+.light-body button.close:hover,
+.light-body button.close:focus {
+    color: #717171;
+}
+
+.light-body .event-details-links tr td a:hover,
+.light-body .event-details tr td a:hover {
+    color: #a4aaac;
+}

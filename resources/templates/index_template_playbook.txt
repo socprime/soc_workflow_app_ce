@@ -1,0 +1,51 @@
+POST _template/playbook
+{
+    "order": 100,
+    "index_patterns": [
+      "playbook"
+    ],
+    "settings": {
+      "index": {
+        "analysis": {
+          "normalizer": {
+            "useLowercase": {
+              "filter": [
+                "lowercase"
+              ],
+              "type": "custom"
+            }
+          }
+        },
+        "number_of_shards": "3",
+        "number_of_replicas": "1"
+      }
+    },
+    "mappings": {
+      "doc": {
+        "dynamic": true,
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "@timestamp": {
+            "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
+            "type": "date"
+          },
+          "playbook_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256,
+                "normalizer": "useLowercase"
+              }
+            }
+          },
+          "playbook_body": {
+            "type": "text"
+          }
+        }
+      }
+    },
+    "aliases": {}
+  }

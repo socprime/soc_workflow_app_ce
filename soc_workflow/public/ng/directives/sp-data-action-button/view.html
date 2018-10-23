@@ -1,0 +1,15 @@
+<div class="dropdown selectpicker">
+    <button class="btn btn-secondary" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i></button>
+    <div class="dropdown-menu" ng-class="additionalClass" aria-labelledby=".event-details">
+        <li class="dropdown-submenu"
+            sp-data-action-button-sub-item
+            ng-repeat="action in actions" sub-actions="action"
+            ng-class="!action.name ? 'dropdown-submenu-has-child' : ''"
+            row-key="{{ rowKey }}"
+            row-data="{{ rowData }}"
+            curr-entity-id="{{ currEntityId }}"
+            curr-entity-type="{{ currEntityType }}"
+            curr-url="currUrl"
+        ></li>
+    </div>
+</div>

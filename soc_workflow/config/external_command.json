@@ -1,0 +1,10 @@
+[
+    {
+        "Enrichment": [
+            {
+                "name": "Enrichment example",
+                "command": "ping \"[[value]]\""
+            }
+        ]
+    }
+]

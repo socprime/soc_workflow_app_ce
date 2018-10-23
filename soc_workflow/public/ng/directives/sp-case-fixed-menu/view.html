@@ -1,0 +1,9 @@
+<div class="fixed-menu-cd-nav is-fixed" ng-show="selectedItem[0]">
+    <a class="cd-nav-trigger has-transitions" ng-click="switchMenuState()" ng-class="{'menu-is-open': showMenu}">Menu<span></span></a>
+    <nav class="cd-main-nav">
+        <ul class="is-fixed has-transitions" ng-class="{'is-visible': showMenu}">
+            <li><a ng-click="processCases()">Process Case(s)</a></li>
+            <li><a></a></li>
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,54 @@
+Arguments: 
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add d3
+
+PATH: 
+  /opt/jdk1.8.0_152//bin:/home/vk/bin:/home/vk/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+
+Yarn version: 
+  1.6.0
+
+Node version: 
+  8.11.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/daterangepicker: tunneling socket could not be established, cause=write EPROTO 139987980072768:error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol:../deps/openssl/openssl/ssl/s23_clnt.c:827:
+  
+      at ClientRequest.onError (/usr/share/yarn/lib/cli.js:147045:17)
+      at Object.onceWrapper (events.js:315:30)
+      at emitOne (events.js:116:13)
+      at ClientRequest.emit (events.js:211:7)
+      at TLSSocket.socketErrorListener (_http_client.js:387:9)
+      at emitOne (events.js:116:13)
+      at TLSSocket.emit (events.js:211:7)
+      at onwriteError (_stream_writable.js:418:12)
+      at onwrite (_stream_writable.js:440:5)
+      at _destroy (internal/streams/destroy.js:39:7)
+
+npm manifest: 
+  {
+    "name": "soc_workflow",
+    "version": "0.9.1",
+    "description": "SOC Workflow plugin",
+    "main": "index.js",
+    "kibana": {
+      "version": "kibana",
+      "templateVersion": "8.0.0"
+    },
+    "homepage": "https://socprime.com/",
+    "dependencies": {
+      "daterangepicker": "^2.1.27",
+      "jquery.cookie": "^1.4.1",
+      "moment-range": "^4.0.1",
+      "node-cmd": "^3.0.0",
+      "popper.js": "^1.14.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

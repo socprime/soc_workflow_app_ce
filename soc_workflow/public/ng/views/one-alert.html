@@ -1,0 +1,122 @@
+<div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="OneAlertController">
+    <main class="cd-main-content is-fixed">
+        <div class="cd-filter-right is-visible">
+
+            <div class="blcok-left-header">
+                <a href="{{ alertsUrl }}" class="right-close">Close <i class="fa fa-times" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="right-header"></div>
+
+            <div class="half-1 ">
+                <div class="inner-side scrollbar-slim-line" style="height: calc(100vh - 61px)">
+
+                    <div class="entity-type-container">Alert Info</div>
+
+                    <table class="table table-striped event-details-one-row">
+                        <thead>
+                        <tr>
+                            <th>Priority</th>
+                            <th>Message</th>
+                            <th>@timestamp (Logstash)</th>
+                            <th>@timestamp UTC (Logstash)</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="priority-placeholder">
+                                <span class="circle-status" ng-class="{'empty':alertCustomData.priority.color == 'transparent'}" ng-style="{'background-color':alertCustomData.priority.color}">{{ alertCustomData.priority.text }}</span>
+                            </td>
+                            <td class="message-placeholder" ng-bind-html="alertCustomData.title"></td>
+                            <td class="date-placeholder">{{ alertCustomData.timestamp }}</td>
+                            <td class="date-placeholder">{{ alertCustomData.timestampUtc }}</td>
+                            <td>
+                                <div class="alert-action">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-danger waves-effect waves-ligh" data-toggle="dropdown">Action <i class="fa fa-share-square"></i></button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a ng-click="createNewCase()" class="dropdown-item">Create Case</a>
+                                            <a ng-click="addToExistingCase()" class="dropdown-item">Add to existing Case</a>
+                                            <a ng-click="uploadToAnomaliMyAttacks()" class="dropdown-item" ng-class="{'disabled':uploadToAnomaliMyAttacks == false}">Upload to Anomali Threatstream</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row" style="display: none;">
+                        <div class="col-md-12 assignee-container">{{ alertCustomData.currentOperator }}</div>
+                    </div>
+
+                    <div class="row m-t-20">
+                        <div class="col-md-6">
+                            <table class="table table-striped event-details half-table table-vertical">
+                                <tbody>
+                                <tr ng-repeat="(rowKey, rowData) in alertPlainData">
+                                    <td>{{ rowKey }}</td>
+                                    <td>{{ rowData }}</td>
+                                    <td>
+                                        <div sp-data-action-button
+                                             actions="alertDataAction"
+                                             curr-url="currUrl"
+                                             curr-entity-id="currAlertId"
+                                             curr-entity-type="alert"
+                                             additional-class="dropdown-menu-right"
+                                             row-key="{{ rowKey }}"
+                                             row-data="{{ rowData }}"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Comment</label>
+                            <span id="alertCommentText" class="activity-text">{{ alertCustomData.comment }}</span>
+
+                            <table class="table table-striped event-details-links half-table table-vertical">
+                                <tbody>
+                                <tr ng-repeat="(rowKey, rowData) in alertLinksData">
+                                    <td>{{ rowKey }}</td>
+                                    <td sp-compile="rowData"></td>
+                                    <td>
+                                        <div sp-data-action-button
+                                             actions="alertDataAction"
+                                             curr-url="currUrl"
+                                             curr-entity-id="currAlertId"
+                                             curr-entity-type="alert"
+                                             row-key="{{ rowKey }}"
+                                             row-data="{{ rowData }}"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="half-2 scrollbar-slim-line">
+                <ol class="activity-feed mb-0 event-status-log">
+                    <li class="feed-item" ng-repeat="oneLog in alertStageLog">
+                        <span class="activity-author">{{ oneLog['timestamp'] }} <span ng-bind-html="oneLog['operator.action']"></span></span>
+                        <span class="activity-author" ng-show="oneLog['stage.now'].length > 0"><b>Stage: </b>{{ oneLog['stage.now'] }}</span>
+                        <span class="activity-author" ng-show="oneLog['operator.now'].length > 0">Assign to <b>{{ oneLog['operator.now'] }}</b></span>
+                        <span class="activity-text" ng-show="oneLog['comment'].length > 0" ng-bind-html="oneLog['comment']"></span>
+                    </li>
+
+                    <li class="feed-item">
+                        <span class="activity-author">Event created - {{ alertCustomData.timestamp }}</span>
+                    </li>
+                </ol>
+            </div>
+
+            <form class="scrollbar-slim-line">
+                <div class="cd-filter-block"></div>
+            </form>
+        </div>
+    </main>
+</div>

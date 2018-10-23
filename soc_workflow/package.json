@@ -1,0 +1,23 @@
+{
+  "name": "soc_workflow",
+  "version": "1.6.3",
+  "description": "SOC Workflow plugin",
+  "main": "index.js",
+  "kibana": {
+    "version": "6.3.0",
+    "templateVersion": "8.0.0"
+  },
+  "homepage": "https://socprime.com/",
+  "dependencies": {
+    "c3": "^0.6.4",
+    "clipboard-copy": "^2.0.1",
+    "daterangepicker": "^2.1.27",
+    "deepmerge": "^2.2.1",
+    "jquery.cookie": "^1.4.1",
+    "katex": "^0.10.0-rc.1",
+    "moment-range": "^4.0.1",
+    "node-cmd": "^3.0.0",
+    "popper.js": "^1.14.3",
+    "quill": "^1.3.6"
+  }
+}

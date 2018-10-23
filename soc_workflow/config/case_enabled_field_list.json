@@ -1,0 +1,426 @@
+[
+    {
+        "key": "ecs_version",
+        "title": "ecs_version"
+    },
+    {
+        "key": "event.category",
+        "title": "event.category"
+    },
+    {
+        "key": "event.type",
+        "title": "event.type"
+    },
+    {
+        "key": "event.data_source_id",
+        "title": "event.data_source_id"
+    },
+    {
+        "key": "event.module",
+        "title": "event.module"
+    },
+    {
+        "key": "event.organization_id",
+        "title": "event.organization_id"
+    },
+    {
+        "key": "event.organization_name",
+        "title": "event.organization_name"
+    },
+    {
+        "key": "event.raw",
+        "title": "event.raw"
+    },
+    {
+        "key": "event.hash",
+        "title": "event.hash"
+    },
+    {
+        "key": "event.tags",
+        "title": "event.tags"
+    },
+    {
+        "key": "event.duration",
+        "title": "event.duration"
+    },
+    {
+        "key": "event.risk_score",
+        "title": "event.risk_score"
+    },
+    {
+        "key": "service.id",
+        "title": "service.id"
+    },
+    {
+        "key": "service.ephemeral_id",
+        "title": "service.ephemeral_id"
+    },
+    {
+        "key": "service.name",
+        "title": "service.name"
+    },
+    {
+        "key": "service.version",
+        "title": "service.version"
+    },
+    {
+        "key": "service.type",
+        "title": "service.type"
+    },
+    {
+        "key": "service.state",
+        "title": "service.state"
+    },
+    {
+        "key": "service.query",
+        "title": "service.query"
+    },
+    {
+        "key": "service.response_code",
+        "title": "service.response_code"
+    },
+    {
+        "key": "device.mac",
+        "title": "device.mac"
+    },
+    {
+        "key": "device.timezone_offset",
+        "title": "device.timezone_offset"
+    },
+    {
+        "key": "device.ip",
+        "title": "device.ip"
+    },
+    {
+        "key": "device.network_interface",
+        "title": "device.network_interface"
+    },
+    {
+        "key": "device.hostname",
+        "title": "device.hostname"
+    },
+    {
+        "key": "device.type",
+        "title": "device.type"
+    },
+    {
+        "key": "device.vendor",
+        "title": "device.vendor"
+    },
+    {
+        "key": "device.version",
+        "title": "device.version"
+    },
+    {
+        "key": "device.serial_number",
+        "title": "device.serial_number"
+    },
+    {
+        "key": "device.action",
+        "title": "device.action"
+    },
+    {
+        "key": "device.rule_set",
+        "title": "device.rule_set"
+    },
+    {
+        "key": "device.event_id",
+        "title": "device.event_id"
+    },
+    {
+        "key": "host.mac",
+        "title": "host.mac"
+    },
+    {
+        "key": "host.timezone_offset",
+        "title": "host.timezone_offset"
+    },
+    {
+        "key": "host.ip",
+        "title": "host.ip"
+    },
+    {
+        "key": "host.network_interface",
+        "title": "host.network_interface"
+    },
+    {
+        "key": "host.hostname",
+        "title": "host.hostname"
+    },
+    {
+        "key": "host.id",
+        "title": "host.id"
+    },
+    {
+        "key": "host.type",
+        "title": "host.type"
+    },
+    {
+        "key": "host.sub_type",
+        "title": "host.sub_type"
+    },
+    {
+        "key": "host.operating_system",
+        "title": "host.operating_system"
+    },
+    {
+        "key": "host.operating_system_version",
+        "title": "host.operating_system_version"
+    },
+    {
+        "key": "host.provider",
+        "title": "host.provider"
+    },
+    {
+        "key": "host.availability_zone",
+        "title": "host.availability_zone"
+    },
+    {
+        "key": "host.region",
+        "title": "host.region"
+    },
+    {
+        "key": "agent.id",
+        "title": "agent.id"
+    },
+    {
+        "key": "agent.ephemeral_id",
+        "title": "agent.ephemeral_id"
+    },
+    {
+        "key": "agent.name",
+        "title": "agent.name"
+    },
+    {
+        "key": "agent.version",
+        "title": "agent.version"
+    },
+    {
+        "key": "source.mac",
+        "title": "source.mac"
+    },
+    {
+        "key": "source.hostname",
+        "title": "source.hostname"
+    },
+    {
+        "key": "source.domain",
+        "title": "source.domain"
+    },
+    {
+        "key": "source.port",
+        "title": "source.port"
+    },
+    {
+        "key": "destination.mac",
+        "title": "destination.mac"
+    },
+    {
+        "key": "destination.hostname",
+        "title": "destination.hostname"
+    },
+    {
+        "key": "destination.domain",
+        "title": "destination.domain"
+    },
+    {
+        "key": "destination.subdomain",
+        "title": "destination.subdomain"
+    },
+    {
+        "key": "destination.port",
+        "title": "destination.port"
+    },
+    {
+        "key": "network.protocol",
+        "title": "network.protocol"
+    },
+    {
+        "key": "network.forwarded_ip",
+        "title": "network.forwarded_ip"
+    },
+    {
+        "key": "network.inbound_bytes",
+        "title": "network.inbound_bytes"
+    },
+    {
+        "key": "network.inbound_packets",
+        "title": "network.inbound_packets"
+    },
+    {
+        "key": "network.outbound_bytes",
+        "title": "network.outbound_bytes"
+    },
+    {
+        "key": "network.outbound_packets",
+        "title": "network.outbound_packets"
+    },
+    {
+        "key": "network.total_bytes",
+        "title": "network.total_bytes"
+    },
+    {
+        "key": "network.total_packets",
+        "title": "network.total_packets"
+    },
+    {
+        "key": "network.direction",
+        "title": "network.direction"
+    },
+    {
+        "key": "resource.type",
+        "title": "resource.type"
+    },
+    {
+        "key": "resource.id",
+        "title": "resource.id"
+    },
+    {
+        "key": "resource.file_name",
+        "title": "resource.file_name"
+    },
+    {
+        "key": "resource.URI",
+        "title": "resource.URI"
+    },
+    {
+        "key": "resource.URL",
+        "title": "resource.URL"
+    },
+    {
+        "key": "resource.path",
+        "title": "resource.path"
+    },
+    {
+        "key": "resource.version",
+        "title": "resource.version"
+    },
+    {
+        "key": "resource.hash_value",
+        "title": "resource.hash_value"
+    },
+    {
+        "key": "resource.hash_type",
+        "title": "resource.hash_type"
+    },
+    {
+        "key": "source.user",
+        "title": "source.user"
+    },
+    {
+        "key": "destination.user",
+        "title": "destination.user"
+    },
+    {
+        "key": "source.service",
+        "title": "source.service"
+    },
+    {
+        "key": "destination.service",
+        "title": "destination.service"
+    },
+    {
+        "key": "source.process",
+        "title": "source.process"
+    },
+    {
+        "key": "destination.process",
+        "title": "destination.process"
+    },
+    {
+        "key": "event.outcome",
+        "title": "event.outcome"
+    },
+    {
+        "key": "customer.URI",
+        "title": "customer.URI"
+    },
+    {
+        "key": "event.count",
+        "title": "event.count"
+    },
+    {
+        "key": "device.CustomString1",
+        "title": "device.CustomString1"
+    },
+    {
+        "key": "device.CustomString2",
+        "title": "device.CustomString2"
+    },
+    {
+        "key": "device.CustomString3",
+        "title": "device.CustomString3"
+    },
+    {
+        "key": "device.CustomString4",
+        "title": "device.CustomString4"
+    },
+    {
+        "key": "device.CustomString5",
+        "title": "device.CustomString5"
+    },
+    {
+        "key": "device.CustomString6",
+        "title": "device.CustomString6"
+    },
+    {
+        "key": "device.flexString1",
+        "title": "device.flexString1"
+    },
+    {
+        "key": "device.flexString2",
+        "title": "device.flexString2"
+    },
+    {
+        "key": "device.flexDate1",
+        "title": "device.flexDate1"
+    },
+    {
+        "key": "device.flexNumber1",
+        "title": "device.flexNumber1"
+    },
+    {
+        "key": "device.flexNumber2",
+        "title": "device.flexNumber2"
+    },
+    {
+        "key": "device.CustomDate1",
+        "title": "device.CustomDate1"
+    },
+    {
+        "key": "device.CustomDate2",
+        "title": "device.CustomDate2"
+    },
+    {
+        "key": "device.CustomNumber1",
+        "title": "device.CustomNumber1"
+    },
+    {
+        "key": "device.CustomNumber2",
+        "title": "device.CustomNumber2"
+    },
+    {
+        "key": "device.CustomNumber3",
+        "title": "device.CustomNumber3"
+    },
+    {
+        "key": "device.CustomFloatingPoint1",
+        "title": "device.CustomFloatingPoint1"
+    },
+    {
+        "key": "device.CustomFloatingPoint2",
+        "title": "device.CustomFloatingPoint2"
+    },
+    {
+        "key": "device.CustomFloatingPoint3",
+        "title": "device.CustomFloatingPoint3"
+    },
+    {
+        "key": "device.CustomFloatingPoint4",
+        "title": "device.CustomFloatingPoint4"
+    },
+    {
+        "key": "event.name",
+        "title": "event.name"
+    }
+]

@@ -1,0 +1,15 @@
+[2018-06-15 21:27:13,324][sigma_converter][INFO] Script started ============================== 
+[2018-06-15 21:27:13,325][sigma_converter][INFO] /usr/bin/python3.6 /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/sigmac.py -c /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/config/qradar.yml -t qradar /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tmp_sigma.txt 
+[2018-06-15 21:27:13,443][sigma_converter][INFO] 0, SELECT UTF8(payload) as search_payload from events where (((LOGSOURCETYPENAME(devicetype) ilike 'Microsoft Windows Security Event Log')) and (("EventID"='104q' and search_payload ilike 'Eventlog'))) 
+[2018-06-15 21:27:20,428][sigma_converter][INFO] Script started ============================== 
+[2018-06-15 21:27:20,429][sigma_converter][INFO] /usr/bin/python3.6 /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/sigmac.py -c /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/config/qradar.yml -t qradar /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tmp_sigma.txt 
+[2018-06-15 21:27:20,518][sigma_converter][INFO] 0, SELECT UTF8(payload) as search_payload from events where (((LOGSOURCETYPENAME(devicetype) ilike 'Microsoft Windows Security Event Log')) and (("EventID"='1014q' and search_payload ilike 'Eventlog'))) 
+[2018-06-15 21:27:23,512][sigma_converter][INFO] Script started ============================== 
+[2018-06-15 21:27:23,513][sigma_converter][INFO] /usr/bin/python3.6 /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/sigmac.py  -t grep /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tmp_sigma.txt 
+[2018-06-15 21:27:23,601][sigma_converter][INFO] 0, grep -P '^(?:.*(?=.*1014q)(?=.*Eventlog))' 
+[2018-06-15 21:27:27,320][sigma_converter][INFO] Script started ============================== 
+[2018-06-15 21:27:27,321][sigma_converter][INFO] /usr/bin/python3.6 /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/sigmac.py  -t logpoint /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tmp_sigma.txt 
+[2018-06-15 21:27:27,413][sigma_converter][INFO] 0, (EventID="1014q" Source="Eventlog") 
+[2018-06-15 22:01:13,430][sigma_converter][INFO] Script started ============================== 
+[2018-06-15 22:01:13,432][sigma_converter][INFO] /usr/bin/python3.6 /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/sigmac.py  -t grep /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tmp_sigma.txt 
+[2018-06-15 22:01:13,530][sigma_converter][INFO] 0, grep -P '^(?:.*(?=.*1041)(?=.*Eventlog))' 

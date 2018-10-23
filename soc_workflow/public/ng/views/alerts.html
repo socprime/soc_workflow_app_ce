@@ -1,0 +1,44 @@
+<div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="AlertsController">
+    <main class="cd-main-content is-fixed">
+        <div sp-alert-fixed-menu selected-item="selectedAlert" curr-url="currUrl" user-list="userList" all-stages="allStages" case-enabled-field-list="caseEnabledFieldList" saved-searches="savedSearches"></div>
+
+        <div sp-top-nav></div>
+
+        <section class="plr">
+            <div sp-period-switch datepicker-id="alerts-reportrange" update-period="updatePeriod" periods-list="configPeriod"></div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div sp-chart chart-title="Alerts by Stage" group-id="donut-chart" chart-type="donut" chart-id="alerts-donut-chart1" chart-src="chartsSrc.byStage" chart-obj="charts.byStage"></div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div sp-chart chart-title="Alerts by Priority" group-id="donut-chart" chart-type="donut" chart-id="alerts-donut-chart2" chart-src="chartsSrc.byPriority" chart-obj="charts.byPriority"></div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div sp-chart chart-title="Alerts by SLA" group-id="donut-chart" chart-type="donut" chart-id="alerts-donut-chart3" chart-src="chartsSrc.bySla" chart-obj="charts.bySla"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div sp-chart chart-title="Alerts Timeline" chart-type="timeline" chart-id="alerts-combine-chart3" chart-src="chartsSrc.timeline" chart-obj="charts.timeline"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-t-20">
+                        <div class="card-header">Alert Flow</div>
+
+                        <div sp-chanel-table table-id="soc-channel-table" table-src="tableSrc" selected-item="selectedAlert" one-item-url="{{ oneAlertUrl }}"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <sp-footer curr-url="currUrl"></sp-footer>
+    </main>
+</div>

@@ -1,0 +1,42 @@
+<div class="{{ formClass }}">
+    <form id="{{ formId }}">
+        <div class="m-b-10" ng-repeat="(fieldIndex, fieldset) in fields">
+            <label class="m-b-0 display-block">{{ fieldset.name }}:</label>
+            <div class="pull-right" ng-show="fieldset.removable">
+                <button class="m-t-7 color" ng-click="removeCurrentFields(fieldset)"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+            </div>
+            <div ng-class="{'m-r-25': fieldset.removable}">
+                <div ng-if="fieldset.type == fieldType.text">
+                    <input name="{{ fieldset.slug }}" ng-model="fieldset.current" id="{{ fieldset.slug }}" placeholder="{{ fieldset.name }}" ng-required="fieldset.required" type="text" class="form-control">
+                </div>
+                <div ng-if="fieldset.type == fieldType.select">
+                    <div sp-select2
+                         select-name="{{ fieldset.slug }}"
+                         select-id="{{ fieldset.slug }}"
+                         placeholder="Select {{ fieldset.name }}"
+                         items="fieldset.list"
+                         is-multiple="{{ fieldset.isMultiple }}"
+                         selected="fieldset.current"
+                         ng-required="fieldset.required"></div>
+                </div>
+                <div ng-if="fieldset.type == fieldType.textarea">
+                    <textarea name="{{ fieldset.slug }}" ng-model="fieldset.current" ng-readonly="fieldset.isReadolny" id="{{ fieldset.slug }}" placeholder="{{ fieldset.name }}" ng-required="fieldset.required" class="form-control" rows="5">{{ fieldset.current }}</textarea>
+                </div>
+
+                <div ng-show="fieldset.errors" class="text-danger form-error-container">
+                    <ul>
+                        <li>Value is required and can't be empty</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-b-10 clearfix">
+            <button id="{{ formClass }}-range-modal" class="btn btn-outline-danger waves-effect waves-ligh pull-right">
+                <span>Time period</span> <i class="fa fa-calendar"></i>
+            </button>
+        </div>
+    </form>
+    <div class="alert alert-success" ng-show="savedSuccess" role="alert">{{ savedSuccess }}</div>
+    <div class="alert alert-danger" ng-show="savedErrors" role="alert">{{ savedErrors }}</div>
+</div>

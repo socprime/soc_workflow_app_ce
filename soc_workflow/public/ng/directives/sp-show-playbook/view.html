@@ -1,0 +1,25 @@
+<div class="playbook-wrap" ng-bind-html="playbookContent"></div>
+<div class="collapse" id="{{ playbookId }}-cases">
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Stage</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Operator</th>
+            <th scope="col">Timestamp</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="oneCase in playbookCases">
+            <td><a href="{{ currUrl }}#/cases/{{ oneCase.id }}">{{ oneCase.name }}</a></td>
+            <td>{{ oneCase['event.labels'] }}</td>
+            <td><span class="circle-status " style="background-color: {{ oneCase['priority_color'] }}">{{ oneCase['event.severity'] }}</span></td>
+            <td>{{ oneCase['operator'] }}</td>
+            <td>{{ oneCase['timestamp'] }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>{{ oneCase }}</div>
+</div>

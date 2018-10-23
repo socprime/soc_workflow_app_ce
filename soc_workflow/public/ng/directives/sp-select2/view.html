@@ -1,0 +1,6 @@
+<div id="{{ selectId }}-wrap">
+    <select name="{{ selectName }}" ng-model="selected" id="{{ selectId }}" multiple>
+        <option value=""></option>
+        <option ng-repeat="(value, name) in items" ng-selected="selected == name" value="{{ value }}">{{ name }}</option>
+    </select>
+</div>

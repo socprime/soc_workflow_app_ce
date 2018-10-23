@@ -1,0 +1,31 @@
+<div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="EventsController">
+    <main class="cd-main-content is-fixed">
+        <div sp-top-nav></div>
+
+        <section class="plr">
+            <div sp-events-saved-search
+                 curr-url="currUrl"
+                 datepicker-id="{{ dateRangePickerId }}"
+                 saved-searches="savedSearches"
+                 events-data="eventsData"></div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-t-20">
+                        <div class="card-header">
+                            Event Search Result
+                            <span ng-show="selectedEvents[0]">
+                                <button ng-click="createNewCase()" type="button" class="btn btn-outline-danger waves-effect waves-ligh menu-raw pull-right">Create Case</button>
+                                <button ng-click="addToExistingCase()" type="button" class="btn btn-outline-danger waves-effect waves-ligh menu-raw pull-right m-r-5">Add to existing Case</button>
+                            </span>
+                        </div>
+
+                        <div sp-chanel-table table-id="soc-channel-table-raw" table-rows="eventsData" table-src="tableSrc" selected-item="selectedEvents"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <sp-footer curr-url="currUrl"></sp-footer>
+    </main>
+</div>

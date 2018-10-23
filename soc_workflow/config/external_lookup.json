@@ -1,0 +1,18 @@
+[
+    {},
+    {
+        "Lookup": [
+            {
+                "name": "CyberChef",
+                "link": "https://gchq.github.io/CyberChef/#input=[[value]]",
+                "functions": [
+                    "base64"
+                ]
+            },
+            {
+                "name": "Google",
+                "link": "https://www.google.com/search?q=[[value]]"
+            }
+        ]
+    }
+]

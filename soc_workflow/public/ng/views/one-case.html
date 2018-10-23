@@ -1,0 +1,124 @@
+<div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="OneCaseController">
+    <main class="cd-main-content is-fixed">
+        <div class="cd-filter-right is-visible">
+
+            <div class="blcok-left-header">
+                <a href="{{ casesUrl }}" class="right-close">Close <i class="fa fa-times" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="right-header"></div>
+
+            <div class="half-1 ">
+                <div class="inner-side scrollbar-slim-line" style="height: calc(100vh - 61px)">
+
+                    <div class="entity-type-container">Case Info</div>
+
+                    <table class="table table-striped event-details-one-row">
+                        <thead>
+                        <tr>
+                            <th>Priority</th>
+                            <th>Message</th>
+                            <th>@timestamp (Logstash)</th>
+                            <th>@timestamp UTC (Logstash)</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="priority-placeholder">
+                                <span class="circle-status" ng-class="{'empty':caseCustomData.priority.color == 'transparent'}" ng-style="{'background-color':caseCustomData.priority.color}">{{ caseCustomData.priority.text }}</span>
+                            </td>
+                            <td class="message-placeholder" ng-bind-html="caseCustomData.title"></td>
+                            <td class="date-placeholder">{{ caseCustomData.timestamp }}</td>
+                            <td class="date-placeholder">{{ caseCustomData.timestampUtc }}</td>
+                            <td>
+                                <div class="case-action">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-danger waves-effect waves-ligh" data-toggle="dropdown">Action <i class="fa fa-share-square"></i></button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" ng-click="processCase()">Process Case</a>
+                                            <a class="dropdown-item" ng-class="editCaseSavedSearch == false ? 'disabled' : ''" ng-click="editCaseSavedSearch()">Edit Case Saved Search</a>
+                                            <a class="dropdown-item" ng-class="editCaseGraphWorkspace == false ? 'disabled' : ''" ng-click="editCaseGraphWorkspace()">Edit Case Graph Workspace</a>
+                                            <a class="dropdown-item" ng-click="enrichWithSigma()">Enrich with SIGMA</a>
+                                            <a ng-click="copyCase()" class="dropdown-item">Copy Case</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row" style="display: none;">
+                        <div class="col-md-12 assignee-container">{{ caseCustomData.currentOperator }}</div>
+                    </div>
+
+                    <div class="row m-t-20">
+                        <div class="col-md-6">
+                            <table class="table table-striped event-details half-table table-vertical">
+                                <tbody>
+                                <tr ng-repeat="(rowKey, rowData) in casePlainData">
+                                    <td>{{ rowKey }}</td>
+                                    <td>{{ rowData }}</td>
+                                    <td>
+                                        <div sp-data-action-button
+                                             actions="caseDataAction"
+                                             curr-url="currUrl"
+                                             curr-entity-id="currCaseId"
+                                             curr-entity-type="case"
+                                             additional-class="dropdown-menu-right"
+                                             row-key="{{ rowKey }}"
+                                             row-data="{{ rowData }}"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Comment</label>
+                            <span id="alertCommentText" class="activity-text">{{ caseCustomData.comment }}</span>
+
+                            <table class="table table-striped event-details-links half-table table-vertical">
+                                <tbody>
+                                <tr ng-repeat="(rowKey, rowData) in caseLinksData">
+                                    <td>{{ rowKey }}</td>
+                                    <td sp-compile="rowData"></td>
+                                    <td>
+                                        <div sp-data-action-button
+                                             actions="caseDataAction"
+                                             curr-url="currUrl"
+                                             curr-entity-id="currCaseId"
+                                             curr-entity-type="case"
+                                             row-key="{{ rowKey }}"
+                                             row-data="{{ rowData }}"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="half-2 scrollbar-slim-line">
+                <ol class="activity-feed mb-0 event-status-log">
+                    <li class="feed-item" ng-repeat="oneLog in caseStageLog">
+                        <span class="activity-author">{{ oneLog['timestamp'] }} <span ng-bind-html="oneLog['operator.action']"></span></span>
+                        <span class="activity-author" ng-show="oneLog['stage.now'].length > 0"><b>Stage: </b>{{ oneLog['stage.now'] }}</span>
+                        <span class="activity-author" ng-show="oneLog['operator.now'].length > 0">Assign to <b>{{ oneLog['operator.now'] }}</b></span>
+                        <span class="activity-text" ng-show="oneLog['comment'].length > 0" ng-bind-html="oneLog['comment']"></span>
+                    </li>
+
+                    <li class="feed-item">
+                        <span class="activity-author">Event created - {{ caseCustomData.timestamp }}</span>
+                    </li>
+                </ol>
+            </div>
+
+            <form class="scrollbar-slim-line">
+                <div class="cd-filter-block"></div>
+            </form>
+        </div>
+    </main>
+</div>
