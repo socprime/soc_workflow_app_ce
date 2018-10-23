@@ -1,0 +1,11 @@
+<h3>Application License Agreement</h3>
+
+<p>Copyright 2018 SOC Prime, Inc.
+
+<p>Source code in this repository is variously licensed under the GPL v3, or the SOC Prime License. Source code in a given file is licensed under the GPL v3, unless otherwise noted at the beginning of the file or a LICENSE file present in the directory subtree declares a separate license.</p>
+<p></p>
+<p>The build produces two sets of binaries - one set that falls under the SOC Prime License and another set that falls under GPL v3. The binaries that contain `_ce` in the folder name are licensed under the GPL v3.</p>
+
+<b>SOC Prime Inc. 1201 Orange street, Suite 600, Wilmington, 19899, Delaware, USA</b><br>
+<a href="mailto:legal@socprime.com">legal@socprime.com</a><br>
+<a href="https://socprime.com" target="_blank">https://socprime.com</a>

@@ -2,15 +2,15 @@
 Helps SOC Analysts and Threat Hunters explore suspicious events, look into raw events arriving at Elastic stack and view Saved Searches saved by teammates. Carry out investigations based on automatically generated alerts from SIEM, EDR, IDS arriving at Elastic stack, Elastic Machine Learning alerts and Threat Intelligence data enrichments from Anomali ThreatStream & MISP.
 # SOC Workflow Installation
 To install SOC Workflow for your Kibana:
-Copy the file soc_workflow-xxxxx.zip to Kibana server and run the command:
+Copy the file soc_workflow_ce-xxxxx.zip to Kibana server and run the command:
 ```sh
-/usr/share/kibana/bin/./kibana-plugin install file:///PATH_TO_FILE/soc_workflow-xxxxx.zip
+/usr/share/kibana/bin/./kibana-plugin install file:///PATH_TO_FILE/soc_workflow_ce-xxxxx.zip
 ```
 
 ![alt text](resources/images/heroban2.png "Sigma-UI")
 Wait until the installation finishes, it may take a few minutes to optimize and cache browser bundles. 
-> If you get the error: "Plugin installation was unsuccessful due to error "Incorrect Kibana version in plugin [soc_workflow]. Expected [6.2.4]; found [6.2.2]", please open zip archive and modify file
-`"./kibana/soc_workflow/package.json": `
+> If you get the error: "Plugin installation was unsuccessful due to error "Incorrect Kibana version in plugin [soc_workflow_ce]. Expected [6.2.4]; found [6.2.2]", please open zip archive and modify file
+`"./kibana/soc_workflow_ce/package.json": `
 put version of your Kibana to field "version".
 
 Restart Kibana to apply the changes.
@@ -42,7 +42,7 @@ Playbook format:
 
 Edit file 
 ```sh
-/usr/share/kibana/plugins/soc_workflow/config/playbook_alert_links.json
+/usr/share/kibana/plugins/soc_workflow_ce/config/playbook_alert_links.json
 ```
 to add mapping of your own alerts to playbooks.
 ```sh
@@ -76,7 +76,7 @@ elasticdump \
  --type=data
 ```
 Configure external commands to run scripts/commands and make lookups to the 3d parties services. 
-Edit file `/usr/share/kibana/plugins/soc_workflow/config/external_command.json`
+Edit file `/usr/share/kibana/plugins/soc_workflow_ce/config/external_command.json`
  ```sh
  [{
     "Menu": [{
@@ -108,11 +108,11 @@ chmod +x /opt/scripts/*.sh
 Now you can use the SOC Workflow plugin.
 
 How to update
-   - Backup all config files in folder `/usr/share/kibana/plugins/soc_workflow/config/`.
-   - Remove folder `/usr/share/kibana/plugins/soc_workflow/`.
+   - Backup all config files in folder `/usr/share/kibana/plugins/soc_workflow_ce/config/`.
+   - Remove folder `/usr/share/kibana/plugins/soc_workflow_ce/`.
    - Install application from new version archive.
    - Remove Kibana cache - all files and subfolders in folder `/usr/share/kibana/optimize/`. Do not delete folder "optimize".
    - In needed update or add new templates for data.
-   - Copy back upped configuration files to folder `/usr/share/kibana/plugins/soc_workflow/config/`
+   - Copy back upped configuration files to folder `/usr/share/kibana/plugins/soc_workflow_ce/config/`
    - Restart Kibana. Restart Kibana may take a while since rebuilding cache.
 
