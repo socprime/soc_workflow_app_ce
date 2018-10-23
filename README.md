@@ -1,5 +1,5 @@
 ![alt text](resources/images/heroban.png "SOC Workflow App CE")
-Helps SOC Analysts and Threat Hunters explore suspicious events, look into raw events arriving at Elastic stack and view Saved Searches saved by teammates. Carry out investigations based on automatically generated alerts from SIEM, EDR, IDS arriving at Elastic stack, Elastic Machine Learning alerts and Threat Intelligence data enrichments from Anomali ThreatStream & MISP.
+SOC Workflow App helps Security Analysts and Threat Hunters explore suspicious events, look into raw events arriving at Elastic stack and view Saved Searches saved by teammates. Carry out investigations based on automatically generated alerts from SIEM, EDR, IDS arriving at Elastic stack, Elastic Machine Learning alerts and Threat Intelligence data enrichments from Anomali ThreatStream & MISP.
 # SOC Workflow Installation
 To install SOC Workflow for your Kibana:
 Copy the file soc_workflow-xxxxx.zip to Kibana server and run the command:
