@@ -1,4 +1,4 @@
-POST _template/alerts_case_logs
+POST _template/alerts_ecs
 {
     "order": 100,
     "index_patterns": [
