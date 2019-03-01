@@ -1,9 +1,13 @@
 require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCasesAjax', [
     '$http',
-    function ($http) {
+    'spCF',
+    'spHelperUpdateTable',
+    'spConfigCaseTable',
+    function ($http, spCF, spHelperUpdateTable, spConfigCaseTable) {
         return function ($scope) {
             let href = $scope.currUrl || false;
             let dateRange = $scope.dateRange || {};
+            let baseFields = spConfigCaseTable($scope.currUrl);
 
             if (href) {
                 $('.cd-main-content').waitAnimationStart();
@@ -27,10 +31,31 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCasesAjax', 
                         $scope.savedSearches = response.savedSearches || [];
                         $scope.allStages = response.allStages || [];
                         $scope.userList = response.userList || [];
+
+                        // Update table
+                        $scope.tableSrc = {};
+                        if (spCF.isArray(response.tableFields)) {
+                            let baseFieldsName = [];
+                            if (spCF.isArray(baseFields)) {
+                                baseFieldsName = baseFields.map((el) => { return spCF.isString(el.field) ? el.field : ''; });
+                            }
+
+                            response.tableFields.forEach(function (field) {
+                                if (spCF.isString(field.data) && baseFieldsName.indexOf(field.data) < 0) {
+                                    baseFields.push(field);
+                                }
+                            });
+
+                            $scope = spHelperUpdateTable($scope, 'cases', baseFields);
+                        }
                     }
                 }, function errorCallback(response) {
                     $('.cd-main-content').waitAnimationStop();
                     console.log('connection error');
+                });
+
+                $('[table-id=' + $scope.workflowTableId + ']').on('select2-changed', function (event) {
+                    $scope = spHelperUpdateTable($scope, 'cases', baseFields);
                 });
             }
         };

@@ -16,6 +16,11 @@ module.exports = function (server, req, index, field, value, size) {
         value = !$cf.isArray(value) && typeof value == 'object' ? [] : value;
         size = typeof size == 'number' ? size : 100;
 
+        if (JSON.stringify(value) == '[]') {
+            resolve([]);
+            return false;
+        }
+
         let terms = {};
         terms[field] = value;
 
@@ -33,6 +38,7 @@ module.exports = function (server, req, index, field, value, size) {
 
             resolve(response);
         }).catch(function (e) {
+            console.log(e);
             resolve([]);
         });
     });

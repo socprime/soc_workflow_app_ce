@@ -19,7 +19,6 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo, options) {
         orderField: false,
         orderDir: 'asc',
         searchValue: false,
-        orderFieldDictionary: {},
         searchFields: [
             'message',
             'operator',
@@ -57,6 +56,7 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo, options) {
             let searchPart = {
                 "query_string": {
                     "analyze_wildcard": true,
+                    "lenient": true,
                     "fields": options.searchFields,
                     "query": ""
                 }
@@ -70,8 +70,10 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo, options) {
         return server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'search', {
             index: currIndex,
             body: queryBody
-        })
+        });
     } else {
-        return null;
+        return new Promise(function(resolve, reject) {
+            reject('Error! Empty server or currIndex params in "server/models/ecs/get-sorted-ordered.js"');
+        });
     }
 };

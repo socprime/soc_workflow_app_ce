@@ -34,6 +34,7 @@ module.exports = function (server, req, ids) {
 
             resolve(tmp);
         }).catch(function (e) {
+            console.log(e);
             resolve(false);
         });
     });

@@ -53,7 +53,7 @@ module.exports = function (scope, $http, $route, modal, spCF, spGetRangeFromPick
                 body: '',
                 actions: [{
                     label: 'Close',
-                    cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                    cssClass: 'btn btn-outline-danger',
                     onClick: function (e) {
                         $route.reload();
                     }
@@ -82,6 +82,7 @@ module.exports = function (scope, $http, $route, modal, spCF, spGetRangeFromPick
                 data['daterangepicker_start'] = dateRange.from || 0;
                 data['daterangepicker_end'] = dateRange.to || 0;
 
+                $('.cd-main-content').waitAnimationStart();
                 $http({
                     method: "POST",
                     url: href + '/cases-enrich-by-sigma',
@@ -92,7 +93,7 @@ module.exports = function (scope, $http, $route, modal, spCF, spGetRangeFromPick
                     if (response.success && response.success == true) {
                         modal.show(scope, Object.assign({}, reloadPage, {
                             title: 'Info',
-                            body: response.message || 'Events from SIGMA enriched',
+                            body: '<pre>' + response.message + '</pre>' || 'Events from SIGMA enriched',
                         }));
                     } else {
                         modal.show(scope, Object.assign({}, reloadPage, {
@@ -100,8 +101,10 @@ module.exports = function (scope, $http, $route, modal, spCF, spGetRangeFromPick
                             body: 'Something went wrong',
                         }));
                     }
+                    $('.cd-main-content').waitAnimationStop();
                 }, function errorCallback(response) {
                     console.log('connection error');
+                    $('.cd-main-content').waitAnimationStop();
                 });
             }
         }

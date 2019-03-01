@@ -5,8 +5,9 @@ const skipedRightSidebarFields = [
     'comment',
     'resource.URL',
     'resource.URI',
-    'events.id',
-    'alerts.id',
+    'url.query',
+    'events_id',
+    'alerts_id',
     'priority_color',
     'operator',
     'available.stage',
@@ -84,9 +85,9 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCasePage'
 
                 // Add links fields
                 let shorteningLength = 30;
-                //events.id
-                if (typeof newValue['events.id'] == 'object') {
-                    let events = newValue['events.id'];
+                //events_id
+                if (typeof newValue['events_id'] == 'object') {
+                    let events = newValue['events_id'];
                     let tpnLinks = [];
                     if ($scope.currUrl) {
                         let href = $scope.currUrl.replace('soc_workflow_ce', 'kibana');
@@ -99,7 +100,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCasePage'
                             let created = spCF.isString(row['created']) ? row['created'] : '';
 
                             if (id) {
-                                let linkTitle = name + (created ? ' (' + created + ')' : id);
+                                let linkTitle = name + ' ' + (created ? '(' + created + ')' : id);
                                 let linkText = linkTitle.length > shorteningLength ? linkTitle.substring(0, shorteningLength) + ' ...' : linkTitle;
 
                                 let tmpLinkHref = href + "#/discover?_g=(refreshInterval:(display:Off,pause:!f,value:0))&_a=(columns:!(_source)" + index + ",interval:auto,query:(language:lucene,query:'_id:%22" + id.trim() + "%22'),sort:!('@timestamp',desc))";
@@ -110,14 +111,14 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCasePage'
                         }
 
                         if (tpnLinks.length) {
-                            $scope.caseLinksData['events.id'] = tpnLinks.join('');
+                            $scope.caseLinksData['events_id'] = tpnLinks.join('');
                         }
                     }
                 }
 
-                //alerts.id
-                if (typeof newValue['alerts.id'] == 'object') {
-                    let alerts = newValue['alerts.id'];
+                //alerts_id
+                if (typeof newValue['alerts_id'] == 'object') {
+                    let alerts = newValue['alerts_id'];
                     let tpnLinks = [];
 
                     for (let rowId in alerts) {
@@ -127,7 +128,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCasePage'
                         let created = spCF.isString(row['created']) ? row['created'] : '';
 
                         if (id) {
-                            let linkTitle = name + (created ? ' (' + created + ')' : id);
+                            let linkTitle = name + ' ' + (created ? '(' + created + ')' : id);
                             let linkText = linkTitle.length > shorteningLength ? linkTitle.substring(0, shorteningLength) + ' ...' : linkTitle;
 
                             let tmpLink = '<a href="' + ($scope.alertsUrl ? $scope.alertsUrl + '/' + id : '') + '" title="' + linkTitle + '">' + linkText + '</a>';
@@ -136,7 +137,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCasePage'
                     }
 
                     if (tpnLinks.length) {
-                        $scope.caseLinksData['alerts.id'] = tpnLinks.join('');
+                        $scope.caseLinksData['alerts_id'] = tpnLinks.join('');
                     }
                 }
 
@@ -204,6 +205,11 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCasePage'
                 // resource.URI
                 if (spCF.isString(newValue['resource.URI'])) {
                     $scope.caseLinksData['Resource.URI'] = '<a href="' + newValue['resource.URI'] + '" target="_blank">' + newValue['resource.URI'] + '</a>';
+                }
+
+                // url.query
+                if (spCF.isString(newValue['url.query'])) {
+                    $scope.caseLinksData['url.query'] = '<a href="' + newValue['url.query'] + '" target="_blank">' + newValue['url.query'] + '</a>';
                 }
             });
 

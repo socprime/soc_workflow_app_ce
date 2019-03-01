@@ -20,7 +20,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spFooter', [
                 body: '',
                 actions: [{
                     label: 'Close',
-                    cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                    cssClass: 'btn btn-outline-danger',
                     onClick: function (e) {
                         $route.reload();
                     }

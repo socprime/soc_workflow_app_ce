@@ -1,3 +1,5 @@
+const copyToClipboard = require('clipboard-copy');
+
 import directiveTemplate from './view.html'
 import directiveSubItemTemplate from './view-sub-item.html'
 
@@ -38,9 +40,10 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spDataActionButt
     }]).directive('spDataActionButtonSubItem', [
     '$http',
     '$route',
+    '$window',
     'spCF',
     'modal',
-    function ($http, $route, spCF, modal) {
+    function ($http, $route, $window, spCF, modal) {
         const preLink = function (scope, element, attributes, controller, transcludeFn) {
             scope.subActions = scope.subActions || {};
             scope.hasChild = true;
@@ -59,6 +62,18 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spDataActionButt
         };
 
         const link = function (scope, element, attrs, controller, transcludeFn) {
+            scope.copy2ClipboardAndRedirect = function ($event, value, href) {
+                if (scope.subActions && scope.subActions.link && scope.subActions.link.indexOf('[[value]]') < 0) {
+                    $event.preventDefault();
+
+                    copyToClipboard(value).then((r) => {
+                        $window.location.href = href;
+                    }).catch((e) => {
+                        $window.location.href = href;
+                    });
+                }
+            };
+
             /**
              * @param link
              * @param functions
@@ -94,7 +109,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spDataActionButt
                     body: '',
                     actions: [{
                         label: 'Close',
-                        cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-outline-danger',
                         onClick: function (e) {
                             oneCaseContainer.waitAnimationStop();
                             $route.reload();

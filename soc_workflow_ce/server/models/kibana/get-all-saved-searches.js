@@ -23,11 +23,13 @@ module.exports = function (server, req) {
                 try {
                     savedSearches[doc['_id']] = (doc['_source']['search']['title']);
                 } catch (e) {
+                    console.log(e);
                 }
             });
 
             resolve(savedSearches);
         }).catch(function (e) {
+            console.log(e);
             resolve({});
         });
     });

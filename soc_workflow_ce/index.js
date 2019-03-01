@@ -5,8 +5,8 @@ export default function (kibana) {
         id: 'soc_workflow_ce',
         uiExports: {
             app: {
-                title: 'SOC Workflow App CE',
-                description: 'SOC Workflow Application Community Edition',
+                title: 'SOC Workflow CE App',
+                description: 'SOC Workflow CE Application',
                 main: 'plugins/soc_workflow_ce/app',
                 icon: 'plugins/soc_workflow_ce/assets/img/applogo.svg'
             }

@@ -1,5 +1,9 @@
 <a class="dropdown-item" ng-if="subActions.command" ng-click="dataEnrichment(subActions.name)">{{ subActions.name }}</a>
-<a class="dropdown-item" ng-if="subActions.link" ng-click="copy2Clipboard(rowData)" href="{{ externalLookup(subActions.link, subActions.functions) }}" target="_blank">{{ subActions.name }}</a>
+<a class="dropdown-item"
+   ng-if="subActions.link"
+   ng-click="copy2ClipboardAndRedirect($event, rowData, externalLookup(subActions.link, subActions.functions))"
+   href="{{ externalLookup(subActions.link, subActions.functions) }}"
+   target="_blank">{{ subActions.name }}</a>
 
 <a ng-if="hasChild && subValue.length">{{ subName }}</a>
 <ul ng-if="hasChild && subValue.length" class="dropdown-menu">

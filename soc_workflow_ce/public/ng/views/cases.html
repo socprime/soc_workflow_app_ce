@@ -32,10 +32,16 @@
                     <div class="card m-t-20">
                         <div class="card-header">
                             Case Flow
-                            <button type="button" class="btn btn-outline-danger waves-effect waves-ligh pull-right" ng-click="createNewCase()">Create Case</button>
+                            <button type="button" class="btn btn-outline-danger pull-right" ng-click="createNewCase()">Create Case</button>
                         </div>
 
-                        <div sp-chanel-table table-id="soc-channel-table" table-src="tableSrc" selected-item="selectedCase" one-item-url="{{ oneCaseUrl }}"></div>
+                        <div sp-channel-table
+                             class="soc-channel-table"
+                             table-id="{{ workflowTableId }}"
+                             table-src="tableSrc"
+                             table-allowed-fields="tableFields"
+                             selected-item="selectedCase"
+                             one-item-url="{{ oneCaseUrl }}"></div>
                     </div>
                 </div>
             </div>

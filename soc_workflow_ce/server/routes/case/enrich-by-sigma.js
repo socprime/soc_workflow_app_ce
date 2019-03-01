@@ -1,6 +1,6 @@
-let moduleFolder = require('./../../constant/module_folder');
+let moduleFolder = require('./../../constant/module-folder');
 
-import moment from 'moment';
+let moment = require('moment-timezone');
 
 let cmd = require('node-cmd');
 let fs = require('fs');
@@ -11,6 +11,7 @@ let commonGetCurrentUser = require('./../../../' + moduleFolder + '/users_model/
 let commonAddOrUpdate = require('./../../models/common/add-or-update');
 let commonGetByBody = require('./../../models/common/get-by-body');
 let kibanaGetAllIndexPattern = require('./../../models/kibana/get-all-index-pattern');
+let helpersCommonGetAppPath = require('./../../helpers/common/get-app-path');
 
 let emptyResult = {
     success: false
@@ -25,14 +26,16 @@ let elasticAlias = "es-qs";
  * @param elasticQuery
  */
 let enrichData = function (server, req, reply, elasticQuery) {
+    let clientTimezone = req.headers.client_timezone || "UTC";
+
     let searchIndex = '*';
     let params = {
         caseId: $cf.isString(req.payload.case_id) ? req.payload.case_id : null,
         choosenSigmaName: $cf.isString(req.payload.choosen_sigma_name) ? req.payload.choosen_sigma_name : null,
         dateFrom: $cf.isString(req.payload.daterangepicker_start) ?
-            moment(req.payload.daterangepicker_start * 1000, 'x').utc() : moment().utc().startOf('day').subtract(7, 'days'),
+            moment(req.payload.daterangepicker_start * 1000, 'x').tz(clientTimezone) : moment().tz(clientTimezone).startOf('day').subtract(7, 'days'),
         dateTo: $cf.isString(req.payload.daterangepicker_end) ?
-            moment(req.payload.daterangepicker_end * 1000, 'x').utc() : moment().utc().endOf('day'),
+            moment(req.payload.daterangepicker_end * 1000, 'x').tz(clientTimezone) : moment().tz(clientTimezone).endOf('day'),
     };
 
     let mustCondition = [{
@@ -81,6 +84,7 @@ let enrichData = function (server, req, reply, elasticQuery) {
                 try {
                     ids.push(doc['_id']);
                 } catch (e) {
+                    console.log(e);
                 }
             });
 
@@ -110,6 +114,7 @@ let enrichData = function (server, req, reply, elasticQuery) {
                     link = link + "#/discover?_g=(refreshInterval:(display:Off,pause:!f,value:0)" + timeRange + ")&_a=(columns:!(_source)" + searchIndexId + ",interval:auto,query:(language:lucene,query:'" + ids + "'),sort:!('@timestamp',desc))";
                     link = '<a href="' + link + '" target="_blank">Events</a>';
                 } catch (e) {
+                    console.log(e);
                 }
 
                 if (link) {
@@ -128,7 +133,7 @@ let enrichData = function (server, req, reply, elasticQuery) {
                 "comment": logMessage
             };
 
-            let indexDate = moment().format('YYYY.MM.DD');
+            let indexDate = moment().tz(clientTimezone).format('YYYY.MM.DD');
             let needIndex = 'case_logs-' + indexDate;
             commonAddOrUpdate(server, req, {
                 'index': needIndex,
@@ -155,97 +160,105 @@ let enrichData = function (server, req, reply, elasticQuery) {
  * @returns {{index: function(*=, *=)}}
  */
 export default function (server, options) {
-    const index = (req, reply) => {
-        let params = {
-            choosenSigma: $cf.isString(req.payload.choosen_sigma) ? req.payload.choosen_sigma : null
-        };
+    const index = (req) => {
+        return (async function () {
+            return await new Promise(function (reply) {
+                let params = {
+                    choosenSigma: $cf.isString(req.payload.choosen_sigma) ? req.payload.choosen_sigma : null
+                };
 
-        if (!$cf.isString(req.payload.case_id) || !params.choosenSigma) {
-            return reply(emptyResult);
-        }
-
-        commonGetByBody(server, req, 'sigma_translation', {
-            "size": 10000,
-            "query": {
-                "bool": {
-                    "must": [
-                        {
-                            "term": {
-                                "backend.keyword": elasticAlias
-                            }
-                        },
-                        {
-                            "term": {
-                                "sigma_doc_id.keyword": params.choosenSigma
-                            }
-                        }
-                    ]
+                if (!$cf.isString(req.payload.case_id) || !params.choosenSigma) {
+                    return reply(emptyResult);
                 }
-            }
-        }).then(function (respTranslation) {
-            respTranslation = respTranslation['hits'] || [];
-            respTranslation = respTranslation['hits'] || [];
-            respTranslation = respTranslation[0] || [];
-            respTranslation = respTranslation['_source'] || [];
 
-            if (respTranslation['text'] && $cf.isString(respTranslation['text'])) {
-                enrichData(server, req, reply, respTranslation['text']);
-            } else {
-                commonGetByBody(server, req, 'sigma_doc', {
+                commonGetByBody(server, req, 'sigma_translation', {
                     "size": 10000,
                     "query": {
-                        "term": {
-                            "_id": params.choosenSigma
+                        "bool": {
+                            "must": [
+                                {
+                                    "term": {
+                                        "backend.keyword": elasticAlias
+                                    }
+                                },
+                                {
+                                    "term": {
+                                        "sigma_doc_id.keyword": params.choosenSigma
+                                    }
+                                }
+                            ]
                         }
                     }
-                }).then(function (respSigma) {
-                    respSigma = respSigma['hits'] || [];
-                    respSigma = respSigma['hits'] || [];
-                    respSigma = respSigma[0] || [];
-                    respSigma = respSigma['_source'] || [];
+                }).then(function (respTranslation) {
+                    respTranslation = respTranslation['hits'] || [];
+                    respTranslation = respTranslation['hits'] || [];
+                    respTranslation = respTranslation[0] || [];
+                    respTranslation = respTranslation['_source'] || [];
 
-                    if (respSigma['sigma_text'] && $cf.isString(respSigma['sigma_text'])) {
-                        let translationScriptPath = '/usr/share/kibana/plugins/socprime_uncoder/server/translation_script';
-                        let cmdPromise = new Promise(function (resolve, reject) {
-                            let tmpSigmaFilePath = translationScriptPath + '/sigma/tmp_sigma.txt';
-                            fs.writeFile(tmpSigmaFilePath, respSigma['sigma_text'], 'utf8', function (error) {
-                                if (!error) {
-                                    cmd.get(
-                                        'python ' + translationScriptPath + '/sigma/sigma_converter.py ' + tmpSigmaFilePath + ' ' + elasticAlias,
-                                        function (err, data, stderr) {
-                                            if (!err) {
-                                                resolve(data);
-                                            } else {
-                                                reject(err);
-                                            }
-                                        }
-                                    );
-                                } else {
-                                    reject(error);
+                    if (respTranslation['text'] && $cf.isString(respTranslation['text'])) {
+                        enrichData(server, req, reply, respTranslation['text']);
+                    } else {
+                        commonGetByBody(server, req, 'sigma_doc', {
+                            "size": 10000,
+                            "query": {
+                                "term": {
+                                    "_id": params.choosenSigma
                                 }
-                            });
-                        });
+                            }
+                        }).then(function (respSigma) {
+                            respSigma = respSigma['hits'] || [];
+                            respSigma = respSigma['hits'] || [];
+                            respSigma = respSigma[0] || [];
+                            respSigma = respSigma['_source'] || [];
 
-                        cmdPromise.then(function (result) {
-                            if (result) {
-                                enrichData(server, req, reply, result);
+                            if (respSigma['sigma_text'] && $cf.isString(respSigma['sigma_text'])) {
+                                let translationScriptPath = helpersCommonGetAppPath(server) + 'server/translation_script';
+                                //let translationScriptPath = '/usr/share/kibana/plugins/soc_workflow_ce/server/translation_script';
+                                let cmdPromise = new Promise(function (resolve, reject) {
+                                    let tmpSigmaFilePath = translationScriptPath + '/sigma/tmp_sigma.txt';
+                                    fs.writeFile(tmpSigmaFilePath, respSigma['sigma_text'], 'utf8', function (error) {
+                                        if (!error) {
+                                            cmd.get(
+                                                'python ' + translationScriptPath + '/sigma/sigma_converter.py ' + tmpSigmaFilePath + ' ' + elasticAlias,
+                                                function (err, data, stderr) {
+                                                    if (!err) {
+                                                        resolve(data);
+                                                    } else {
+                                                        reject(err);
+                                                    }
+                                                }
+                                            );
+                                        } else {
+                                            reject(error);
+                                        }
+                                    });
+                                });
+
+                                cmdPromise.then(function (result) {
+                                    if (result) {
+                                        enrichData(server, req, reply, result);
+                                    } else {
+                                        return reply(emptyResult);
+                                    }
+                                }).catch(function (e) {
+                                    console.log(e);
+                                    server.log(['error'], e);
+                                    return reply(emptyResult);
+                                });
                             } else {
                                 return reply(emptyResult);
                             }
                         }).catch(function (e) {
-                            server.log(['error'], e);
+                            console.log(e);
                             return reply(emptyResult);
                         });
-                    } else {
-                        return reply(emptyResult);
                     }
                 }).catch(function (e) {
+                    console.log(e);
                     return reply(emptyResult);
                 });
-            }
-        }).catch(function (e) {
-            return reply(emptyResult);
-        });
+            });
+        })();
     };
 
     return {

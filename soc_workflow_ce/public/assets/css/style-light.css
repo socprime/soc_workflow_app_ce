@@ -2,10 +2,13 @@
     background-color: #ebeff2;
 }
 
-.light-body .global-nav-link__anchor {
+.light-body .kbnGlobalNavLink__anchor {
     display: block;
     height: 100%;
     color: #616161 !important;
+}
+.light-body .euiIcon {
+    fill: #616161 !important;
 }
 
 .light-body .application {
@@ -42,7 +45,7 @@ Main Components
 }
 
 /* Kibana Layout Start */
-.light-body .global-nav__logo,
+.light-body .kbnGlobalNav__logo,
 .light-body .cd-tab-filter-wrapper {
     color: #565b60;
     background-color: #ffffff;
@@ -67,8 +70,9 @@ Main Components
     color: #6c757d!important;
 }
 
-.light-body .global-nav-link__icon-image,
-.light-body .cd-tab-filter .logo {
+.light-body .kbnGlobalNavLink__iconImage,
+.light-body .cd-tab-filter .logo,
+.light-body .euiIcon.euiIcon--large.euiIcon--ghost.euiIcon--app {
     -webkit-filter: invert(70%);
     -moz-filter: invert(70%);
     -ms-filter: invert(70%);
@@ -76,27 +80,41 @@ Main Components
     filter: invert(70%);
 }
 
-.light-body .global-nav {
+.light-body .kbnGlobalNav {
     background-color: #ffffff !important;
 }
 
-.light-body .global-nav-link:hover,
-.light-body .global-nav-link.active {
+.light-body .kbnGlobalNavLink:hover,
+.light-body .kbnGlobalNavLink.active {
     background-color: #e6e6e6 !important;
 }
 
-.light-body .global-nav .logo-small.kibana,
-.light-body .global-nav .logo.kibana {
+.light-body .kbnGlobalNav__logo .kibana {
     background-color: #ffffff !important;
     background-image: url(../img/kibana-light-logo.svg);
 }
 /* Kibana Layout End */
 
-/* --------------------------------
+.light-body  .badge-blue-grey {
+    background-color: #a4aaac;
+}
 
-xtab-filter
+.light-body .dropdown > #soc-channel-table-alert-select-fields-wrap,
+.light-body .dropdown > #soc-channel-table-cases-select-fields-wrap {
+    background-color: #fff;
+}
 
--------------------------------- */
+.light-body .dropdown > #soc-channel-table-alerts-select-fields-wrap,
+.light-body .dropdown > #soc-channel-table-cases-select-fields-wrap {
+    color: #1f2c33;
+    background-color: #fff;
+}
+
+    /* --------------------------------
+
+    xtab-filter
+
+    -------------------------------- */
 .light-body .cd-tab-filter .btn {
     color: #616161 !important;
 }
@@ -176,19 +194,6 @@ xfilter
     background-color: #e84126;
 }
 
-
-/* ==============
-  Waves Effect
-===================*/
-/*!
- * Waves v0.6.0
- * http://fian.my.id/Waves
- *
- * Copyright 2014 Alfiana E. Sibuea and other contributors
- * Released under the MIT license
- * https://github.com/fians/Waves/blob/master/LICENSE
- */
-
 /* ==============
   Buttons
 ===================*/
@@ -220,7 +225,9 @@ xfilter
 }
 
 .light-body .refresh-switcher-wrap .dropdown-menu .dropdown-item.active,
-.light-body .refresh-switcher-wrap .dropdown-menu .dropdown-item:hover {
+.light-body .refresh-switcher-wrap .dropdown-menu .dropdown-item:hover,
+.light-body .column-selector-wrap .dropdown-menu .dropdown-item.active,
+.light-body .column-selector-wrap .dropdown-menu .dropdown-item:hover {
     background-color: #a0a0a0;
     color: #ffffff;
 }
@@ -549,5 +556,5 @@ xfilter
 
 .light-body .event-details-links tr td a:hover,
 .light-body .event-details tr td a:hover {
-    color: #a4aaac;
+    color: #a4aaac !important;
 }

@@ -1,15 +1,14 @@
-const casesRangeId = '#cases-reportrange';
-
 require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCasesPage', [
     'spConfigPeriod',
     'spInitCommonDateRangePicker',
-    'spGetRangeFromPicker',
     'spInitCasesAjax',
-    'spConfigCasesTable',
-    function (spConfigPeriod, spInitCommonDateRangePicker, spGetRangeFromPicker, spInitCasesAjax, spConfigCasesTable) {
+    'spConfigCaseTable',
+    'spGetRangeFromPicker',
+    'spInitCommonUpdateDateRangeFromPicker',
+    function (spConfigPeriod, spInitCommonDateRangePicker, spInitCasesAjax, spConfigCaseTable, spGetRangeFromPicker, spInitCommonUpdateDateRangeFromPicker) {
         return function ($scope) {
             // Init date range pickers
-            spInitCommonDateRangePicker(casesRangeId, 'cases_date_range_picker_from', 'cases_date_range_picker_to', {});
+            spInitCommonDateRangePicker($scope.rangeId, 'cases_date_range_picker_from', 'cases_date_range_picker_to', {});
             spInitCommonDateRangePicker('#edit-saved-search-range-modal', 'cases_date_range_picker_from', 'cases_date_range_picker_to', {
                 "parentEl": '#edit-case-saved-search.modal',
                 "timePicker": true,
@@ -18,26 +17,17 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCasesPage', 
                 }
             });
 
-            let dateRange = spGetRangeFromPicker(casesRangeId);
-            dateRange.from = dateRange.from || 0;
-            dateRange.to = dateRange.to || 0;
-
-            $scope.$apply(function () {
-                // Init date range
-                $scope.dateRange.from = dateRange.from;
-                $scope.dateRange.to = dateRange.to;
-
-                // Init table
-                $scope.tableSrc = spConfigCasesTable($scope.currUrl, dateRange.from, dateRange.to);
-            });
+            spInitCommonUpdateDateRangeFromPicker($scope);
+            // Init table and date range
             spInitCasesAjax($scope);
-
             // Set updater by period
             $scope.$watch('updatePeriod', function (newValue) {
                 let updateByPeriod = function () {
                     let period = $scope.updatePeriod || spConfigPeriod.getFirst();
+
+                    clearTimeout($scope.periodEntity);
                     if (period != spConfigPeriod.getFirst() && parseInt(period) != NaN) {
-                        setTimeout(function () {
+                        $scope.periodEntity = setTimeout(function () {
                             spInitCasesAjax($scope);
                             updateByPeriod();
                         }, (parseInt(period) * 1000));
@@ -47,19 +37,13 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCasesPage', 
                 updateByPeriod();
             });
 
+            $scope.$on("$destroy", function(){
+                clearTimeout($scope.periodEntity);
+            });
 
-            $(casesRangeId).on('apply.daterangepicker', function (ev, picker) {
-                let dateRange = spGetRangeFromPicker(casesRangeId);
-                dateRange.from = dateRange.from || 0;
-                dateRange.to = dateRange.to || 0;
-
+            $($scope.rangeId).on('apply.daterangepicker', function (ev, picker) {
                 $scope.$apply(function () {
-                    // Update date range
-                    $scope.dateRange.from = dateRange.from;
-                    $scope.dateRange.to = dateRange.to;
-
-                    // Update table
-                    $scope.tableSrc = spConfigCasesTable($scope.currUrl, dateRange.from, dateRange.to);
+                    spInitCommonUpdateDateRangeFromPicker($scope);
 
                     // Update ajax data
                     spInitCasesAjax($scope);

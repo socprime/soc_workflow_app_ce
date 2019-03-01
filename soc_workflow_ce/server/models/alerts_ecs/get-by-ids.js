@@ -22,56 +22,62 @@ module.exports = function (server, req, id) {
                 }
             }
         }).then(function (response) {
+            let clientTimezone = req.headers.client_timezone || "UTC";
+
             let alerts = [];
             response = response['hits'] || [];
             response = response['hits'] || [];
 
             response.forEach(function (doc) {
                 try {
-                    doc['_source']['event.timestamp'] = $cf.getDateInFormat(doc['_source']['timestamp'], 'x', '');
-                    doc['_source']['timestamp'] = $cf.getDateInFormat(doc['_source']['@timestamp'], 'YYYY-MM-DD HH:mm.ss', '');
+                    doc['_source']['id'] = $cf.isString(doc['_id']) ? doc['_id'] : '';
+                    doc['_source']['index'] = $cf.isString(doc['_index']) ? doc['_index'] : '';
+                    doc = doc['_source'];
+                    doc = $cf.makeFlatListFromObject('', doc, {});
 
-                    for (let fieldKey in doc['_source']) {
-                        if (typeof doc['_source'][fieldKey] == "object") {
-                            doc['_source'][fieldKey] = typeof doc['_source'][fieldKey] != "undefined" && typeof doc['_source'][fieldKey] == "object" && doc['_source'][fieldKey] != null
-                                ? Object.values(doc['_source'][fieldKey]).join(', ') : (typeof doc['_source'][fieldKey] == "string" ? doc['_source'][fieldKey] : '');
+                    doc['event.timestamp'] = $cf.getDateInFormat(doc['@timestamp'], 'x', '', false, clientTimezone);
+                    doc['timestamp'] = $cf.getDateInFormat(doc['@timestamp'], 'YYYY-MM-DD HH:mm.ss', '', false, clientTimezone);
+
+                    for (let fieldKey in doc) {
+                        if ($cf.isObject(doc[fieldKey])) {
+                            doc[fieldKey] = $cf.isObject(doc[fieldKey]) && doc[fieldKey] != null
+                                ? Object.values(doc[fieldKey]).join(', ') : ($cf.isString(doc[fieldKey]) ? doc[fieldKey] : '');
                         }
                     }
 
-                    if (typeof doc['_source']['event.severity'] != "undefined") {
+                    if ($cf.isSet(doc['event.severity'])) {
                         let availableEventSeverity = Object.keys(presetColorGlobalPriority);
-                        if (availableEventSeverity.indexOf(doc['_source']['event.severity']) < 0) {
-                            doc['_source']['event.severity'] = '';
+                        if (availableEventSeverity.indexOf(doc['event.severity']) < 0) {
+                            doc['event.severity'] = '';
                         }
 
-                        if (presetColorGlobalPriority[doc['_source']['event.severity']]) {
-                            doc['_source']['priority_color'] = presetColorGlobalPriority[doc['_source']['event.severity']]
+                        if (presetColorGlobalPriority[doc['event.severity']]) {
+                            doc['priority_color'] = presetColorGlobalPriority[doc['event.severity']]
                         } else {
-                            doc['_source']['priority_color'] = 'transparent';
+                            doc['priority_color'] = 'transparent';
                         }
                     } else {
-                        doc['_source']['priority_color'] = 'transparent';
+                        doc['priority_color'] = 'transparent';
                     }
 
-                    if (typeof doc['_source']['comment'] != "undefined" && doc['_source']['comment'] != '') {
-                        doc['_source']['comment'] = $cf.createTextLinks(doc['_source']['comment']);
+                    if ($cf.isSet(doc['comment']) && doc['comment'] != '') {
+                        doc['comment'] = $cf.createTextLinks(doc['comment']);
                     }
-
-                    doc['_source']['id'] = typeof doc['_id'] == 'string' ? doc['_id'] : '';
-                    doc['_source']['index'] = typeof doc['_index'] == 'string' ? doc['_index'] : '';
 
                     let orderedEventData = {};
-                    Object.keys(doc['_source']).sort().forEach(function (key) {
-                        orderedEventData[key] = doc['_source'][key];
+                    Object.keys(doc).sort().forEach(function (key) {
+                        orderedEventData[key] = doc[key];
                     });
 
                     alerts.push(orderedEventData);
                 } catch (e) {
+                    console.log(e);
                 }
             });
 
             resolve(alerts);
         }).catch(function (e) {
+            console.log(e);
             resolve([]);
         });
     });

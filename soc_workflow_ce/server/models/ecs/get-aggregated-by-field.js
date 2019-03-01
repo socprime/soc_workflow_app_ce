@@ -44,7 +44,12 @@ module.exports = function (server, req, currIndex, field, dateFrom, dateTo, colo
                 }
             }
         }).then(function (response) {
-            let rawData = response['aggregations']['by']['buckets'] || [];
+            let rawData = [];
+            try {
+                rawData = response['aggregations']['by']['buckets'];
+            } catch (e) {
+                rawData = [];
+            }
             let resultTmp = {};
 
             rawData.forEach(function (oneStage) {
@@ -69,6 +74,7 @@ module.exports = function (server, req, currIndex, field, dateFrom, dateTo, colo
                 total: total
             });
         }).catch(function (e) {
+            console.log(e);
             resolve({
                 data: [],
                 names: {},
@@ -77,5 +83,4 @@ module.exports = function (server, req, currIndex, field, dateFrom, dateTo, colo
             });
         });
     });
-}
-;
+};

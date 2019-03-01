@@ -1,0 +1,65 @@
+[
+    {
+        "Lookup": [
+            {
+                "name": "CyberChef",
+                "link": "https://gchq.github.io/CyberChef/#input=[[value]]",
+                "functions": [
+                    "base64"
+                ]
+            },
+            {
+                "name": "Google",
+                "link": "https://www.google.com/search?q=[[value]]"
+            }
+        ]
+    },
+    {
+        "Responde": [
+            {
+                "name": "Anomali threatstream",
+                "link": "https://ui.threatstream.com/settings?action=email"
+            },
+            {
+                "Block IP": [
+                    {
+                        "name": "Firewall Office MicroTik",
+                        "command": "/opt/scripts/drop_ip_microtik.sh 10.10.14.172 0 add [[value]] admin 'password'"
+                    },
+                    {
+                        "name": "Firewall Palo Alto",
+                        "command": "/usr/bin/python2.7 /opt/scripts/pan_fw_dynamic_ip_tag.py --ip_addr [[value]]"
+                    }
+                ]
+            },
+            {
+                "name": "Blacklist IP",
+                "command": "echo \"Blacklist IP - [[value]]\""
+            }
+        ]
+    },
+    {
+        "Analyze": [
+            {
+                "name": "Virus Total",
+                "command": "/usr/bin/python2.7 /opt/scripts/data_enrichment_vt_check.py --field_value \"[[value]]\""
+            },
+            {
+                "name": "URLSCAN.IO",
+                "command": "/opt/scripts/urlscanio.sh \"[[value]]\""
+            },
+            {
+                "name": "Anomali Threatstream",
+                "command": "/usr/bin/python2.7 /opt/scripts/anomali_find_ioc/anomali_find_ioc.py -i [[value]]"
+            },
+            {
+                "name": "Detonate File",
+                "command": "echo \"File was processed - [[value]]\""
+            },
+            {
+                "name": "Detonate URL",
+                "command": "echo \"URL was processed - [[value]]\""
+            }
+        ]
+    }
+]

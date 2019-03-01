@@ -10,6 +10,7 @@ module.exports = function (server, req, index, ids) {
         } else {
             const resp = server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'index', {
                 index: index,
+                refresh: true,
                 type: '_delete_by_query',
                 body: {
                     "query": {
@@ -22,6 +23,7 @@ module.exports = function (server, req, index, ids) {
             }).finally(function () {
                 resolve(true);
             }).catch(function (e) {
+                console.log(e);
                 resolve(false);
             });
         }

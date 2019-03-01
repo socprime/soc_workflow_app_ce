@@ -57,7 +57,8 @@ require('ui/modules').get('app/soc_workflow_ce', [])
 
                 let modalClass = {
                     small: "modal-sm",
-                    large: "modal-lg"
+                    large: "modal-lg",
+                    xlarge: "modal-lg-big"
                 };
 
                 self.$modal.data('bs.modal', false);
@@ -86,7 +87,7 @@ require('ui/modules').get('app/soc_workflow_ce', [])
                         $(buttonHtml).appendTo(footer).on('click', options.actions[i].onClick);
                     }
                 } else {
-                    $('<button type="button" class="btn btn-outline-danger waves-effect waves-light" data-dismiss="modal">Close</button>').appendTo(footer);
+                    $('<button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>').appendTo(footer);
                 }
 
                 self.$modal.modal(options);

@@ -56,6 +56,7 @@ module.exports = function (server, req, inputTerms) {
 
             resolve(JSON.stringify(tmp));
         }).catch(function (e) {
+            console.log(e);
             resolve("[]");
         });
     });

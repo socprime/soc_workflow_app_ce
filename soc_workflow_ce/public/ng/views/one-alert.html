@@ -34,7 +34,7 @@
                             <td>
                                 <div class="alert-action">
                                     <div class="dropdown">
-                                        <button class="btn btn-outline-danger waves-effect waves-ligh" data-toggle="dropdown">Action <i class="fa fa-share-square"></i></button>
+                                        <button class="btn btn-outline-danger" data-toggle="dropdown">Action <i class="fa fa-share-square"></i></button>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a ng-click="createNewCase()" class="dropdown-item">Create Case</a>
                                             <a ng-click="addToExistingCase()" class="dropdown-item">Add to existing Case</a>
@@ -75,7 +75,7 @@
 
                         <div class="col-md-6">
                             <label>Comment</label>
-                            <span id="alertCommentText" class="activity-text">{{ alertCustomData.comment }}</span>
+                            <span id="alertCommentText" class="activity-text" ng-bind-html="alertCustomData.comment"></span>
 
                             <table class="table table-striped event-details-links half-table table-vertical">
                                 <tbody>

@@ -1,0 +1,12 @@
+<div class="card-block" style="overflow-y: auto;">
+    <div class="dataTables_wrapper">
+        <div class="dataTables_filter">
+            <label><input type="search" class="form-control form-control-sm" placeholder="" aria-controls="{{ tableId }}"></label>
+            <button type="button" class="btn btn-outline-danger" ng-click="searchInTable($event)" style="padding: 3px 12px;">Search</button>
+        </div>
+    </div>
+
+    <div style="overflow-x: auto; width: 100%; padding-bottom: 45px;">
+        <table id="{{ tableId }}" class="table table-striped" style="width: 100%"></table>
+    </div>
+</div>

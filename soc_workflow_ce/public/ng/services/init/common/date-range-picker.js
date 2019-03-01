@@ -12,13 +12,18 @@ const defaultRange = {
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 };
 
+const defaultRangeKibanaRanges = Object.assign({}, defaultRange, {
+    'Last 7 Days': [moment().subtract(7, 'days'), moment()],
+    'Last 30 Days': [moment().subtract(30, 'days'), moment()]
+});
+
 /**
  * @param cookieFrom
  * @param cookieTo
  * @param format
  * @returns {{from: moment.Moment, to: *|moment.Moment}}
  */
-const getPeriodByCookiesName = function (cookieFrom, cookieTo, format) {
+const getPeriodByCookiesName = function (cookieFrom, cookieTo, format, currentRange) {
     format = format || 'X';
 
     let range = {
@@ -31,10 +36,10 @@ const getPeriodByCookiesName = function (cookieFrom, cookieTo, format) {
         let rangeTo = $.cookie(cookieTo);
 
         if (rangeFrom && rangeTo) {
-            let defaultRangeList = Object.keys(defaultRange);
-            if (defaultRangeList.includes(rangeFrom) && Array.isArray(defaultRange[rangeFrom])) {
-                range.from = defaultRange[rangeFrom][0] || range.from;
-                range.to = defaultRange[rangeFrom][1] || range.to;
+            let defaultRangeList = Object.keys(currentRange);
+            if (defaultRangeList.includes(rangeFrom) && Array.isArray(currentRange[rangeFrom])) {
+                range.from = currentRange[rangeFrom][0] || range.from;
+                range.to = currentRange[rangeFrom][1] || range.to;
                 range.name = rangeFrom;
             } else {
                 range.from = moment(rangeFrom, format);
@@ -53,9 +58,9 @@ const getPeriodByCookiesName = function (cookieFrom, cookieTo, format) {
  * @param title
  * @param dateFormat
  */
-const updatePickerTitle = function (selector, start, end, title, dateFormat) {
+const updatePickerTitle = function (selector, start, end, title, dateFormat, currentRange) {
     let titleSpan = '';
-    if (Object.keys(defaultRange).includes(title)) {
+    if (Object.keys(currentRange).includes(title)) {
         titleSpan = title;
     } else {
         titleSpan = start.format(dateFormat) + ' - ' + end.format(dateFormat);
@@ -76,15 +81,17 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCommonDateRa
             cookieTo = cookieTo || false;
             options = options || {};
 
-            let range = getPeriodByCookiesName(cookieFrom, cookieTo, (options.cookieFormat || undefined));
+            let useKibanaDateRanges = options.useKibanaDateRanges || false;
+            let currentRange = useKibanaDateRanges ? defaultRangeKibanaRanges : defaultRange;
+            let range = getPeriodByCookiesName(cookieFrom, cookieTo, (options.cookieFormat || undefined), currentRange);
 
             let defaultOptions = {
                 "opens": "left",
                 startDate: range.from,
                 endDate: range.to,
-                applyClass: 'btn btn-sm btn-secondary waves-effect waves-light',
-                cancelClass: 'btn btn-sm btn-secondary waves-effect waves-light',
-                ranges: defaultRange
+                applyClass: 'btn btn-sm btn-secondary',
+                cancelClass: 'btn btn-sm btn-secondary',
+                ranges: currentRange
             };
 
             if (typeof options == "object") {
@@ -98,12 +105,12 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCommonDateRa
             }
 
             try {
-                updatePickerTitle(selector, defaultOptions.startDate, defaultOptions.endDate, (range.name || null), dateFormat);
+                updatePickerTitle(selector, defaultOptions.startDate, defaultOptions.endDate, (range.name || null), dateFormat, currentRange);
             } catch (e) {
             }
             try {
                 $(selector).daterangepicker(defaultOptions, function (rangeFrom, rangeTo, rangeTitle) {
-                    updatePickerTitle(selector, rangeFrom, rangeTo, rangeTitle, dateFormat);
+                    updatePickerTitle(selector, rangeFrom, rangeTo, rangeTitle, dateFormat, currentRange);
                 });
             } catch (e) {
             }
@@ -114,10 +121,10 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitCommonDateRa
                     to: 0
                 };
 
-                let defaultRangeList = Object.keys(defaultRange);
+                let defaultRangeList = Object.keys(currentRange);
                 let currRange = $(selector).data('daterangepicker').chosenLabel;
 
-                if (defaultRangeList.includes(currRange) && Array.isArray(defaultRange[currRange])) {
+                if (defaultRangeList.includes(currRange) && Array.isArray(currentRange[currRange])) {
                     dateRange.from = currRange;
                     dateRange.to = currRange;
                 } else {

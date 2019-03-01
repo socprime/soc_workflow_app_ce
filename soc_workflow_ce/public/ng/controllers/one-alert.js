@@ -23,7 +23,7 @@ const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSa
         $scope.userList = [];
         $scope.savedSearches = {};
         $scope.alertDataAction = [];
-        $scope.alertSkippingLinks = ['cases.id', 'events.id', 'alerts.id', 'Saved Search', 'Playbooks'];
+        $scope.alertSkippingLinks = ['cases.id', 'events_id', 'alerts_id', 'Saved Search', 'Playbooks'];
 
         $scope.currAlertId = $routeParams.alertId || null;
         $scope.alertRawData = {};

@@ -1,4 +1,4 @@
-import moment from 'moment';
+let moment = require('moment-timezone');
 let $cf = require('./../../common/function');
 
 let ecsGetByPeriod = require('./../../models/ecs/get-by-period');
@@ -9,39 +9,46 @@ let ecsGetByPeriod = require('./../../models/ecs/get-by-period');
  * @returns {{index: function(*=, *)}}
  */
 export default function (server, options) {
-    const index = (req, reply) => {
-        let dateFrom = moment().utc().subtract(6, 'days').startOf('day');
-        let dateTo = moment().utc().endOf('day');
+    const index = (req) => {
+        return (async function () {
+            return await new Promise(function (reply) {
+                let clientTimezone = req.headers.client_timezone || "UTC";
 
-        ecsGetByPeriod(server, req, 'case_ecs-*', dateFrom, dateTo).then(function (cases) {
-            let data = [];
-            cases.forEach(function (oneCase) {
-                let rowIndex = oneCase['index'] || '';
-                let rowId = oneCase['id'] || '';
-                let rowName = oneCase['name'] || '';
-                let ts = oneCase['@timestamp'] || '';
+                let dateFrom = moment().tz(clientTimezone).subtract(6, 'days').startOf('day');
+                let dateTo = moment().tz(clientTimezone).endOf('day');
 
-                if (ts) {
-                    ts = $cf.getDateInFormat(ts, 'DD/MM/YYYY HH:mm', '');
-                }
+                ecsGetByPeriod(server, req, 'case_ecs-*', dateFrom, dateTo).then(function (cases) {
+                    let data = [];
+                    cases.forEach(function (oneCase) {
+                        let rowIndex = oneCase['index'] || '';
+                        let rowId = oneCase['id'] || '';
+                        let rowName = oneCase['name'] || '';
+                        let ts = oneCase['@timestamp'] || '';
 
-                if (rowName) {
-                    data.push({
-                        'id': [rowIndex, rowId].join('/'),
-                        'name': [rowName, ts].join('-'),
+                        if (ts) {
+                            ts = $cf.getDateInFormat(ts, 'DD/MM/YYYY HH:mm', '', false, clientTimezone);
+                        }
+
+                        if (rowName) {
+                            data.push({
+                                'id': [rowIndex, rowId].join('/'),
+                                'name': [rowName, ts].join('-'),
+                            });
+                        }
                     });
-                }
-            });
 
-            return reply({
-                data: data,
-                success: true
+                    return reply({
+                        data: data,
+                        success: true
+                    });
+                }).catch(function (e) {
+                    console.log(e);
+                    return reply({
+                        success: false
+                    });
+                });
             });
-        }).catch(function (e) {
-            return reply({
-                success: false
-            });
-        });
+        })();
     };
 
     return {

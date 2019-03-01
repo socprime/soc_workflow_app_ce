@@ -1,4 +1,4 @@
-let moduleFolder = require('./../../constant/module_folder');
+let moduleFolder = require('./../../constant/module-folder');
 let getStage = require('../../../' + moduleFolder + '/stage_model/server/get-stage');
 let $cf = require('./../../common/function');
 
@@ -16,13 +16,7 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo)
         dateFrom = dateFrom || 0;
         dateTo = dateTo || 0;
 
-        let timezone = 0;
-        let dateFromZone = parseInt(dateFrom);
-        if (dateFromZone > 0) {
-            let dateFromObj = new Date(dateFromZone);
-            timezone = dateFromObj.getTimezoneOffset() / 60;
-            timezone *= -1;
-        }
+        let clientTimezone = req.headers.client_timezone || 0;
 
         server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'search', {
             index: currIndex,
@@ -34,7 +28,7 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo)
                             "range": {
                                 "@timestamp": {
                                     "gte": dateFrom,
-                                    "lt": dateTo
+                                    "lt": dateTo,
                                 }
                             }
                         }]
@@ -51,7 +45,7 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo)
                                 "date_histogram": {
                                     "field": "@timestamp",
                                     "interval": "day",
-                                    "time_zone": timezone
+                                    "time_zone": clientTimezone
                                 }
                             }
                         }
@@ -59,15 +53,14 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo)
                 }
             }
         }).then(function (response) {
-            let rawData = {};
-
+            let rawData = [];
             try {
                 rawData = response['aggregations']['by']['buckets'];
             } catch (e) {
                 rawData = [];
             }
 
-            let tmpData = $cf.prepareTimelineChartData(rawData, dateFrom, dateTo, getStage.all);
+            let tmpData = $cf.prepareTimelineChartData(rawData, dateFrom, dateTo, clientTimezone, getStage.all);
             let data = typeof tmpData['data'] != "undefined" ? tmpData['data'] : [];
             let dataGroups = typeof tmpData['dataGroups'] != "undefined" ? tmpData['dataGroups'] : [];
             let colors = typeof tmpData['colors'] != "undefined" ? tmpData['colors'] : [];
@@ -78,6 +71,7 @@ module.exports = function (server, req, currIndex, dateFrom, dateTo)
                 colors: colors
             });
         }).catch(function (e) {
+            console.log(e);
             resolve({
                 data: [],
                 dataGroups: [],

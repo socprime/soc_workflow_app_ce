@@ -1,4 +1,4 @@
-import moment from 'moment';
+let moment = require('moment-timezone');
 
 let $cf = require('./../../common/function');
 
@@ -14,9 +14,9 @@ module.exports = {
             'operator': 'operator',
             'available-stage': 'event.labels',
             'comment': 'comment',
-            'source-ip': 'source.ip',
-            'destination-ip': 'destination.ip',
-            'device-product': 'device.product',
+            'source.ip': 'source.ip',
+            'destination.ip': 'destination.ip',
+            'device.product': 'device.product',
             'playbooks': 'playbooks',
         };
 
@@ -48,6 +48,7 @@ module.exports = {
                     }
                 });
             } catch (e) {
+                console.log(e);
             }
         }
 
@@ -55,14 +56,15 @@ module.exports = {
             try {
                 req.payload['playbooks'] = JSON.parse(req.payload['playbooks']);
             } catch (e) {
+                console.log(e);
             }
         }
 
         // Add all fields to data
         for (let index in fields) {
-            if (typeof req.payload[index] != "undefined" && req.payload[index].length > 0) {
+           if (typeof req.payload[index] != "undefined" && req.payload[index].length > 0) {
                 data[fields[index]] = req.payload[index];
-            }
+           }
         }
 
         data['name'] = (typeof data['message'] != "undefined") ? data['message'] : '';

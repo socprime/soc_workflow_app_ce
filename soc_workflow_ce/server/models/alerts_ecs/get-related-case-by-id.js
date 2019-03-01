@@ -17,11 +17,13 @@ module.exports = function (server, req, id) {
                 },
                 "query": {
                     "term": {
-                        "alerts.id.keyword": id
+                        "alerts_id.keyword": id
                     }
                 }
             }
         }).then(function (response) {
+            let clientTimezone = req.headers.client_timezone || "UTC";
+
             let cases = [];
             response = response['hits']['hits'] || [];
             response.forEach(function (oneCase) {
@@ -34,7 +36,7 @@ module.exports = function (server, req, id) {
                         clearedCase.name = oneCase['_source']['name'];
                     }
                     if (typeof oneCase['_source']['@timestamp'] != "undefined") {
-                        clearedCase.timestamp = $cf.getDateInFormat(oneCase['_source']['@timestamp'], 'YYYY-MM-DD HH:mm:ss', '');
+                        clearedCase.timestamp = $cf.getDateInFormat(oneCase['_source']['@timestamp'], 'YYYY-MM-DD HH:mm:ss', '', false, clientTimezone);
                     }
                 }
 
@@ -43,6 +45,7 @@ module.exports = function (server, req, id) {
 
             resolve(cases);
         }).catch(function (e) {
+            console.log(e);
             resolve([]);
         });
     });

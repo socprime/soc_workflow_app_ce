@@ -39,6 +39,7 @@ module.exports = function (server, req) {
             resolve(result);
         })
         .catch(function (e) {
+            console.log(e);
             resolve([]);
         });
     });

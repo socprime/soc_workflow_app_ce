@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 require('ui/modules').get('app/soc_workflow_ce', []).service('spGetRangeFromPicker', [
     function () {
         return function (selector, miliseconds) {
@@ -7,8 +5,6 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spGetRangeFromPick
             let defaultRange = $(selector).data('daterangepicker').ranges || {};
             let dateRangeFrom = 0;
             let dateRangeTo = 0;
-
-            let defaultRangeList = Object.keys(defaultRange);
             let currRange = $(selector).data('daterangepicker').chosenLabel;
 
             if (typeof defaultRange[currRange] == 'object' && Array.isArray(defaultRange[currRange])) {
@@ -41,9 +37,6 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spGetRangeFromPick
                 } catch (e) {
                 }
             }
-
-            dateRangeFrom = moment(dateRangeFrom, 'x').add(moment(dateRangeFrom, 'x').utcOffset(), 'm').utc().format('x');
-            dateRangeTo = moment(dateRangeTo, 'x').add(moment(dateRangeTo, 'x').utcOffset(), 'm').utc().format('x');
 
             return {
                 'from': (!miliseconds) ? parseInt(dateRangeFrom / 1000) : dateRangeFrom,

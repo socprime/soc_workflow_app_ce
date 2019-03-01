@@ -104,6 +104,7 @@ module.exports = function (scope, $http, $route, spCF, spSavedSearchIntegrationS
                 // Form link
                 let href = scope.currUrl ? scope.currUrl + '/create-case' : false;
                 if (href) {
+                    $('.cd-main-content').waitAnimationStart();
                     $http({
                         method: "POST",
                         url: href,
@@ -120,8 +121,10 @@ module.exports = function (scope, $http, $route, spCF, spSavedSearchIntegrationS
 
                             setTimeout(function () {
                                 $route.reload();
+                                $('.cd-main-content').waitAnimationStop();
                             }, 1000);
                         } else {
+                            $('.cd-main-content').waitAnimationStop();
                             scope.savedErrors = typeof response.message != "undefined" ? response.message : 'Something went wrong!';
                             scope.savedSuccess = undefined;
                         }
@@ -132,6 +135,8 @@ module.exports = function (scope, $http, $route, spCF, spSavedSearchIntegrationS
                         submitBtn.removeClass('disabled');
                         submitBtn.text(submitBtn.attr('data-label'));
                         console.log('connection error');
+
+                        $('.cd-main-content').waitAnimationStop();
                     });
                 }
             }

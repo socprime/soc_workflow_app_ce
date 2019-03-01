@@ -17,14 +17,14 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCaseActio
                     body: '<div sp-process-case selected-item="currCaseId" curr-url="currUrl" user-list="userList" all-stages="caseAvailableStage"></div>',
                     actions: [{
                         label: 'Cancel',
-                        cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-outline-danger',
                         onClick: function (e) {
                             $(e.target).parents('.modal').modal('hide');
                         }
                     }, {
                         label: 'Save',
                         savingLabel: 'Saving...',
-                        cssClass: 'btn btn-submit btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-submit btn-outline-danger',
                         onClick: function (event) {
                             if (!$(event.target).hasClass('disabled')) {
                                 $(event.target).parents('.modal').find('.process-case form').trigger('sp.apply_form');
@@ -64,14 +64,14 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCaseActio
                     body: '<div sp-enrich-with-sigma curr-url="currUrl" form-class="' + enrichWithSigma + '" curr-case-id="currCaseId"></div>',
                     actions: [{
                         label: 'Cancel',
-                        cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-outline-danger',
                         onClick: function (e) {
                             $(e.target).parents('.modal').modal('hide');
                         }
                     }, {
                         label: 'Save',
                         savingLabel: 'Saving...',
-                        cssClass: 'btn btn-submit btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-submit btn-outline-danger',
                         onClick: function (event) {
                             if (!$(event.target).hasClass('disabled')) {
                                 $(event.target).parents('.modal').find('.' + enrichWithSigma + ' form').trigger('sp.apply_form');
@@ -90,14 +90,14 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCaseActio
                     body: '<div sp-create-case current-page="cases" case-id="currCaseId" curr-url="currUrl" user-list="userList" all-stages="allStages" enabled-field-list="caseEnabledFieldList" saved-searches="savedSearches"></div>',
                     actions: [{
                         label: 'Cancel',
-                        cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-outline-danger',
                         onClick: function (e) {
                             $(e.target).parents('.modal').modal('hide');
                         }
                     }, {
                         label: 'Save',
                         savingLabel: 'Saving...',
-                        cssClass: 'btn btn-submit btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-submit btn-outline-danger',
                         onClick: function (event) {
                             if (!$(event.target).hasClass('disabled')) {
                                 $(event.target).parents('.modal').find('.create-case form').trigger('sp.apply_form');

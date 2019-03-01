@@ -1,8 +1,6 @@
 let fs = require('fs');
 let path = require("path");
 
-let $cf = require('./../../common/function');
-
 let emptyResult = {
     success: false
 };
@@ -13,23 +11,24 @@ let emptyResult = {
  * @returns {{index: function(*=, *=)}}
  */
 export default function (server, options) {
-    const index = (req, reply) => {
+    const index = (req) => {
         let query = req.query || {};
         let file = typeof query.file == "string" ? query.file : null;
 
         if (!file || !fs.existsSync(__dirname + file)) {
-            return reply(emptyResult);
+            return emptyResult;
         }
 
         try {
             let fileContent = fs.readFileSync(path.resolve(__dirname + file), 'utf8');
 
-            return reply({
+            return {
                 success: true,
                 text: fileContent,
-            });
+            };
         } catch (e) {
-            return reply(emptyResult);
+            console.log(e);
+            return emptyResult;
         }
     };
 

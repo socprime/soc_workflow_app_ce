@@ -5,7 +5,7 @@ let $cf = require('./../../common/function');
  * @param req
  * @param options
  */
-module.exports = function (server, req, options) {
+module.exports = function (server, req, options, makeBulk) {
     options = Object.assign({
         'index': null,
         'data': {},
@@ -13,6 +13,8 @@ module.exports = function (server, req, options) {
         'schema': {},
         'required': [],
     }, options);
+
+    makeBulk = typeof makeBulk == 'boolean' && makeBulk == true ? makeBulk : false;
 
     options.required = $cf.isArray(options.required) ? options.required : [];
     options.schema = typeof options.schema == 'object' ? options.schema : {};
@@ -32,10 +34,15 @@ module.exports = function (server, req, options) {
             resolve(false);
         }
 
+        if (makeBulk) {
+            options.data = $cf.makeBulkObjectFromList(options.data);
+        }
+
         let request = {
             index: options.index,
             type: 'doc',
-            body: options.data
+            body: options.data,
+            refresh: true
         };
 
         // If set id update
@@ -46,6 +53,7 @@ module.exports = function (server, req, options) {
         let resp = server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'index', request).then(function (resp) {
             resolve(resp);
         }).catch(function (e) {
+            console.log(e);
             resolve(false);
         });
     });

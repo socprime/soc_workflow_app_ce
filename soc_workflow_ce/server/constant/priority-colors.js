@@ -1,4 +1,4 @@
-let data = {
+module.exports = {
     '1': '#1B5E20',
     '2': '#5a7115',
     '3': '#c9b53e',
@@ -10,5 +10,3 @@ let data = {
     '9': '#fd5a28',
     '10': '#F44336',
 };
-
-module.exports = data;

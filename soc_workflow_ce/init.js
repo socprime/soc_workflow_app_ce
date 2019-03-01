@@ -1,10 +1,8 @@
-let moduleFolder = require('./server/constant/module_folder');
+let moduleFolder = require('./server/constant/module-folder');
 
-let AlertUpdateTable =                 require('./server/routes/alert/update-table');
 let AlertUpdate =                      require('./server/routes/alert/update');
 let AlertOneEntity =                   require('./server/routes/alert/one-entity');
 let AlertLogStage =                    require('./server/routes/alert/log-stage');
-let CasesUpdateTable =                 require('./server/routes/case/update-table');
 let CasesUpdate =                      require('./server/routes/case/update');
 let CasesOneEntity =                   require('./server/routes/case/one-entity');
 let CasesOneData =                     require('./server/routes/case/one-data');
@@ -28,36 +26,40 @@ let UpdateCaseGraphWorkspaceList =     require('./' + moduleFolder + '/graph_int
 let UpdateCaseSavedSearchList =        require('./' + moduleFolder + '/saved_searches_integration/server/routes/update-case-saved-search-list');
 let SavePlaybook =                     require('./' + moduleFolder + '/playbooks/server/routes/save-playbook');
 let DeletePlaybook =                   require('./' + moduleFolder + '/playbooks/server/routes/delete-playbook');
+let AjaxUpdateChannelTable =           require('./' + moduleFolder + '/channel_table/server/routes/update-table');
+let GetEditSlaSettingsData =           require('./' + moduleFolder + '/sla_settings/server/routes/get-data');
+let PostEditSlaSettingsData =          require('./' + moduleFolder + '/sla_settings/server/routes/post-data');
 
 /**
  * @param server
  * @param options
  */
 export default function (server, options) {
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/alert-update-table',                        handler: (req,reply) => AlertUpdateTable(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/alert-update',                              handler: (req,reply) => AlertUpdate(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/alert-one-entity',                          handler: (req,reply) => AlertOneEntity(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/alert-log-stage',                           handler: (req,reply) => AlertLogStage(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/cases-update-table',                        handler: (req,reply) => CasesUpdateTable(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/cases-update',                              handler: (req,reply) => CasesUpdate(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/cases-one-entity',                          handler: (req,reply) => CasesOneEntity(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/cases-one-data',                            handler: (req,reply) => CasesOneData(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/cases-log-stage',                           handler: (req,reply) => CasesLogStage(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/cases-enrich-by-sigma',                     handler: (req,reply) => CasesEnrichBySigma(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/saved-search',                              handler: (req,reply) => SavedSearch(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/create-case',                               handler: (req,reply) => CreateCase(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-case-list-for-select',                  handler: (req,reply) => GetCaseListForSelect(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/update-case-events',                        handler: (req,reply) => UpdateCaseEvents(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/update-case-saved-search-list',             handler: (req,reply) => UpdateCaseSavedSearchList(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/update-case-graph-workspace-list',          handler: (req,reply) => UpdateCaseGraphWorkspaceList(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-playbook',                              handler: (req,reply) => GetPlaybook(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/save-playbook',                             handler: (req,reply) => SavePlaybook(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/delete-playbook',                           handler: (req,reply) => DeletePlaybook(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-playbook-list-by-alert-ids',            handler: (req,reply) => GetPlaybookListByAlertIds(server, options).index(req,reply) });
-    server.route({ method: 'POST', path: '/app/soc_workflow_ce/enrich-data',                               handler: (req,reply) => GetEnrichData(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/event-update',                              handler: (req,reply) => EventsUpdate(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-same-alerts-events-fields-for-case',    handler: (req,reply) => GetSameAlertsEventsFieldsForCase(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-saved-search-list-by-case-id',          handler: (req,reply) => GetSavedSearchListByCaseId(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/sigmas-list',                               handler: (req,reply) => GetSigmasList(server, options).index(req,reply) });
-    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-file',                                  handler: (req,reply) => GetFile(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/alert-update',                           handler: (req,reply) => AlertUpdate(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/alert-one-entity',                       handler: (req,reply) => AlertOneEntity(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/alert-log-stage',                        handler: (req,reply) => AlertLogStage(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/cases-update',                           handler: (req,reply) => CasesUpdate(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/cases-one-entity',                       handler: (req,reply) => CasesOneEntity(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/cases-one-data',                         handler: (req,reply) => CasesOneData(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/cases-log-stage',                        handler: (req,reply) => CasesLogStage(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/cases-enrich-by-sigma',                  handler: (req,reply) => CasesEnrichBySigma(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/saved-search',                           handler: (req,reply) => SavedSearch(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/create-case',                            handler: (req,reply) => CreateCase(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-case-list-for-select',               handler: (req,reply) => GetCaseListForSelect(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/update-case-events',                     handler: (req,reply) => UpdateCaseEvents(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/update-case-saved-search-list',          handler: (req,reply) => UpdateCaseSavedSearchList(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/update-case-graph-workspace-list',       handler: (req,reply) => UpdateCaseGraphWorkspaceList(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-playbook',                           handler: (req,reply) => GetPlaybook(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/save-playbook',                          handler: (req,reply) => SavePlaybook(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/delete-playbook',                        handler: (req,reply) => DeletePlaybook(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-playbook-list-by-alert-ids',         handler: (req,reply) => GetPlaybookListByAlertIds(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/enrich-data',                            handler: (req,reply) => GetEnrichData(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/event-update',                           handler: (req,reply) => EventsUpdate(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-same-alerts-events-fields-for-case', handler: (req,reply) => GetSameAlertsEventsFieldsForCase(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-saved-search-list-by-case-id',       handler: (req,reply) => GetSavedSearchListByCaseId(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/sigmas-list',                            handler: (req,reply) => GetSigmasList(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/get-file',                               handler: (req,reply) => GetFile(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/ajax-update-channel-table',              handler: (req,reply) => AjaxUpdateChannelTable(server, options).index(req,reply) });
+    server.route({ method: 'GET',  path: '/app/soc_workflow_ce/edit-sla-settings-data',                 handler: (req ,reply) => GetEditSlaSettingsData(server, options).index(req,reply) });
+    server.route({ method: 'POST', path: '/app/soc_workflow_ce/edit-sla-settings-data',                 handler: (req ,reply) => PostEditSlaSettingsData(server, options).index(req,reply) });
 };

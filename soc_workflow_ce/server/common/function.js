@@ -1,8 +1,8 @@
-import moment from 'moment';
+let moment = require('moment-timezone');
 let fs = require('fs');
 let path = require("path");
 
-let moduleFolder = require('./../constant/module_folder');
+let moduleFolder = require('./../constant/module-folder');
 let getStage = require('./../../' + moduleFolder + '/stage_model/server/get-stage');
 
 let functions = {
@@ -14,6 +14,18 @@ let functions = {
         delete allStages['In Case'];
 
         return Object.keys(allStages);
+    },
+    getAlertStage: function () {
+        return getStage.forAlert;
+    },
+    getCaseClosedStage: function () {
+        return getStage.forCaseClosed;
+    },
+    getAlertClosedStage: function () {
+        return getStage.forAlertClosed;
+    },
+    getCaseStage: function () {
+        return getStage.forCase;
     },
     getRandomColor: function () {
         let letters = '0123456789ABCDEF';
@@ -73,18 +85,18 @@ let functions = {
             total: total
         };
     },
-    prepareTimelineChartData: function (rawData, dateFrom, dateTo, globalStages) {
+    prepareTimelineChartData: function (rawData, dateFrom, dateTo, clientTimezone, globalStages) {
         let dateRange = {};
-        let currentDate = moment(dateFrom, 'x');
-        let stopDate = moment(dateTo, 'x');
+        let currentDate = moment(dateFrom, 'x').tz(clientTimezone);
+        let stopDate = moment(dateTo, 'x').tz(clientTimezone);
 
         let data = [];
         let dataGroups = [];
         let colors = [];
 
         while (currentDate <= stopDate) {
-            dateRange[moment(currentDate).format('YYYY-MM-DD')] = {};
-            currentDate = moment(currentDate).add(1, 'days');
+            dateRange[moment(currentDate).tz(clientTimezone).format('YYYY-MM-DD')] = {};
+            currentDate = moment(currentDate).tz(clientTimezone).add(1, 'days');
         }
 
         let allLabels = [];
@@ -114,6 +126,7 @@ let functions = {
                         try {
                             stageDates = oneStage['sales_over_time']['buckets'];
                         } catch (e) {
+                            console.log(e);
                         }
 
                         if (stageName && stageDates) {
@@ -121,7 +134,7 @@ let functions = {
                             colors.push((typeof globalStages[elementLabel] != "undefined" ? globalStages[elementLabel] : functions.getRandomColor()));
 
                             stageDates.forEach(function (oneDate) {
-                                let dateDate = typeof oneDate['key_as_string'] != "undefined" ? (moment(oneDate['key_as_string'], 'x').format('YYYY-MM-DD')) : false;
+                                let dateDate = typeof oneDate['key_as_string'] != "undefined" ? (moment(oneDate['key_as_string'], 'x').tz(clientTimezone).format('YYYY-MM-DD')) : false;
                                 let dateCount = typeof oneDate['doc_count'] != "undefined" ? oneDate['doc_count'] : false;
                                 if (dateDate && dateCount !== false && typeof dateRange[dateDate] != "undefined") {
                                     dateRange[dateDate][elementLabel] = dateCount;
@@ -164,6 +177,7 @@ let functions = {
         try {
             data = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/../../config/' + filename), 'utf8'));
         } catch (e) {
+            console.log(e);
         }
 
         return data;
@@ -173,6 +187,7 @@ let functions = {
         try {
             data = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/../../config/case_enabled_field_list.json'), 'utf8'));
         } catch (e) {
+            console.log(e);
         }
 
         return data;
@@ -185,6 +200,7 @@ let functions = {
             try {
                 data = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/../../config/playbook_alert_links.json'), 'utf8'));
             } catch (e) {
+                console.log(e);
                 server.log(['info'], ['getAvailablePlaybooksNameByAlertNames', e]);
             }
 
@@ -200,6 +216,7 @@ let functions = {
                         }
                     });
                 } catch (e) {
+                    console.log(e);
                 }
             });
         }
@@ -212,6 +229,7 @@ let functions = {
             let data = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/../../config/user_source.json'), 'utf8'));
             source = data['user_source'] || source;
         } catch (e) {
+            console.log(e);
         }
 
         return source;
@@ -229,17 +247,24 @@ let functions = {
                     return space + '<a href="' + hyperlink + '" target="_blank">' + url + '</a>';
                 }
             );
-
         } catch (e) {
+            console.log(e);
         }
 
         return result;
     },
-    getDateInFormat: function (date, format, alternative, inUtc) {
+    getDateInFormat: function (date, format, alternative, inUtc, clientTimezone) {
         let needDate = '';
         alternative = alternative || '';
 
-        needDate = typeof inUtc != 'undefined' ? moment(date).utc().format(format) : moment(date).format(format);
+        if (inUtc === true) {
+            needDate = moment(date).utc().format(format);
+        } else if (clientTimezone) {
+            needDate = moment(date).tz(clientTimezone).format(format);
+        } else {
+            needDate = moment(date).format(format);
+        }
+
         if (format == 'x') {
             needDate = parseInt(needDate);
         }
@@ -253,11 +278,20 @@ let functions = {
     isArray: function (value) {
         return typeof value != 'undefined' && Array.isArray(value);
     },
+    isObject: function (value) {
+        return typeof value == 'object';
+    },
     isString: function (value) {
         return typeof value == 'string' && value.length > 0;
     },
     isFunction: function (value) {
         return typeof value == 'function';
+    },
+    isBool: function (value) {
+        return typeof value == 'boolean';
+    },
+    isNumber: function (value) {
+        return typeof value == 'number';
     },
     arrayUnique: function (needArray) {
         let a = needArray.concat();
@@ -293,6 +327,77 @@ let functions = {
             id: id,
             title: title
         };
+    },
+    slaConfigHasError: function (config) {
+        let spCF = this;
+        let hasErrors = false;
+        ['alert', 'case'].forEach(function (oneConfig) {
+            if (spCF.isArray(config[oneConfig])) {
+                config[oneConfig].forEach(function (oneRange) {
+                    let errorMessage = 'Not specified all data for range!';
+                    oneRange.errorMessage = undefined;
+                    if (!(
+                            spCF.isArray(oneRange.from) && oneRange.from.length > 0 &&
+                            spCF.isArray(oneRange.to) && oneRange.to.length > 0 &&
+                            spCF.isNumber(oneRange.High) &&
+                            spCF.isNumber(oneRange.Medium) &&
+                            spCF.isNumber(oneRange.Low) &&
+                            spCF.isArray(oneRange.fromEntry) && oneRange.fromEntry.length > 0 &&
+                            spCF.isArray(oneRange.toEntry) && oneRange.toEntry.length > 0
+                        )) {
+                        oneRange.errorMessage = errorMessage;
+                        hasErrors = true;
+                    }
+                });
+            }
+        });
+
+        return hasErrors;
+    },
+    makeFlatListFromObject: function (nameDotted, content, fields) {
+        let spCF = this;
+        if (spCF.isObject(content) && !spCF.isArray(content)) {
+            for (let propName in content) {
+                fields = spCF.makeFlatListFromObject((nameDotted == '' ? propName : nameDotted + '.' + propName), content[propName], fields);
+            }
+        } else {
+            fields[nameDotted] = content;
+        }
+
+        return fields;
+    },
+    makeBulkObjectFromList: function (content) {
+        let spCF = this;
+        let newContent = content;
+        if (spCF.isObject(content) && !spCF.isArray(content)) {
+            newContent = {};
+            for (let fieldName in content) {
+                if (fieldName.indexOf('.') >= 0) {
+                    let fieldNameArr = fieldName.split('.');
+                    let firstFieldName = fieldNameArr[0];
+                    fieldNameArr.shift();
+                    let fieldInnerName = fieldNameArr.join('.');
+                    if (spCF.isSet(newContent[firstFieldName])) {
+                        let newInner = {};
+                        newInner[fieldInnerName] = content[fieldName];
+                        newContent[firstFieldName] = spCF.isObject(newContent[firstFieldName]) ? newContent[firstFieldName] : {0: newContent[firstFieldName]};
+                        newContent[firstFieldName] = Object.assign({}, newContent[firstFieldName], newInner);
+                    } else {
+                        newContent[firstFieldName] = {};
+                        newContent[firstFieldName][fieldInnerName] = content[fieldName];
+                    }
+                } else {
+                    newContent[fieldName] = content[fieldName];
+                }
+            }
+            for (let fieldName in newContent) {
+                if (spCF.isObject(newContent[fieldName]) && !spCF.isArray(newContent[fieldName])) {
+                    newContent[fieldName] = spCF.makeBulkObjectFromList(newContent[fieldName]);
+                }
+            }
+        }
+
+        return newContent;
     }
 };
 

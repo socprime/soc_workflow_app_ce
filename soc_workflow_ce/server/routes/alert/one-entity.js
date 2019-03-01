@@ -1,4 +1,4 @@
-let moduleFolder = require('./../../constant/module_folder');
+let moduleFolder = require('./../../constant/module-folder');
 let $cf = require('./../../common/function');
 let getStage = require('./../../../' + moduleFolder + '/stage_model/server/get-stage');
 let helpersCommonPrepare = require('./../../helpers/common/prepare_data_actions');
@@ -34,10 +34,12 @@ const getAlertWithPlaybook = function (server, req, id) {
                 data['playbooks'] = result;
                 resolve(data);
             }).catch(function (e) {
+                console.log(e);
                 server.log(['info'], ['server/route/alert/playbookGetByTerms', e]);
                 resolve(data);
             });
         }).catch(function (e) {
+            console.log(e);
             server.log(['info'], ['server/routes/alert/alertsEcsGetByIds', e]);
             resolve({});
         });
@@ -50,45 +52,49 @@ const getAlertWithPlaybook = function (server, req, id) {
  * @returns {{index: function(*=, *)}}
  */
 export default function (server, options) {
-    const index = (req, reply) => {
-        if (typeof req.query.id != "undefined") {
-            let id = req.query.id;
+    const index = (req) => {
+        return (async function () {
+            return await new Promise(function (reply) {
+                if (typeof req.query.id != "undefined") {
+                    let id = req.query.id;
 
-            Promise.all([
-                logsGetById(server, req, 'alerts_logs*', id),
-                getAlertWithPlaybook(server, req, [id]), // eventData, playbooks
-                alertsEcsGetRelatedCaseById(server, req, id), // cases
-                commonGetAllUsers(server, req), // userList
-                kibanaGetAllSavedSearches(server, req), // savedSearches
-                kibanaGetAllIndexPattern(server, req) // all index pattern
-            ]).then(value => {
-                let stageLog = $cf.isArray(value[0]) ? value[0] : [];
-                let eventData = typeof value[1] == 'object' ? value[1] : {};
-                eventData['cases'] = $cf.isArray(value[2]) ? value[2] : [];
-                let userList = $cf.isArray(value[3]) ? value[3] : [];
-                let savedSearches = typeof value[4] == 'object' ? value[4] : {};
-                let allIndexPattern = typeof value[5] == 'object' ? value[5] : {};
+                    Promise.all([
+                        logsGetById(server, req, 'alerts_logs*', id),
+                        getAlertWithPlaybook(server, req, [id]), // eventData, playbooks
+                        alertsEcsGetRelatedCaseById(server, req, id), // cases
+                        commonGetAllUsers(server, req), // userList
+                        kibanaGetAllSavedSearches(server, req), // savedSearches
+                        kibanaGetAllIndexPattern(server, req) // all index pattern
+                    ]).then(value => {
+                        let stageLog = $cf.isArray(value[0]) ? value[0] : [];
+                        let eventData = typeof value[1] == 'object' ? value[1] : {};
+                        eventData['cases'] = $cf.isArray(value[2]) ? value[2] : [];
+                        let userList = $cf.isArray(value[3]) ? value[3] : [];
+                        let savedSearches = typeof value[4] == 'object' ? value[4] : {};
+                        let allIndexPattern = typeof value[5] == 'object' ? value[5] : {};
 
-                let availableStage = getStage.available((eventData['event.labels'] != "undefined" ? eventData['event.labels'] : ''));
+                        let availableStage = getStage.available((eventData['event.labels'] != "undefined" ? eventData['event.labels'] : ''));
 
-                return reply({
-                    success: true,
-                    data: eventData,
-                    stageLog: stageLog,
-                    availableStage: availableStage,
-                    dataAction: helpersCommonPrepare(),
-                    allStages: allStages,
-                    userList: userList,
-                    savedSearches: savedSearches,
-                    allIndexPattern: allIndexPattern,
-                    caseEnabledFieldList: $cf.getCaseEnabledFieldList(),
-                });
-            }).catch(function (e) {
-                return reply(emptyResult);
+                        return reply({
+                            success: true,
+                            data: eventData,
+                            stageLog: stageLog,
+                            availableStage: availableStage,
+                            dataAction: helpersCommonPrepare(),
+                            allStages: allStages,
+                            userList: userList,
+                            savedSearches: savedSearches,
+                            allIndexPattern: allIndexPattern,
+                            caseEnabledFieldList: $cf.getCaseEnabledFieldList(),
+                        });
+                    }).catch(function (e) {
+                        return reply(emptyResult);
+                    });
+                } else {
+                    reply(emptyResult);
+                }
             });
-        } else {
-            reply(emptyResult);
-        }
+        })();
     };
 
     return {

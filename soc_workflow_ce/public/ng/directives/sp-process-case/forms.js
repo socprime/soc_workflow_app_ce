@@ -68,6 +68,7 @@ module.exports = function (scope, $http, $route, spCF) {
                 // Form link
                 let href = scope.currUrl ? scope.currUrl + '/cases-log-stage' : false;
                 if (href) {
+                    $('.cd-main-content').waitAnimationStart();
                     $http({
                         method: "POST",
                         url: href,
@@ -84,14 +85,18 @@ module.exports = function (scope, $http, $route, spCF) {
 
                             setTimeout(function () {
                                 $route.reload();
+                                $('.cd-main-content').waitAnimationStop();
                             }, 1000);
                         } else {
                             scope.savedErrors = typeof response.message != "undefined" ? response.message : 'Something went wrong!';
                             scope.savedSuccess = undefined;
+                            $('.cd-main-content').waitAnimationStop();
                         }
                     }, function errorCallback(response) {
                         scope.savedErrors = 'Something went wrong!';
                         scope.savedSuccess = undefined;
+
+                        $('.cd-main-content').waitAnimationStop();
 
                         submitBtn.removeClass('disabled');
                         submitBtn.text(submitBtn.attr('data-label'));
@@ -103,7 +108,7 @@ module.exports = function (scope, $http, $route, spCF) {
     };
 
     // Set current operator
-    //let currentOperatorName = $.trim($('[ng-controller="securityNavController"] .global-nav-link:first-child .global-nav-link__title').text());
+    let currentOperatorName = $.trim($('[ng-controller="securityNavController"] .kbnGlobalNav__linksSection .kbnGlobalNavLink__title').text());
     scope.userList = scope.userList || [];
     let tmpUserList = {};
     scope.userList.forEach(function (el) {
@@ -115,7 +120,7 @@ module.exports = function (scope, $http, $route, spCF) {
         slug: 'operator',
         type: scope.fieldType.select,
         required: true,
-        //current: (currentOperatorName.length > 0 && spCF.isString(tmpUserList[currentOperatorName])) ? currentOperatorName : '',
+        current: (currentOperatorName.length > 0 && spCF.isSet(tmpUserList[currentOperatorName])) ? currentOperatorName : undefined,
         list: tmpUserList
     });
 

@@ -1,18 +1,24 @@
+let moment = require('moment-timezone');
+
 import uiRoutes from 'ui/routes';
 
 require('ui/autoload/all');
 require('ui/chrome');
 
 import * as d3 from 'd3';
+
 window.d3 = d3;
 
 import * as c3 from 'c3';
+
 window.c3 = c3;
 
 import katex from 'katex';
+
 window.katex = katex;
 
 import Quill from 'quill';
+
 window.Quill = Quill;
 
 // Include assets
@@ -48,8 +54,10 @@ import './assets/js/main.js';
 
 import './assets/js/customCharts.js';
 
-let moduleFolder = require('../server/constant/module_folder');
+let moduleFolder = require('../server/constant/module-folder');
 // require SOC Workflow modules
+//- top_nav
+require('./../' + moduleFolder + '/top_nav/public/directives/sp-top-nav/index');
 //- Event Share Link
 require('./../' + moduleFolder + '/event_share_link/public/directives/sp-events-saved-search/index');
 //- Machine Learning Integration
@@ -68,11 +76,18 @@ require('./../' + moduleFolder + '/playbooks/public/directives/sp-all-playbooks/
 require('./../' + moduleFolder + '/playbooks/public/directives/sp-edit-playbook/index');
 //- Upload to Anomali My Attacks
 require('./../' + moduleFolder + '/anomali_threatstream_enrichment/public/services/upload');
+//- channel_table
+require('./../' + moduleFolder + '/channel_table/public/directives/sp-channel-table/index');
+require('./../' + moduleFolder + '/channel_table/public/services/config/table');
+require('./../' + moduleFolder + '/channel_table/public/services/helper/get-table-fields');
+require('./../' + moduleFolder + '/channel_table/public/services/helper/update-table');
+require('./../' + moduleFolder + '/channel_table/public/services/config/case-table');
+require('./../' + moduleFolder + '/channel_table/public/services/config/alert-table');
+//- sla_settings
+require('./../' + moduleFolder + '/sla_settings/public/directives/sp-edit-sla-settings/index');
 
 // require SOC Workflow services
 //- config
-require('./ng/services/config/cases-table');
-require('./ng/services/config/alerts-table');
 require('./ng/services/config/events-table');
 require('./ng/services/config/period');
 //- common
@@ -82,6 +97,7 @@ require('./ng/services/common/modal');
 require('./ng/services/common/get-range-from-picker');
 //- init common
 require('./ng/services/init/common/date-range-picker');
+require('./ng/services/init/common/update-date-range-from-picker');
 require('./ng/services/init/method/common');
 //- init chart
 require('./ng/services/init/chart/donut');
@@ -107,13 +123,11 @@ require('./ng/services/init/events/page');
 require('./ng/services/init/events/ajax');
 
 // require SOC Workflow directives
-require('./ng/directives/sp-top-nav/index');
 require('./ng/directives/sp-select2/index');
 require('./ng/directives/sp-compile/index');
 require('./ng/directives/sp-show-playbook/index');
 require('./ng/directives/sp-period-switch/index');
 require('./ng/directives/sp-chart/index');
-require('./ng/directives/sp-chanel-table/index');
 require('./ng/directives/sp-case-fixed-menu/index');
 require('./ng/directives/sp-create-case/index');
 require('./ng/directives/sp-process-case/index');
@@ -129,6 +143,15 @@ require('./ng/controllers/one-case');
 require('./ng/controllers/alerts');
 require('./ng/controllers/one-alert');
 require('./ng/controllers/events');
+
+// Add headers to all ajax request
+require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSanitize'])
+    .run(['$http', function ($http) {
+        // Add client timezone
+        $http.defaults.headers.common['client_timezone'] = moment.tz.guess();
+        $http.defaults.headers.common['client_timezone'] = typeof $http.defaults.headers.common['client_timezone'] == 'string' ?
+            $http.defaults.headers.common['client_timezone'] : "UTC";
+    }]);
 
 uiRoutes.enable();
 uiRoutes.when('/cases', {

@@ -32,7 +32,13 @@
                     <div class="card m-t-20">
                         <div class="card-header">Alert Flow</div>
 
-                        <div sp-chanel-table table-id="soc-channel-table" table-src="tableSrc" selected-item="selectedAlert" one-item-url="{{ oneAlertUrl }}"></div>
+                        <div sp-channel-table
+                             class="soc-channel-table"
+                             table-id="{{ workflowTableId }}"
+                             table-src="tableSrc"
+                             table-allowed-fields="tableFields"
+                             selected-item="selectedAlert"
+                             one-item-url="{{ oneAlertUrl }}"></div>
                     </div>
                 </div>
             </div>

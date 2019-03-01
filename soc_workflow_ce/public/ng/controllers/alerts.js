@@ -36,7 +36,9 @@ const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSa
             timeline: null
         };
 
+        $scope.workflowTableId = 'soc-channel-table-alerts';
         $scope.tableSrc = {};
+        $scope.tableFields = [];
 
         $scope.caseEnabledFieldList = [];
         $scope.savedSearches = {};
@@ -45,6 +47,9 @@ const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSa
 
         $scope.configPeriod = spConfigPeriod.getAll();
         $scope.updatePeriod = spConfigPeriod.getFirst();
+        $scope.periodEntity = undefined;
+
+        $scope.rangeId = '#alerts-reportrange';
 
         // Init section
         angular.element(document).ready(() => {

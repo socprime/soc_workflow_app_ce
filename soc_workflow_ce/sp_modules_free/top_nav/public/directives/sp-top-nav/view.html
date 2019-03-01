@@ -1,0 +1,28 @@
+<div class="cd-tab-filter-wrapper">
+    <div class="cd-tab-filter">
+        <ul class="nav nav-pills pull-left" id="pills-tab">
+            <li class="nav-item">
+                <a class="btn btn-outline-danger" ng-class="{'active': currentPage == 'cases'}" id="cases-btn" href="#/cases">Cases</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-danger" ng-class="{'active': currentPage == 'alerts'}" id="correlated-btn" href="#/alerts">Alerts</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-danger" ng-class="{'active': currentPage == 'events'}" id="raw-btn" href="#/events">Events</a>
+            </li>
+        </ul>
+
+        <div class="pull-left inline-block-children">
+            <div sp-all-playbooks class="m-l-10 refresh-switcher-wrap" curr-url="currUrl"></div>
+        </div>
+
+        <img aria-hidden="true" class="logo" alt="SOC Prime" kbn-src="/plugins/soc_workflow_ce/assets/img/logo-sm.png"/>
+
+        <span style="position: relative; float: right; display: inline-block;">
+              <div class="form-field __first">
+                  <input class="form-field_input" id="theme-switcher" ng-model="isLightThemeChecked" ng-init="isLightThemeChecked = (themeCookie == 'light')" type="checkbox" ng-checked="themeCookie == 'light'">
+                  <label class="form-field_label" for="theme-switcher">Dark/Light theme</label>
+              </div>
+          </span>
+    </div>
+</div>

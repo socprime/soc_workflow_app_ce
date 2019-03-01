@@ -18,6 +18,7 @@ module.exports = function (server, req, index, body) {
         }).then(function (response) {
             resolve(response);
         }).catch(function (e) {
+            console.log(e);
             resolve(false);
         });
     });

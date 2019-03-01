@@ -1,11 +1,10 @@
-let moduleFolder = require('./../../constant/module_folder');
+let moduleFolder = require('./../../constant/module-folder');
 
-import moment from 'moment';
+let moment = require('moment-timezone');
 
 let $cf = require('./../../common/function');
 let $hcc = require('./../../helpers/case/create');
 
-let kibanaGetAllIndexPattern = require('./../../models/kibana/get-all-index-pattern');
 let commonGetCurrentUser = require('./../../../' + moduleFolder + '/users_model/server/get-current-user');
 let commonAddOrUpdate = require('./../../models/common/add-or-update');
 let commonUpdateValueByIds = require('./../../models/common/update-value-by-ids');
@@ -21,73 +20,66 @@ let emptyResult = {
  * @returns {{index: function(*=, *=)}}
  */
 export default function (server, options) {
-    const index = (req, reply) => {
-        let indexDate = moment().format('YYYY.MM.DD');
-        let idType = (typeof req.payload['is_alerts'] != "undefined") && Boolean(req.payload['is_alerts']) ? 'alerts.id' : 'events.id';
-        let data = $hcc.validateInput(req, idType);
+    const index = (req) => {
+        return (async function () {
+            return await new Promise(function (reply) {
+                let clientTimezone = req.headers.client_timezone || "UTC";
+                let indexDate = moment().tz(clientTimezone).format('YYYY.MM.DD');
+                let idType = (typeof req.payload['is_alerts'] != "undefined") && Boolean(req.payload['is_alerts']) ? 'alerts_id' : 'events_id';
+                let data = $hcc.validateInput(req, idType);
 
-        let promisList = [commonGetCurrentUser(server, req)];
-        if (typeof data[idType] !== typeof undefined && typeof data[idType][0] !== typeof undefined) {
-            promisList.push(kibanaGetAllIndexPattern(server, req));
-        }
+                Promise.all([
+                    commonGetCurrentUser(server, req),
+                    commonAddOrUpdate(server, req, {
+                        'index': 'case_ecs-' + indexDate,
+                        'data': data
+                    }, true)
+                ]).then(function (value) {
+                    let operatorAction = value[0] || '';
+                    let newCase = value[1] || [];
 
-        Promise.all(promisList).then(function (value) {
-            let operatorAction = value[0] || '';
+                    if (typeof newCase['_id'] != 'undefined') {
+                        let logData = {
+                            "event_id": newCase['_id'],
+                            "@timestamp": parseInt(moment().format('x')),
+                            "operator.now": data['operator'] || '',
+                            "operator.prev": '',
+                            "operator.action": operatorAction || '',
+                            "stage.now": data['event.labels'] || '',
+                            "stage.prev": '',
+                            "comment": data['comment'] || ''
+                        };
 
-            if ($cf.isArray(value[1])) {
-                let indexPattern = $cf.identifyCurrentIndexPattern((value[1] || []), (data[idType][0] || ''));
-                if (indexPattern.title.length > 0) {
-                    for (let row in data[idType]) {
-                        data[idType][row] = indexPattern.title + '/' + indexPattern.id + '/' + data[idType][row];
-                    }
-                }
-            }
+                        let promisList = [commonAddOrUpdate(server, req, {
+                            'index': 'case_logs-' + indexDate,
+                            'data': logData
+                        })];
 
-            commonAddOrUpdate(server, req, {
-                'index': 'case_ecs-' + indexDate,
-                'data': data
-            }).then(function (newCase) {
-                if (typeof newCase['_id'] != 'undefined') {
-                    let logData = {
-                        "event_id": newCase['_id'],
-                        "@timestamp": parseInt(moment().format('x')),
-                        "operator.now": data['operator'] || '',
-                        "operator.prev": '',
-                        "operator.action": operatorAction || '',
-                        "stage.now": data['event.labels'] || '',
-                        "stage.prev": '',
-                        "comment": data['comment'] || ''
-                    };
+                        if ($cf.isArray(data['alerts_id'])) {
+                            promisList.push(commonUpdateValueByIds(server, req, 'alerts_ecs*', data['alerts_id'], 'event.labels', 'In Case', true));
+                        }
 
-                    let promisList = [commonAddOrUpdate(server, req, {
-                        'index': 'case_logs-' + indexDate,
-                        'data': logData
-                    })];
+                        Promise.all(promisList).then(function (result) {
+                            let resp = true;
+                            result.forEach(function (onePromise) {
+                                resp = resp && Boolean(onePromise);
+                            });
 
-                    if ($cf.isArray(data['alerts.id'])) {
-                        promisList.push(commonUpdateValueByIds(server, req, 'alerts_ecs*', data['alerts.id'], 'event.labels', 'In Case'));
-                    }
-
-                    Promise.all(promisList).then(function (result) {
-                        let resp = true;
-                        result.forEach(function (onePromise) {
-                            resp = resp && Boolean(onePromise);
+                            return reply({
+                                success: resp
+                            });
+                        }).catch(function (e) {
+                            console.log(e);
                         });
-
-                        return reply({
-                            success: resp
-                        });
-                    }).catch(function (e) {
-                    });
-                } else {
+                    } else {
+                        return reply(emptyResult);
+                    }
+                }).catch(function (e) {
+                    console.log(e);
                     return reply(emptyResult);
-                }
-            }).catch(function (e) {
-                return reply(emptyResult);
+                });
             });
-        }).catch(function (e) {
-            return reply(emptyResult);
-        });
+        })();
     };
 
     return {

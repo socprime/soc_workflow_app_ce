@@ -34,6 +34,7 @@ const prepareEventsAlerts = function (entity, addIndex) {
                 }
             }
         } catch (e) {
+            console.log(e);
         }
     });
 
@@ -44,16 +45,17 @@ const prepareEventsAlerts = function (entity, addIndex) {
 };
 
 /**
+ * @param clientTimezone
  * @param data
  * @param enrichment
- * @returns {*}
+ * @return {*}
  */
-const enrichEventsAlerts = function (data, enrichment) {
+const enrichEventsAlerts = function (clientTimezone, data, enrichment) {
     enrichment = ($cf.isArray(enrichment) ? enrichment : []);
     enrichment.forEach(function (doc) {
         if (typeof doc['_id'] != "undefined" && typeof data[doc['_id']] != "undefined") {
             data[doc['_id']]['name'] = typeof doc['_source']['message'] != "undefined" ? doc['_source']['message'] : doc['_id'];
-            data[doc['_id']]['created'] = typeof doc['_source']['@timestamp'] != "undefined" ? $cf.getDateInFormat(doc['_source']['@timestamp'], 'YYYY-MM-DD HH:mm:ss', '') : '';
+            data[doc['_id']]['created'] = typeof doc['_source']['@timestamp'] != "undefined" ? $cf.getDateInFormat(doc['_source']['@timestamp'], 'YYYY-MM-DD HH:mm:ss', '', false, clientTimezone) : '';
         }
     });
 
@@ -66,13 +68,15 @@ const enrichEventsAlerts = function (data, enrichment) {
  * @param id
  */
 const getCaseWithEnrichment = function (server, req, id) {
+    let clientTimezone = req.headers.client_timezone || "UTC";
+
     return new Promise((resolve, reject) => {
         caseEcsGetByIds(server, req, id).then(function (data) {
             data = typeof data[0] == 'object' ? data[0] : {};
 
             let playbooks = typeof data['playbooks'] == "object" ? data['playbooks'] : [];
-            let events = prepareEventsAlerts(data['events.id'], true);
-            let alerts = prepareEventsAlerts(data['alerts.id']);
+            let events = prepareEventsAlerts(data['events_id'], true);
+            let alerts = prepareEventsAlerts(data['alerts_id']);
 
             Promise.all([
                 playbookGetByTerms(server, req, {"playbook_name.keyword": playbooks}),
@@ -81,16 +85,17 @@ const getCaseWithEnrichment = function (server, req, id) {
             ]).then(function (value) {
                 // playbooks
                 data['playbooks'] = typeof value[0] == 'string' ? value[0] : "[]";
-                // events.id
-                data['events.id'] = enrichEventsAlerts(events.data, value[1]);
-                // alerts.id
-                data['alerts.id'] = enrichEventsAlerts(alerts.data, value[2]);
+                // events_id
+                data['events_id'] = enrichEventsAlerts(clientTimezone, events.data, value[1]);
+                // alerts_id
+                data['alerts_id'] = enrichEventsAlerts(clientTimezone, alerts.data, value[2]);
 
                 resolve(data);
-            }).catch (function (e) {
+            }).catch(function (e) {
+                console.log(e);
                 data['playbooks'] = "[]";
-                data['events.id'] = {};
-                data['alerts.id'] = {};
+                data['events_id'] = {};
+                data['alerts_id'] = {};
 
                 resolve(data);
             });
@@ -104,24 +109,29 @@ const getCaseWithEnrichment = function (server, req, id) {
  * @returns {{index: function(*=, *=)}}
  */
 export default function (server, options) {
-    const index = (req, reply) => {
-        let id = null;
-        if (typeof req.query.id != "undefined") {
-            id = req.query.id;
-        } else {
-            return reply(emptyResult);
-        }
+    const index = (req) => {
+        return (async function () {
+            return await new Promise(function (reply) {
+                let id = null;
+                if (typeof req.query.id != "undefined") {
+                    id = req.query.id;
+                } else {
+                    return reply(emptyResult);
+                }
 
-        getCaseWithEnrichment(server, req, id).then(function (data) {
-            data = typeof data == 'object' ? data : {};
+                getCaseWithEnrichment(server, req, id).then(function (data) {
+                    data = typeof data == 'object' ? data : {};
 
-            return reply({
-                success: true,
-                data: data
+                    return reply({
+                        success: true,
+                        data: data
+                    });
+                }).catch(function (e) {
+                    console.log(e);
+                    return reply(emptyResult);
+                });
             });
-        }).catch(function (e) {
-            return reply(emptyResult);
-        });
+        })();
     };
 
     return {

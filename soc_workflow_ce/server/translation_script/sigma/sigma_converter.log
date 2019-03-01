@@ -13,3 +13,21 @@
 [2018-06-15 22:01:13,430][sigma_converter][INFO] Script started ============================== 
 [2018-06-15 22:01:13,432][sigma_converter][INFO] /usr/bin/python3.6 /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tools/sigmac.py  -t grep /usr/share/kibana/plugins/socprime_uncoder/server/translation_script/sigma/tmp_sigma.txt 
 [2018-06-15 22:01:13,530][sigma_converter][INFO] 0, grep -P '^(?:.*(?=.*1041)(?=.*Eventlog))' 
+[2019-01-08 16:28:59,625][sigma_converter][INFO] Script started ============================== 
+[2019-01-08 16:28:59,626][sigma_converter][INFO] /usr/bin/python3.6 /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tools/sigmac.py  -t es-qs /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tmp_sigma.txt
+[2019-01-08 16:28:59,684][sigma_converter][INFO] 0, (EventID:"13" AND TargetObject:("*\\Services\\DHCPServer\\Parameters\\CalloutDlls" "*\\Services\\DHCPServer\\Parameters\\CalloutEnabled")) 
+[2019-01-08 16:29:12,425][sigma_converter][INFO] Script started ============================== 
+[2019-01-08 16:29:12,425][sigma_converter][INFO] /usr/bin/python3.6 /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tools/sigmac.py  -t es-qs /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tmp_sigma.txt
+[2019-01-08 16:29:12,473][sigma_converter][INFO] 0, (EventID:"13" AND TargetObject:("*\\Services\\DHCPServer\\Parameters\\CalloutDlls" "*\\Services\\DHCPServer\\Parameters\\CalloutEnabled")) 
+[2019-01-08 16:29:29,037][sigma_converter][INFO] Script started ============================== 
+[2019-01-08 16:29:29,038][sigma_converter][INFO] /usr/bin/python3.6 /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tools/sigmac.py  -t es-qs /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tmp_sigma.txt
+[2019-01-08 16:29:29,089][sigma_converter][INFO] 0, (EventID:"13" AND TargetObject:("*\\Services\\DHCPServer\\Parameters\\CalloutDlls" "*\\Services\\DHCPServer\\Parameters\\CalloutEnabled")) 
+[2019-01-08 16:30:38,022][sigma_converter][INFO] Script started ============================== 
+[2019-01-08 16:30:38,023][sigma_converter][INFO] /usr/bin/python3.6 /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tools/sigmac.py  -t es-qs /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tmp_sigma.txt
+[2019-01-08 16:30:38,072][sigma_converter][INFO] 0, (EventID:"13" AND TargetObject:("*\\Services\\DHCPServer\\Parameters\\CalloutDlls" "*\\Services\\DHCPServer\\Parameters\\CalloutEnabled")) 
+[2019-01-29 10:54:38,555][sigma_converter][INFO] Script started ============================== 
+[2019-01-29 10:54:38,557][sigma_converter][INFO] /usr/bin/python3.6 /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tools/sigmac.py  -t es-qs /home/vk/projects/kibana/kibana-6.5.4/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tmp_sigma.txt
+[2019-01-29 10:54:38,615][sigma_converter][INFO] 0, (EventID:"1" AND Image:("*\\wscript.exe" "*\\cscript.exe") AND CommandLine:("*.jse" "*.vbe" "*.js" "*.vba")) 
+[2019-02-04 11:09:48,841][sigma_converter][INFO] Script started ============================== 
+[2019-02-04 11:09:48,842][sigma_converter][INFO] /usr/bin/python3.6 /home/vk/projects/kibana/kibana-6.6.0/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tools/sigmac.py  -t es-qs /home/vk/projects/kibana/kibana-6.6.0/kibana/plugins/soc_workflow_ce/server/translation_script/sigma/tmp_sigma.txt
+[2019-02-04 11:09:48,913][sigma_converter][INFO] 0, (EventID:"1" AND CommandLine:"ps.exe \-accepteula") 

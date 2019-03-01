@@ -7,7 +7,8 @@
                  curr-url="currUrl"
                  datepicker-id="{{ dateRangePickerId }}"
                  saved-searches="savedSearches"
-                 events-data="eventsData"></div>
+                 events-data="eventsData"
+                 use-kibana-date-ranges="yes"></div>
 
             <div class="row">
                 <div class="col-12">
@@ -15,12 +16,18 @@
                         <div class="card-header">
                             Event Search Result
                             <span ng-show="selectedEvents[0]">
-                                <button ng-click="createNewCase()" type="button" class="btn btn-outline-danger waves-effect waves-ligh menu-raw pull-right">Create Case</button>
-                                <button ng-click="addToExistingCase()" type="button" class="btn btn-outline-danger waves-effect waves-ligh menu-raw pull-right m-r-5">Add to existing Case</button>
+                                <button ng-click="createNewCase()" type="button" class="btn btn-outline-danger menu-raw pull-right">Create Case</button>
+                                <button ng-click="addToExistingCase()" type="button" class="btn btn-outline-danger menu-raw pull-right m-r-5">Add to existing Case</button>
                             </span>
                         </div>
 
-                        <div sp-chanel-table table-id="soc-channel-table-raw" table-rows="eventsData" table-src="tableSrc" selected-item="selectedEvents"></div>
+                        <div sp-channel-table
+                             class="soc-channel-table"
+                             table-id="soc-channel-table-raw"
+                             table-rows="eventsData"
+                             table-src="tableSrc"
+                             selected-item="selectedEvents"
+                             show-columns-selector="false"></div>
                     </div>
                 </div>
             </div>

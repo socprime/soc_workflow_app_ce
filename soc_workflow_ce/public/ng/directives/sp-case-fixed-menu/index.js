@@ -16,14 +16,14 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spCaseFixedMenu'
                     body: '<div sp-process-case selected-item="selectedItem" curr-url="currUrl" user-list="userList" all-stages="allStages"></div>',
                     actions: [{
                         label: 'Cancel',
-                        cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-outline-danger',
                         onClick: function (e) {
                             $(e.target).parents('.modal').modal('hide');
                         }
                     }, {
                         label: 'Save',
                         savingLabel: 'Saving...',
-                        cssClass: 'btn btn-submit btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-submit btn-outline-danger',
                         onClick: function (event) {
                             if (!$(event.target).hasClass('disabled')) {
                                 $(event.target).parents('.modal').find('.process-case form').trigger('sp.apply_form');

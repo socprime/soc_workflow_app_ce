@@ -4,7 +4,7 @@ SOC Workflow App helps Security Analysts and Threat Hunters explore suspicious e
 To install SOC Workflow for your Kibana:
 Copy the file soc_workflow_ce-xxxxx.zip to Kibana server and run the command:
 ```sh
-/usr/share/kibana/bin/./kibana-plugin install file:///PATH_TO_FILE/soc_workflow_ce-xxxxx.zip
+/usr/share/kibana/bin/./kibana-plugin install file:///PATH_TO_FILE/soc_workflow_app_ce/dist/soc_workflow_ce-xxxxx.zip
 ```
 
 ![alt text](resources/images/heroban2.png "SOC Workflow App CE")
@@ -26,10 +26,8 @@ SOC Workflow Application is using indices:
  - "playbook" - for playbooks.
 
 Create index templates for these indices from files:
-
+ - [index_template_ecs_new.txt](/resources/templates/index_template_ecs_new.txt)
  - [index_template_alerts_case_logs.txt](/resources/templates/index_template_alerts_case_logs.txt)
- - [index_template_case_ecs.txt](/resources/templates/index_template_case_ecs.txt)
- - [index_template_alerts_ecs.txt](/resources/templates/index_template_alerts_ecs.txt)
  - [index_template_playbook.txt](/resources/templates/index_template_playbook.txt)
  - [index_template_sigma_doc.txt](/resources/templates/index_template_sigma_doc.txt)
 
@@ -54,29 +52,25 @@ to add mapping of your own alerts to playbooks.
 Where "Brute Force Detection Advanced" is the name of the playbook. 
 "User Brute Force", "Server Brute Force Detection" - are alert names in the index alert-ecs*. For these alerts playbook "Brute Force Detection Advanced" will be automatically assigned in the SOC App.
 
-Load SIGMA documents to index using Node.js plugin
-See [elasticdump](https://www.npmjs.com/package/elasticdump)
 
-Install it with command:
+##Load SIGMA documents to index - "sigma_doc";
+​
+To fill sigma docs to index:
+Enter to folder **resources/ELK_import_export**
+- Modify script **es_config.py**, put there Elasticsearch hostname, user and password.
+- Run command
 ```sh
-npm install elasticdump -g
+python /PATH_TO_FILE/ELK_import_export/import_es_index.py
 ```
-To import SIGMA document use command:
-```sh
-elasticdump \
- --input=/path/to/file/sigma_doc_backup.json \
- --output=<elasticsearch protocol>://<elasticsearch host>:<elasticsearch port>/sigma_doc \
- --type=data
- ```
- Example:
- ```sh
-elasticdump \
- --input=/path/to/file/sigma_doc_backup.json \
- --output=http://localhost:9200/sigma_doc \
- --type=data
-```
+Indices will be created and filled with sigma rules.
+
+>You should have the elasticsearch module, for python 2.7 install it using the command:
+>```sh
+>pip install elasticsearch
+>```
+
 Configure external commands to run scripts/commands and make lookups to the 3d parties services. 
-Edit file `/usr/share/kibana/plugins/soc_workflow_ce/config/external_command.json`
+Edit file `/usr/share/kibana/plugins/soc_workflow_ce/config/data_actions.json`
  ```sh
  [{
     "Menu": [{

@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-b-20">
+            <div class="card-body">
+                <div class="raw">
+                    <div class="col-sm-6">
+                        <ul class="nav nav-tabs" id="raw-events-source" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="btn-from-saved-search" data-toggle="tab" href=".from-saved-search" role="tab" aria-controls="from-saved-search" aria-selected="true">Saved search</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled">Share link</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane show active from-saved-search" id="from-saved-search" role="tabpanel" aria-labelledby="btn-from-saved-search">
+                                <h5>Choose saved search</h5>
+                                <div sp-select2
+                                     select-name="Saved Searches"
+                                     select-id="saved-search"
+                                     placeholder="Select Saved Searches"
+                                     items="savedSearches"
+                                     selected="selectedSavedSearches"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-outline-danger pull-right" ng-click="rawLogSearch()">Select</button>
+
+                        <button id="{{ datepickerId }}" class="btn btn-outline-danger m-r-5 pull-right">
+                            <span>Time period</span> <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

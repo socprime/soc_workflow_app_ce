@@ -1,15 +1,6 @@
-const copyToClipboard = require('clipboard-copy');
-
 require('ui/modules').get('app/soc_workflow_ce', [])
     .service('spInitMethodCommon', ['modal', function (modal) {
         return function ($scope) {
-            /**
-             * @param value
-             */
-            $scope.copy2Clipboard = function (value) {
-                copyToClipboard(value);
-            };
-
             /**
              * @param playbookId
              */
@@ -20,13 +11,13 @@ require('ui/modules').get('app/soc_workflow_ce', [])
                     size: 'large',
                     actions: [{
                         label: 'View Cases',
-                        cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-outline-danger',
                         onClick: function (e) {
                             $(e.target).parents('.modal').find('#' + playbookId + '-cases').collapse('toggle');
                         }
                     }, {
                         label: 'Close',
-                        cssClass: 'btn btn-outline-danger waves-effect waves-light',
+                        cssClass: 'btn btn-outline-danger',
                         onClick: function (e) {
                             $(e.target).parents('.modal').modal('hide');
                         }

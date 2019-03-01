@@ -57,6 +57,7 @@ module.exports = function (scope, $http, $route, spCF) {
                 // Form link
                 let href = scope.currUrl ? scope.currUrl + '/update-case-events' : false;
                 if (href) {
+                    $('.cd-main-content').waitAnimationStart();
                     $http({
                         method: "POST",
                         url: href,
@@ -73,14 +74,18 @@ module.exports = function (scope, $http, $route, spCF) {
 
                             setTimeout(function () {
                                 $route.reload();
+                                $('.cd-main-content').waitAnimationStop();
                             }, 1000);
                         } else {
                             scope.savedErrors = typeof response.message != "undefined" ? response.message : 'Something went wrong!';
                             scope.savedSuccess = undefined;
+                            $('.cd-main-content').waitAnimationStop();
                         }
                     }, function errorCallback(response) {
                         scope.savedErrors = 'Something went wrong!';
                         scope.savedSuccess = undefined;
+
+                        $('.cd-main-content').waitAnimationStop();
 
                         submitBtn.removeClass('disabled');
                         submitBtn.text(submitBtn.attr('data-label'));

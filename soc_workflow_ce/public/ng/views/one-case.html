@@ -34,7 +34,7 @@
                             <td>
                                 <div class="case-action">
                                     <div class="dropdown">
-                                        <button class="btn btn-outline-danger waves-effect waves-ligh" data-toggle="dropdown">Action <i class="fa fa-share-square"></i></button>
+                                        <button class="btn btn-outline-danger" data-toggle="dropdown">Action <i class="fa fa-share-square"></i></button>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" ng-click="processCase()">Process Case</a>
                                             <a class="dropdown-item" ng-class="editCaseSavedSearch == false ? 'disabled' : ''" ng-click="editCaseSavedSearch()">Edit Case Saved Search</a>
@@ -77,7 +77,7 @@
 
                         <div class="col-md-6">
                             <label>Comment</label>
-                            <span id="alertCommentText" class="activity-text">{{ caseCustomData.comment }}</span>
+                            <span id="alertCommentText" class="activity-text" ng-bind-html="caseCustomData.comment"></span>
 
                             <table class="table table-striped event-details-links half-table table-vertical">
                                 <tbody>

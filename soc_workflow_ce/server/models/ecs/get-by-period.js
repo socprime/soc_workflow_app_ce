@@ -1,4 +1,4 @@
-import moment from 'moment';
+let moment = require('moment-timezone');
 
 /**
  * @param server
@@ -14,6 +14,7 @@ module.exports = function (server, req, index, dateFrom, dateTo) {
             dateFrom = moment(dateFrom);
             dateTo = moment(dateTo);
         } catch (e) {
+            console.log(e);
             dateFrom = null;
             dateTo = null;
         }
@@ -51,6 +52,7 @@ module.exports = function (server, req, index, dateFrom, dateTo) {
 
             resolve(data);
         }).catch(function (e) {
+            console.log(e);
             resolve([]);
         });
     });

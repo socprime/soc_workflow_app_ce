@@ -24,7 +24,7 @@ const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSa
         $scope.savedSearches = {};
         $scope.graphWorkspace = {};
         $scope.caseDataAction = [];
-        $scope.caseSkippingLinks = ['events.id', 'alerts.id', 'Saved Search', 'Playbooks'];
+        $scope.caseSkippingLinks = ['events_id', 'alerts_id', 'Saved Search', 'Playbooks'];
 
         $scope.currCaseId = $routeParams.caseId || null;
         $scope.caseRawData = {};

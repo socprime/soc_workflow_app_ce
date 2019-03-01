@@ -1,28 +1,16 @@
-const alertsRangeId = '#alerts-reportrange';
-
 require('ui/modules').get('app/soc_workflow_ce', []).service('spInitAlertsPage', [
     'spConfigPeriod',
-    'spConfigAlertsTable',
     'spInitCommonDateRangePicker',
-    'spGetRangeFromPicker',
     'spInitAlertsAjax',
-    function (spConfigPeriod, spConfigAlertsTable, spInitCommonDateRangePicker, spGetRangeFromPicker, spInitAlertsAjax) {
+    'spConfigAlertTable',
+    'spGetRangeFromPicker',
+    'spInitCommonUpdateDateRangeFromPicker',
+    function (spConfigPeriod, spInitCommonDateRangePicker, spInitAlertsAjax, spConfigAlertTable, spGetRangeFromPicker, spInitCommonUpdateDateRangeFromPicker) {
         return function ($scope) {
             // Init date range pickers
-            spInitCommonDateRangePicker(alertsRangeId, 'alerts_date_range_picker_from', 'alerts_date_range_picker_to', {});
+            spInitCommonDateRangePicker($scope.rangeId, 'alerts_date_range_picker_from', 'alerts_date_range_picker_to', {});
 
-            let dateRange = spGetRangeFromPicker(alertsRangeId);
-            dateRange.from = dateRange.from || 0;
-            dateRange.to = dateRange.to || 0;
-
-            $scope.$apply(function () {
-                // Init date range
-                $scope.dateRange.from = dateRange.from;
-                $scope.dateRange.to = dateRange.to;
-
-                // Init table
-                $scope.tableSrc = spConfigAlertsTable($scope.currUrl, dateRange.from, dateRange.to);
-            });
+            spInitCommonUpdateDateRangeFromPicker($scope);
             spInitAlertsAjax($scope);
 
             // Set updater by period
@@ -30,8 +18,9 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitAlertsPage',
                 let updateByPeriod = function () {
                     let defaultPeriod = spConfigPeriod.getFirst();
                     let period = $scope.updatePeriod || 'Pause';
+                    clearTimeout($scope.periodEntity);
                     if (period != defaultPeriod && period != 'Pause' && parseInt(period) != NaN) {
-                        setTimeout(function () {
+                        $scope.periodEntity = setTimeout(function () {
                             spInitAlertsAjax($scope);
                             updateByPeriod();
                         }, (parseInt(period) * 1000));
@@ -41,19 +30,13 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitAlertsPage',
                 updateByPeriod();
             });
 
+            $scope.$on("$destroy", function(){
+                clearTimeout($scope.periodEntity);
+            });
 
-            $(alertsRangeId).on('apply.daterangepicker', function (ev, picker) {
-                let dateRange = spGetRangeFromPicker(alertsRangeId);
-                dateRange.from = dateRange.from || 0;
-                dateRange.to = dateRange.to || 0;
-
+            $($scope.rangeId).on('apply.daterangepicker', function (ev, picker) {
                 $scope.$apply(function () {
-                    // Update date range
-                    $scope.dateRange.from = dateRange.from;
-                    $scope.dateRange.to = dateRange.to;
-
-                    // Update table
-                    $scope.tableSrc = spConfigAlertsTable($scope.currUrl, dateRange.from, dateRange.to);
+                    spInitCommonUpdateDateRangeFromPicker($scope);
 
                     // Update ajax data
                     spInitAlertsAjax($scope);

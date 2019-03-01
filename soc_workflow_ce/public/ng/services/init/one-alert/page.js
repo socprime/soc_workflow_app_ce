@@ -7,8 +7,9 @@ const skipedRightSidebarFields = [
     'comment',
     'resource.URL',
     'resource.URI',
+    'url.query',
     'priority_color',
-    'events.id',
+    'events_id',
     'dateday',
     'available.stage',
     'event.labels',
@@ -102,9 +103,9 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneAlertPage
                     $scope.alertLinksData['Corporate Email URL'] = '<a href="' + newValue['suspicious_emails_box.url'] + '" target="_blank">' + newValue['suspicious_emails_box.url'] + '</a>';
                 }
 
-                //events.id
-                if (typeof newValue['events.id'] == 'string') {
-                    let events = newValue['events.id'].split(',').map(s => s.trim());
+                //events_id
+                if (typeof newValue['events_id'] == 'string') {
+                    let events = newValue['events_id'].split(',').map(s => s.trim());
 
                     if ($scope.currUrl && events.length > 0) {
                         let href = $scope.currUrl.replace('soc_workflow_ce', 'kibana');
@@ -127,7 +128,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneAlertPage
                         let tmpLink = '<a href="' + tmpLinkHref + '" target="_blank">Events</a>';
 
                         if (tmpLink.length) {
-                            $scope.alertLinksData['events.id'] = tmpLink;
+                            $scope.alertLinksData['events_id'] = tmpLink;
                         }
                     }
                 }
@@ -140,10 +141,10 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneAlertPage
                     cases.forEach(function (row) {
                         let id = spCF.isString(row['id']) ? row['id'] : '';
                         let name = spCF.isString(row['name']) ? row['name'] : '';
-                        let created = spCF.isString(row['created']) ? row['created'] : '';
+                        let created = spCF.isString(row['timestamp']) ? row['timestamp'] : '';
 
                         if (id) {
-                            let linkTitle = name + (created ? ' (' + created + ')' : id);
+                            let linkTitle = name + ' ' + (created ? '(' + created + ')' : id);
                             let linkText = linkTitle.length > shorteningLength ? linkTitle.substring(0, shorteningLength) + ' ...' : linkTitle;
 
                             let tmpLink = '<a href="' + ($scope.casesUrl ? $scope.casesUrl + '/' + id : '') + '" title="' + linkTitle + '">' + linkText + '</a>';
@@ -188,6 +189,11 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneAlertPage
                 // resource.URI
                 if (spCF.isString(newValue['resource.URI'])) {
                     $scope.alertLinksData['Resource.URI'] = '<a href="' + newValue['resource.URI'] + '" target="_blank">' + newValue['resource.URI'] + '</a>';
+                }
+
+                // url.query
+                if (spCF.isString(newValue['url.query'])) {
+                    $scope.alertLinksData['url.query'] = '<a href="' + newValue['url.query'] + '" target="_blank">' + newValue['url.query'] + '</a>';
                 }
             });
 

@@ -38,7 +38,7 @@ module.exports = function (scope, spCF) {
     });
 
     // Set current operator
-    let currentOperatorName = $.trim($('[ng-controller="securityNavController"] .global-nav-link:first-child .global-nav-link__title').text());
+    let currentOperatorName = $.trim($('[ng-controller="securityNavController"] .kbnGlobalNav__linksSection .kbnGlobalNavLink__title').text());
     scope.userList = scope.userList || [];
     let tmpUserList = {};
     scope.userList.forEach(function (el) {
@@ -49,7 +49,7 @@ module.exports = function (scope, spCF) {
         slug: 'operator',
         type: scope.fieldType.select,
         required: true,
-        current: (currentOperatorName.length > 0) ? currentOperatorName : '',
+        current: (currentOperatorName.length > 0 && spCF.isSet(tmpUserList[currentOperatorName])) ? currentOperatorName : undefined,
         list: tmpUserList
     });
 

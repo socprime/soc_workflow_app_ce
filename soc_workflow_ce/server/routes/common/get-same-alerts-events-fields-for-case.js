@@ -12,87 +12,94 @@ let emptyResult = {
  * @returns {{index: function(*=, *=)}}
  */
 export default function (server, options) {
-    const index = (req, reply) => {
+    const index = (req) => {
+        return (async function () {
+            return await new Promise(function (reply) {
+                let ids = null;
+                let isAlerts = typeof req.query.isAlerts != "undefined" ? Boolean(req.query.isAlerts == 'true') : true;
 
-        let ids = null;
-        let isAlerts = typeof req.query.isAlerts != "undefined" ? Boolean(req.query.isAlerts == 'true') : true;
-
-        try {
-            ids = JSON.parse(req.query.ids);
-        } catch (e) {
-        }
-
-        if (!isAlerts && $cf.isArray(ids)) {
-            let tmpIds = [];
-            ids.forEach(function (row) {
-                if (row) {
-                    let split = row.split('/');
-
-                    tmpIds.push(split[(split.length - 1)]);
+                try {
+                    ids = JSON.parse(req.query.ids);
+                } catch (e) {
+                    console.log(e);
                 }
-            });
 
-            ids = tmpIds;
-        }
+                if (!isAlerts && $cf.isArray(ids)) {
+                    let tmpIds = [];
+                    ids.forEach(function (row) {
+                        if (row) {
+                            let split = row.split('/');
 
-        let fields = {
-            'message': 'message',
-            'event.severity': 'event-severity',
-            'operator': 'operator',
-            'event.labels': 'available-stage',
-            'comment': 'comment',
-            'source.ip': 'source.ip',
-            'destination.ip': 'destination.ip',
-            'device.product': 'device.product',
-        };
-
-        // Enrich enabled field list
-        let caseEnabledFieldListData = $cf.getCaseEnabledFieldList();
-        caseEnabledFieldListData = $cf.isArray(caseEnabledFieldListData) ? caseEnabledFieldListData : [];
-        caseEnabledFieldListData.forEach(function (row) {
-            if (typeof row['key'] != "undefined") {
-                fields[row['key']] = row['key'];
-            }
-        });
-
-        // Get prev data
-        commonGetByTerms(server, req, (isAlerts ? 'alerts_ecs*' : '*'), '_id', ids, 10000).then(function (response) {
-            let prevData = {};
-            response.forEach(function (row) {
-                if (typeof row['_id'] != 'undefined' && typeof row['_source'] != "undefined") {
-                    Object.keys(row['_source']).forEach(function (key) {
-                        if (typeof row['_source'][key] != 'undefined' && typeof fields[key] != 'undefined') {
-                            if (typeof prevData[fields[key]] == 'undefined') {
-                                prevData[fields[key]] = [];
-                            }
-                            prevData[fields[key]].push(row['_source'][key]);
+                            tmpIds.push(split[(split.length - 1)]);
                         }
                     });
-                }
-            });
 
-            let data = {};
-            Object.keys(prevData).forEach(function (key) {
-                let currentArray = prevData[key];
-                if ($cf.isArray(currentArray) && currentArray.length == response.length && currentArray.length) {
-                    let first = currentArray[0];
-                    let isEqual = currentArray.every(function (currentValue) {
-                        return currentValue == first;
+                    ids = tmpIds;
+                }
+
+                let fields = {
+                    'message': 'message',
+                    'event.severity': 'event-severity',
+                    'operator': 'operator',
+                    'event.labels': 'available-stage',
+                    'comment': 'comment',
+                    'source.ip': 'source.ip',
+                    'destination.ip': 'destination.ip',
+                    'device.product': 'device.product',
+                };
+
+                // Enrich enabled field list
+                let caseEnabledFieldListData = $cf.getCaseEnabledFieldList();
+                caseEnabledFieldListData = $cf.isArray(caseEnabledFieldListData) ? caseEnabledFieldListData : [];
+                caseEnabledFieldListData.forEach(function (row) {
+                    if (typeof row['key'] != "undefined") {
+                        fields[row['key']] = row['key'];
+                    }
+                });
+
+                // Get prev data
+                commonGetByTerms(server, req, (isAlerts ? 'alerts_ecs*' : '*'), '_id', ids, 10000).then(function (response) {
+                    let prevData = {};
+
+                    response.forEach(function (row) {
+                        if (typeof row['_id'] != 'undefined' && typeof row['_source'] != "undefined") {
+                            row['_source'] = $cf.makeFlatListFromObject('', row['_source'], {});
+                            Object.keys(row['_source']).forEach(function (key) {
+                                if (typeof row['_source'][key] != 'undefined' && typeof fields[key] != 'undefined') {
+                                    if (typeof prevData[fields[key]] == 'undefined') {
+                                        prevData[fields[key]] = [];
+                                    }
+                                    prevData[fields[key]].push(row['_source'][key]);
+                                }
+                            });
+                        }
                     });
 
-                    if (isEqual) {
-                        data[key] = first;
-                    }
-                }
-            });
+                    let data = {};
+                    Object.keys(prevData).forEach(function (key) {
+                        let currentArray = prevData[key];
+                        if ($cf.isArray(currentArray) && currentArray.length == response.length && currentArray.length) {
+                            let first = currentArray[0];
+                            let isEqual = currentArray.every(function (currentValue) {
+                                return currentValue == first;
+                            });
 
-            return reply({
-                data: data,
-                success: true
+                            if (isEqual) {
+                                data[key] = first;
+                            }
+                        }
+                    });
+
+                    return reply({
+                        data: data,
+                        success: true
+                    });
+                }).catch(function (e) {
+                    console.log(e);
+                    return reply(emptyResult);
+                });
             });
-        }).catch(function (e) {
-            return reply(emptyResult);
-        });
+        })();
     };
 
     return {
