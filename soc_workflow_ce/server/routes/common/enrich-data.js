@@ -1,9 +1,9 @@
-let moduleFolder = require('./../../constant/module-folder');
+const moduleFolder = require('./../../constant/module-folder');
 
 let moment = require('moment-timezone');
 let cmd = require('node-cmd');
 let $cf = require('./../../common/function');
-let commonGetCurrentUser = require('./../../../' + moduleFolder + '/users_model/server/get-current-user');
+let kibanaGetCurrentUser = require(`./../../../${moduleFolder}/server/models/kibana/get-current-user`);
 let commonAddOrUpdate = require('./../../models/common/add-or-update');
 
 let emptyResult = {
@@ -19,7 +19,7 @@ export default function (server, options) {
     const index = (req) => {
         return (async function () {
             return await new Promise(function (reply) {
-                let clientTimezone = req.headers.client_timezone || "UTC";
+                let clientTimezone = req.headers.clienttimezone || "UTC";
 
                 let params = {
                     id: typeof req.payload.id == "string" ? req.payload.id : null,
@@ -74,10 +74,11 @@ export default function (server, options) {
                 }
 
                 // Replace value
+                //params.dataValue = Buffer.from(params.dataValue).toString('base64');
                 enrichCommand = enrichCommand.replace(/\[\[value\]\]/, params.dataValue);
 
                 Promise.all([
-                    commonGetCurrentUser(server, req),
+                    kibanaGetCurrentUser(server, req),
                     new Promise(function (resolve, reject) {
                         cmd.get(
                             enrichCommand,
@@ -92,7 +93,7 @@ export default function (server, options) {
 
                         setTimeout(() => {
                             reject(new Error("Timeout error"));
-                        }, 30000);
+                        }, 120000);
                     })
                 ]).then(function (value) {
                     let operatorAction = value[0] || '';
@@ -116,7 +117,7 @@ export default function (server, options) {
                         "comment": logMessage
                     };
 
-                    let indexDate = moment().tz(clientTimezone).format('YYYY.MM.DD');
+                    let indexDate = moment().tz(clientTimezone).format('YYYY.MM');
                     let needIndex = (params.type == 'case') ? 'case_logs-' + indexDate : 'alerts_logs-' + indexDate;
                     commonAddOrUpdate(server, req, {
                         'index': needIndex,

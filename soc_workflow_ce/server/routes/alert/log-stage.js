@@ -1,9 +1,9 @@
-let moduleFolder = require('./../../constant/module-folder');
+const moduleFolder = require('./../../constant/module-folder');
 
 let moment = require('moment-timezone');
 let $cf = require('./../../common/function');
 let alertsEcsGetByIds = require('./../../models/alerts_ecs/get-by-ids');
-let commonGetCurrentUser = require('./../../../' + moduleFolder + '/users_model/server/get-current-user');
+let kibanaGetCurrentUser = require(`./../../../${moduleFolder}/server/models/kibana/get-current-user`);
 let commonAddOrUpdate = require('./../../models/common/add-or-update');
 
 let requiredFields = [
@@ -41,20 +41,20 @@ export default function (server, options) {
                 // Receive need data
                 Promise.all([
                     alertsEcsGetByIds(server, req, id),
-                    commonGetCurrentUser(server, req)
+                    kibanaGetCurrentUser(server, req)
                 ]).then(values => {
-                    let clientTimezone = req.headers.client_timezone || "UTC";
+                    let clientTimezone = req.headers.clienttimezone || "UTC";
 
                     let alertsData = $cf.isArray(values[0]) ? values[0] : [];
                     let operatorAction = typeof values[1] == 'string' ? values[1] : '';
 
                     let allPromis = [];
                     alertsData.forEach(function (oneAlert) {
-                        let indexDate = $cf.getDateInFormat(oneAlert['@timestamp'], 'YYYY.MM.DD', moment().tz(clientTimezone).format('YYYY.MM.DD'), false, clientTimezone);
+                        let indexDate = $cf.getDateInFormat(oneAlert['@timestamp'], 'YYYY.MM', moment().tz(clientTimezone).format('YYYY.MM'), false, clientTimezone);
                         let alertIndex = oneAlert['index'] || false;
                         let alertId = oneAlert['id'] || false;
 
-                        oneAlert = $cf.makeFlatListFromObject('', oneAlert, {});
+                        oneAlert = $cf.makeFlatListFromObject(oneAlert);
 
                         // Add log
                         let logData = {

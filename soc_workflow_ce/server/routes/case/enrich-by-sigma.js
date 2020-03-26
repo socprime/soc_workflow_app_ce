@@ -1,4 +1,4 @@
-let moduleFolder = require('./../../constant/module-folder');
+const moduleFolder = require('./../../constant/module-folder');
 
 let moment = require('moment-timezone');
 
@@ -7,7 +7,7 @@ let fs = require('fs');
 
 let $cf = require('./../../common/function');
 
-let commonGetCurrentUser = require('./../../../' + moduleFolder + '/users_model/server/get-current-user');
+let kibanaGetCurrentUser = require(`./../../../${moduleFolder}/server/models/kibana/get-current-user`);
 let commonAddOrUpdate = require('./../../models/common/add-or-update');
 let commonGetByBody = require('./../../models/common/get-by-body');
 let kibanaGetAllIndexPattern = require('./../../models/kibana/get-all-index-pattern');
@@ -26,7 +26,7 @@ let elasticAlias = "es-qs";
  * @param elasticQuery
  */
 let enrichData = function (server, req, reply, elasticQuery) {
-    let clientTimezone = req.headers.client_timezone || "UTC";
+    let clientTimezone = req.headers.clienttimezone || "UTC";
 
     let searchIndex = '*';
     let params = {
@@ -53,7 +53,7 @@ let enrichData = function (server, req, reply, elasticQuery) {
 
     Promise.all([
         kibanaGetAllIndexPattern(server, req),
-        commonGetCurrentUser(server, req)
+        kibanaGetCurrentUser(server, req)
     ]).then(function (value) {
         let indexPatterns = value[0] || [];
         let operatorAction = value[1] || [];
@@ -133,7 +133,7 @@ let enrichData = function (server, req, reply, elasticQuery) {
                 "comment": logMessage
             };
 
-            let indexDate = moment().tz(clientTimezone).format('YYYY.MM.DD');
+            let indexDate = moment().tz(clientTimezone).format('YYYY.MM');
             let needIndex = 'case_logs-' + indexDate;
             commonAddOrUpdate(server, req, {
                 'index': needIndex,

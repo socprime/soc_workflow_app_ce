@@ -8,41 +8,49 @@ let $cf = require('./../../common/function');
  * @param dateFrom
  * @param dateTo
  * @param colorSet
+ * @param defaultValue
+ * @returns {Promise}
  */
-module.exports = function (server, req, currIndex, field, dateFrom, dateTo, colorSet)
-{
+module.exports = function (server, req, currIndex, field, dateFrom, dateTo, colorSet, defaultValue) {
     return new Promise((resolve, reject) => {
         currIndex = currIndex || '';
         field = field || '';
         dateFrom = dateFrom || 0;
         dateTo = dateTo || 0;
         colorSet = colorSet || {};
+        defaultValue = defaultValue || false;
 
-        server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'search', {
-            index: currIndex,
-            body: {
-                "size": 0,
-                "query": {
-                    "bool": {
-                        "must": [{
-                            "range": {
-                                "@timestamp": {
-                                    "gte": dateFrom,
-                                    "lt": dateTo
-                                }
+        let requestBody = {
+            "size": 0,
+            "query": {
+                "bool": {
+                    "must": [{
+                        "range": {
+                            "@timestamp": {
+                                "gte": dateFrom,
+                                "lt": dateTo
                             }
-                        }]
-                    }
-                },
-                "aggs": {
-                    "by": {
-                        "terms": {
-                            "field": field,
-                            "size": 50
                         }
+                    }]
+                }
+            },
+            "aggs": {
+                "by": {
+                    "terms": {
+                        "field": field,
+                        "size": 50
                     }
                 }
             }
+        };
+
+        if (defaultValue) {
+            requestBody["aggs"]["by"]["terms"]["missing"] = defaultValue;
+        }
+
+        server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'search', {
+            index: currIndex,
+            body: requestBody
         }).then(function (response) {
             let rawData = [];
             try {

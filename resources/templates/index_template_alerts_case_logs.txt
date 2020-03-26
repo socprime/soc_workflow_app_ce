@@ -22,74 +22,72 @@ POST _template/alerts_case_logs
     }
   },
   "mappings": {
-    "doc": {
-      "dynamic": false,
-      "properties": {
-        "event.severity": {
-          "type": "short"
-        },
-        "@timestamp": {
-          "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
-          "type": "date"
-        },
-        "message": {
-          "type": "keyword",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256,
-              "normalizer": "useLowercase"
-            }
+    "dynamic": false,
+    "properties": {
+      "event.severity": {
+        "type": "short"
+      },
+      "@timestamp": {
+        "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
+        "type": "date"
+      },
+      "message": {
+        "type": "keyword",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256,
+            "normalizer": "useLowercase"
           }
-        },
-        "event.labels": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256,
-              "normalizer": "useLowercase"
-            }
-          }
-        },
-        "comment": {
-          "type": "text"
-        },
-        "soupce.ip": {
-          "type": "ip"
-        },
-        "destination.ip": {
-          "type": "ip"
-        },
-        "device.product": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256,
-              "normalizer": "useLowercase"
-            }
-          }
-        },
-        "name": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256,
-              "normalizer": "useLowercase"
-            }
-          }
-        },
-        "events.id": {
-          "type": "text"
-        },
-        "event_id": {
-          "type": "keyword"
-        },
-        "tags": {
-          "type": "text"
         }
+      },
+      "event.labels": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256,
+            "normalizer": "useLowercase"
+          }
+        }
+      },
+      "comment": {
+        "type": "text"
+      },
+      "soupce.ip": {
+        "type": "ip"
+      },
+      "destination.ip": {
+        "type": "ip"
+      },
+      "device.product": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256,
+            "normalizer": "useLowercase"
+          }
+        }
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256,
+            "normalizer": "useLowercase"
+          }
+        }
+      },
+      "events.id": {
+        "type": "text"
+      },
+      "event_id": {
+        "type": "keyword"
+      },
+      "tags": {
+        "type": "text"
       }
     }
   },

@@ -1,0 +1,33 @@
+// POST _template/sigma_translation
+{
+  "order": 100,
+  "index_patterns": [
+    "sigma_translation*"
+  ],
+  "settings": {
+    "index": {
+      "number_of_shards": "1",
+      "number_of_replicas": "0"
+    }
+  },
+  "mappings": {
+    "_source": {
+      "enabled": true
+    },
+    "properties": {
+      "sigma_doc_id": {
+        "type": "keyword"
+      },
+      "backend": {
+        "type": "keyword"
+      },
+      "text": {
+        "type": "text"
+      },
+      "hash": {
+        "type": "keyword"
+      }
+    }
+  },
+  "aliases": {}
+}

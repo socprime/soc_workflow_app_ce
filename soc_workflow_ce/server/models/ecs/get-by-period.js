@@ -11,8 +11,8 @@ module.exports = function (server, req, index, dateFrom, dateTo) {
     return new Promise((resolve, reject) => {
         index = typeof index == 'string' ? index : null;
         try {
-            dateFrom = moment(dateFrom);
-            dateTo = moment(dateTo);
+            dateFrom = moment(dateFrom, "x").format("x");
+            dateTo = moment(dateTo, "x").format("x");
         } catch (e) {
             console.log(e);
             dateFrom = null;

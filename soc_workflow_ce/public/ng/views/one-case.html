@@ -1,18 +1,16 @@
 <div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="OneCaseController">
     <main class="cd-main-content is-fixed">
         <div class="cd-filter-right is-visible">
-
-            <div class="blcok-left-header">
-                <a href="{{ casesUrl }}" class="right-close">Close <i class="fa fa-times" aria-hidden="true"></i></a>
+            <div class="block-left-header">
+                <a href="{{ casesUrl }}" class="btns btns--bg btns--icon-right">
+                    <span class="btns__text">Close</span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
             </div>
-
             <div class="right-header"></div>
-
             <div class="half-1 ">
                 <div class="inner-side scrollbar-slim-line" style="height: calc(100vh - 61px)">
-
                     <div class="entity-type-container">Case Info</div>
-
                     <table class="table table-striped event-details-one-row">
                         <thead>
                         <tr>
@@ -34,7 +32,7 @@
                             <td>
                                 <div class="case-action">
                                     <div class="dropdown">
-                                        <button class="btn btn-outline-danger" data-toggle="dropdown">Action <i class="fa fa-share-square"></i></button>
+                                        <button class="btns btns--border btns--icon-right" data-toggle="dropdown"><span class="btns__text">Action</span> <i class="fa fa-share-square"></i></button>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" ng-click="processCase()">Process Case</a>
                                             <a class="dropdown-item" ng-class="editCaseSavedSearch == false ? 'disabled' : ''" ng-click="editCaseSavedSearch()">Edit Case Saved Search</a>

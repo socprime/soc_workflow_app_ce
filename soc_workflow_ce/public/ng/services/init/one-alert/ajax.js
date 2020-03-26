@@ -1,5 +1,7 @@
-require('ui/modules').get('app/soc_workflow_ce', [])
-    .service('spInitOneAlertAjax', ['$http', function ($http) {
+require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneAlertAjax', [
+    '$http',
+    'spCF',
+    function ($http, spCF) {
         return function ($scope) {
             let href = $scope.currUrl || false;
             if (href && $scope.currAlertId) {
@@ -12,8 +14,8 @@ require('ui/modules').get('app/soc_workflow_ce', [])
                         id: $scope.currAlertId
                     }
                 }).then(function successCallback(response) {
-                    response = response.data || {};
                     $('.cd-main-content').waitAnimationStop();
+                    response = response.data || {};
                     if (response.success && response.success == true) {
                         $scope.allStages = response['allStages'] || [];
                         $scope.userList = response['userList'] || [];
@@ -24,6 +26,10 @@ require('ui/modules').get('app/soc_workflow_ce', [])
                         $scope.alertAvailableStage = response['availableStage'] || [];
                         $scope.caseEnabledFieldList = response['caseEnabledFieldList'] || [];
                         $scope.allIndexPattern = response['allIndexPattern'] || [];
+
+                        if (!spCF.isString($scope.alertRawData.id)) {
+                            window.location.href = $scope.alertsUrl;
+                        }
                     }
                 }, function errorCallback(response) {
                     $('.cd-main-content').waitAnimationStop();

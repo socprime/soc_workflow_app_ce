@@ -5,13 +5,24 @@ import uiRoutes from 'ui/routes';
 require('ui/autoload/all');
 require('ui/chrome');
 
+// HTML templates
+import viewsCases from './ng/views/cases.html';
+import viewsOneCase from './ng/views/one-case.html';
+import viewsAlerts from './ng/views/alerts.html';
+import viewsOneAlert from './ng/views/one-alert.html';
+import viewsEvents from './ng/views/events.html';
+import viewsRisksUsers from './ng/views/risks-users.html';
+import viewsRisksOneUser from './ng/views/risks-one-user.html';
+import viewsRisksHosts from './ng/views/risks-hosts.html';
+import viewsRisksOneHost from './ng/views/risks-one-host.html';
+
 import * as d3 from 'd3';
-
-window.d3 = d3;
-
 import * as c3 from 'c3';
 
-window.c3 = c3;
+setTimeout(() => {
+    window.d3 = d3;
+    window.c3 = c3;
+});
 
 import katex from 'katex';
 
@@ -41,9 +52,11 @@ import './assets/plugins/c3/c3.css';
 import './assets/css/menu-button.css';
 import './assets/css/style.css';
 import './assets/css/style-light.css';
+import './assets/css/app.css';
 
 import './assets/js/jquery-2.1.1.js';
 import './assets/plugins/bootstrap/bootstrap.min.js';
+
 // Required datatable js
 import './assets/plugins/datatables/jquery.dataTables.min.js';
 import './assets/plugins/datatables/dataTables.bootstrap4.js';
@@ -54,37 +67,58 @@ import './assets/js/main.js';
 
 import './assets/js/customCharts.js';
 
-let moduleFolder = require('../server/constant/module-folder');
+const moduleFolder = require('../server/constant/module-folder');
 // require SOC Workflow modules
 //- top_nav
-require('./../' + moduleFolder + '/top_nav/public/directives/sp-top-nav/index');
+require(`./../${moduleFolder}/public/directives/sp-top-nav/index`);
 //- Event Share Link
-require('./../' + moduleFolder + '/event_share_link/public/directives/sp-events-saved-search/index');
+require(`./../${moduleFolder}/public/directives/sp-events-saved-search/index`);
 //- Machine Learning Integration
-require('./../' + moduleFolder + '/ml_integration/public/services/add');
+require(`./../${moduleFolder}/public/services/ml_integration/add`);
 //- Graph Integration
-require('./../' + moduleFolder + '/graph_integration/public/directives/sp-edit-case-graph-workspace/index');
-require('./../' + moduleFolder + '/graph_integration/public/services/add');
-require('./../' + moduleFolder + '/graph_integration/public/services/edit');
+require(`./../${moduleFolder}/public/directives/sp-edit-case-graph-workspace/index`);
+require(`./../${moduleFolder}/public/services/graph_integration/add`);
+require(`./../${moduleFolder}/public/services/graph_integration/edit`);
 //- Saved Search Integrations
-require('./../' + moduleFolder + '/saved_searches_integration/public/directives/sp-edit-case-saved-search/index');
-require('./../' + moduleFolder + '/saved_searches_integration/public/services/edit');
-require('./../' + moduleFolder + '/saved_searches_integration/public/directives/sp-saved-search-integration-create-case/index');
-require('./../' + moduleFolder + '/saved_searches_integration/public/services/save');
+require(`./../${moduleFolder}/public/directives/sp-edit-case-saved-search/index`);
+require(`./../${moduleFolder}/public/directives/sp-saved-search-integration-create-case/index`);
+require(`./../${moduleFolder}/public/services/saved_searches_integration/edit`);
+require(`./../${moduleFolder}/public/services/saved_searches_integration/save`);
 //- Playbooks
-require('./../' + moduleFolder + '/playbooks/public/directives/sp-all-playbooks/index');
-require('./../' + moduleFolder + '/playbooks/public/directives/sp-edit-playbook/index');
+require(`./../${moduleFolder}/public/directives/sp-all-playbooks/index`);
+require(`./../${moduleFolder}/public/directives/sp-edit-playbook/index`);
 //- Upload to Anomali My Attacks
-require('./../' + moduleFolder + '/anomali_threatstream_enrichment/public/services/upload');
+require(`./../${moduleFolder}/public/services/anomali_threatstream_enrichment/upload`);
 //- channel_table
-require('./../' + moduleFolder + '/channel_table/public/directives/sp-channel-table/index');
-require('./../' + moduleFolder + '/channel_table/public/services/config/table');
-require('./../' + moduleFolder + '/channel_table/public/services/helper/get-table-fields');
-require('./../' + moduleFolder + '/channel_table/public/services/helper/update-table');
-require('./../' + moduleFolder + '/channel_table/public/services/config/case-table');
-require('./../' + moduleFolder + '/channel_table/public/services/config/alert-table');
+require(`./../public/ng/directives/sp-channel-table/index`);
+
+require(`./../public/ng/services/config/table`);
+require(`./../public/ng/services/config/case-table`);
+require(`./../public/ng/services/config/alert-table`);
+require(`./../public/ng/services/channel_table/get-table-fields`);
+require(`./../public/ng/services/channel_table/update-table`);
 //- sla_settings
-require('./../' + moduleFolder + '/sla_settings/public/directives/sp-edit-sla-settings/index');
+require(`./../${moduleFolder}/public/directives/sp-edit-sla-settings/index`);
+
+// require SOC Workflow from module
+if (moduleFolder == 'sp_modules') {
+    require(`./../${moduleFolder}/public/services/init/risks-users/page`);
+    require(`./../${moduleFolder}/public/services/init/risks-users/action`);
+    require(`./../${moduleFolder}/public/services/config/risks-users-table`);
+    require(`./../${moduleFolder}/public/services/init/one-risks-user/page`);
+    require(`./../${moduleFolder}/public/services/init/one-risks-user/action`);
+    require(`./../${moduleFolder}/public/directives/sp-search-cv-entity/index`);
+    require(`./../${moduleFolder}/public/directives/sp-one-user-forensics/index`);
+    require(`./../${moduleFolder}/public/directives/sp-one-user-timeline/index`);
+
+    require(`./../${moduleFolder}/public/services/init/risks-hosts/page`);
+    require(`./../${moduleFolder}/public/services/init/risks-hosts/action`);
+    require(`./../${moduleFolder}/public/services/config/risks-hosts-table`);
+    require(`./../${moduleFolder}/public/services/init/one-risks-host/page`);
+    require(`./../${moduleFolder}/public/services/init/one-risks-host/action`);
+    require(`./../${moduleFolder}/public/directives/sp-one-host-forensics/index`);
+    require(`./../${moduleFolder}/public/directives/sp-one-host-timeline/index`);
+}
 
 // require SOC Workflow services
 //- config
@@ -143,37 +177,113 @@ require('./ng/controllers/one-case');
 require('./ng/controllers/alerts');
 require('./ng/controllers/one-alert');
 require('./ng/controllers/events');
+require('./ng/controllers/risks-users');
+require('./ng/controllers/risks-one-user');
+require('./ng/controllers/risks-hosts');
+require('./ng/controllers/risks-one-host');
 
 // Add headers to all ajax request
-require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSanitize'])
-    .run(['$http', function ($http) {
-        // Add client timezone
-        $http.defaults.headers.common['client_timezone'] = moment.tz.guess();
-        $http.defaults.headers.common['client_timezone'] = typeof $http.defaults.headers.common['client_timezone'] == 'string' ?
-            $http.defaults.headers.common['client_timezone'] : "UTC";
-    }]);
+require('ui/modules').get('app/soc_workflow_ce', ['ngSanitize'])
+    .run([
+        '$http',
+        function ($http) {
+            // Add client timezone
+            $http.defaults.headers.common['clienttimezone'] = moment.tz.guess();
+            $http.defaults.headers.common['clienttimezone'] = typeof $http.defaults.headers.common['clienttimezone'] == 'string' ?
+                $http.defaults.headers.common['clienttimezone'] : "UTC";
+        }])
+    .filter('isNotEmpty', function () {
+        return function (obj) {
+            let bar;
+            for (bar in obj) {
+                if (obj.hasOwnProperty(bar)) {
+                    return true;
+                }
+            }
+            return false;
+        };
+    })
+    .filter('objectCount', function () {
+        return function (obj) {
+            return Object.keys(obj).length;
+        };
+    })
+    .filter('beautifyName', ['spCF', function (spCF) {
+        return function (name) {
+            return spCF.beautifyName(name);
+        };
+    }])
+    .filter('range', function () {
+        return function (input, total) {
+            total = parseInt(total);
+
+            for (var i = 0; i < total; i++) {
+                input.push(i);
+            }
+
+            return input;
+        };
+    })
+    .filter('textToSlug', function () {
+        return function (text) {
+            return text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+        };
+    })
+    .directive('stringToNumber', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                ngModel.$parsers.push(function (value) {
+                    return '' + value;
+                });
+                ngModel.$formatters.push(function (value) {
+                    return parseFloat(value);
+                });
+            }
+        };
+    });
 
 uiRoutes.enable();
 uiRoutes.when('/cases', {
-    template: require('./ng/views/cases.html'),
+    template: viewsCases,
     reloadOnSearch: false
 });
 uiRoutes.when('/cases/:caseId', {
-    template: require('./ng/views/one-case.html'),
+    template: viewsOneCase,
     reloadOnSearch: false
 });
 uiRoutes.when('/alerts', {
-    template: require('./ng/views/alerts.html'),
+    template: viewsAlerts,
     reloadOnSearch: false
 });
 uiRoutes.when('/alerts/:alertId', {
-    template: require('./ng/views/one-alert.html'),
+    template: viewsOneAlert,
     reloadOnSearch: false
 });
 uiRoutes.when('/events', {
-    template: require('./ng/views/events.html'),
+    template: viewsEvents,
     reloadOnSearch: false
 });
+
+if (moduleFolder == 'sp_modules') {
+    uiRoutes.when('/risks-users', {
+        template: viewsRisksUsers,
+        reloadOnSearch: false
+    });
+    uiRoutes.when('/risks-user/:userId', {
+        template: viewsRisksOneUser,
+        reloadOnSearch: false
+    });
+    uiRoutes.when('/risks-hosts', {
+        template: viewsRisksHosts,
+        reloadOnSearch: false
+    });
+    uiRoutes.when('/risks-host/:hostId', {
+        template: viewsRisksOneHost,
+        reloadOnSearch: false
+    });
+}
+
 uiRoutes.otherwise({
     redirectTo: '/cases'
 });

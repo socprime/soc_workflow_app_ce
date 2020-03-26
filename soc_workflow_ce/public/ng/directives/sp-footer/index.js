@@ -14,6 +14,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spFooter', [
          */
         const link = function (scope, element, attrs, controller, transcludeFn) {
             scope.tosContent = '';
+            scope.appVersion = '';
 
             let alertPattern = {
                 title: '',
@@ -43,6 +44,27 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spFooter', [
                     response = response.data || {};
                     if (response.success && response.success == true && response.text) {
                         scope.tosContent = response.text;
+                    }
+                }, function errorCallback(response) {
+                    console.log('connection error');
+                });
+
+                $http({
+                    method: "GET",
+                    url: href + '/get-file',
+                    dataType: "json",
+                    params: {
+                        file: '/../../../package.json'
+                    }
+                }).then(function successCallback(response) {
+                    response = response.data || {};
+                    if (response.success && response.success == true && response.text) {
+                        try {
+                            response.text = JSON.parse(response.text);
+                            scope.appVersion = response.text.version || '';
+                        } catch (e) {
+                            scope.appVersion = '';
+                        }
                     }
                 }, function errorCallback(response) {
                     console.log('connection error');

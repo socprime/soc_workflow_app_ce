@@ -1,5 +1,22 @@
 {
-   "<playbook_name>": [
-       "<alert_name>"
+   "Microsoft Office365 Security Monitor": [
+ 
+   ],
+   "Brute Force Detection Advanced": [
+       "Brute force detection, 20 unsuccessful login attempts for one user from one source per 5min",
+       "Brute force detection, 3 login attempts for diff user from diff source per 5min"
+   ],
+   "Password Security Basic": [
+       "Password Compromised"
+   ],
+   "VPN Security Monitor Advanced": [
+
+   ],
+   "DetectTOR Advanced": [
+       "Connection to TOR network",
+       "Connection to Malware IP 09_18_37"
+   ],
+   "Possible phishing email from user": [
+       "Possible phishing email from user"
    ]
 }

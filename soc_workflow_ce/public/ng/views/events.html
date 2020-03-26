@@ -1,38 +1,36 @@
 <div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="EventsController">
-    <main class="cd-main-content is-fixed">
-        <div sp-top-nav></div>
-
-        <section class="plr">
-            <div sp-events-saved-search
-                 curr-url="currUrl"
-                 datepicker-id="{{ dateRangePickerId }}"
-                 saved-searches="savedSearches"
-                 events-data="eventsData"
-                 use-kibana-date-ranges="yes"></div>
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card m-t-20">
-                        <div class="card-header">
-                            Event Search Result
-                            <span ng-show="selectedEvents[0]">
-                                <button ng-click="createNewCase()" type="button" class="btn btn-outline-danger menu-raw pull-right">Create Case</button>
-                                <button ng-click="addToExistingCase()" type="button" class="btn btn-outline-danger menu-raw pull-right m-r-5">Add to existing Case</button>
-                            </span>
-                        </div>
-
-                        <div sp-channel-table
-                             class="soc-channel-table"
-                             table-id="soc-channel-table-raw"
-                             table-rows="eventsData"
-                             table-src="tableSrc"
-                             selected-item="selectedEvents"
-                             show-columns-selector="false"></div>
-                    </div>
-                </div>
+    <main class="so-main is-fixed so-main--events">
+        <div class="so-main__row">
+            <div class="so-main__col so-main__col--left">
+                <div sp-top-nav></div>
             </div>
-        </section>
-
+        </div>
+        <section class="schedule">
+                <div class="schedule__wrap">
+                    <div sp-events-saved-search
+                         curr-url="currUrl"
+                         datepicker-id="{{ dateRangePickerId }}"
+                         saved-searches="savedSearches"
+                         events-data="eventsData"
+                         use-kibana-date-ranges="yes"></div>
+                </div>
+                <div class="schedule__table">
+                    <div class="btn-list">
+                        <span ng-show="selectedEvents[0]">
+                            <button ng-click="createNewCase()" type="button" class="btn btn-outline-danger menu-raw pull-right">Create Case</button>
+                            <button ng-click="addToExistingCase()" type="button" class="btn btn-outline-danger menu-raw pull-right m-r-5">Add to existing Case</button>
+                        </span>
+                    </div>
+                    <div sp-channel-table
+                         class="soc-channel-table"
+                         table-title="Event Search Result"
+                         table-id="soc-channel-table-raw"
+                         table-rows="eventsData"
+                         table-src="tableSrc"
+                         selected-item="selectedEvents"
+                         show-columns-selector="false"></div>
+                </div>
+            </section>
         <sp-footer curr-url="currUrl"></sp-footer>
     </main>
 </div>

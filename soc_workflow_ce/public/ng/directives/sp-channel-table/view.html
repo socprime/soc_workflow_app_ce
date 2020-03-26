@@ -1,0 +1,37 @@
+<div class="chart-card is-open" data-card-wrap="data-card-wrap">
+    <div class="slide-btn" ng-click="collapseOneCard($event)">
+        <h5 class="slide-btn__text">{{ tableTitle || 'Flow' }}</h5>
+        <span class="border-arrow border-arrow--up"></span>
+    </div>
+    <div class="chart-card__main" data-card-body="data-card-body">
+        <div class="chart-card__filter">
+            <form class="form" ng-submit="searchInTable($event)">
+                <div class="form__item">
+                    <input type="search" class="form__input" placeholder="Search..." aria-controls="{{ tableId }}">
+                    <button type="submit" class="form__btn btns btns--bg icon">
+                        <img aria-hidden="true" alt="SOC Prime" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/custom-image-search.svg"/>
+                    </button>
+                </div>
+            </form>
+            <div class="chart-card__dropdown" ng-show="showColumnsSelector == true">
+                <div class="dropdown">
+                    <button class="dropdown__btn btns btns--border arrow btns--icon-left" ng-click="openSelect2(select2Id)" data-display="static" type="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true" style="padding: 3px 12px;" data-select2-open="{{ select2Id }}">
+                        <img aria-hidden="true" alt="SOC Prime" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/custom-image-open-select.svg"/>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-left keep-open" id="{{ tableId }}-select-fields-wrap">
+                        <div sp-select2 select-name="{{ select2Id }}" select-id="{{ select2Id }}" placeholder="Choose fields" items="availableFields" selected="selectedFields" is-multiple="true"></div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btns btns--border btns--icon-right" ng-click="createNewCase()" ng-show="showCreateCaseButton">
+                <span class="btns__text">Create Case</span>
+                <img aria-hidden="true" alt="SOC Prime" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/custom-image-circle-plus.svg"/>
+            </button>
+        </div>
+        <div style="width: 100%; padding-bottom: 20px;">
+            <div class="chart-card__table">
+                <table id="{{ tableId }}" class="table table-striped soc-channel-table" style="width: 100%"></table>
+            </div>
+        </div>
+    </div>
+</div>

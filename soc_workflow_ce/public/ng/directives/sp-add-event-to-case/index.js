@@ -11,7 +11,6 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spAddEventToCase
     'spCF',
     function ($http, $timeout, $route, spCF) {
         const preLink = function (scope, element, attributes, controller, transcludeFn) {
-            let href = scope.currUrl || false;
             scope.formId = 'form-' + parseInt(Math.random() * 1000);
             scope.fields = [];
             scope.fieldType = {
@@ -20,6 +19,13 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spAddEventToCase
                 textarea: 'textarea',
             };
             scope.caseList = {};
+
+            scope.casePeriod = {
+                '1d': '1d',
+                '7d': '7d',
+                '14d': '14d',
+                '30d': '30d'
+            };
 
             scope.eventsId = null;
             scope.isAlerts = false;
@@ -36,9 +42,9 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spAddEventToCase
                     break;
             }
 
-            let localScope = scope;
-            if (href) {
-                initAjax(href, localScope, $http, spCF);
+            if (scope.currUrl) {
+                let localScope = scope;
+                initAjax(localScope, $http, spCF, Object.values(scope.casePeriod)[0]);
             }
 
             initHandlers(scope, $http, $route, spCF);

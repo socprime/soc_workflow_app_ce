@@ -8,14 +8,13 @@ module.exports = function (server, req, index, ids) {
         if (index == null || ids == null) {
             resolve(false);
         } else {
-            const resp = server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'index', {
-                index: index,
-                refresh: true,
-                type: '_delete_by_query',
+            const resp = server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'transport.request', {
+                method: 'POST',
+                path: index + '/_delete_by_query?refresh=true',
                 body: {
                     "query": {
                         "ids": {
-                            "type": "doc",
+                            "type": "_doc",
                             "values": ids
                         }
                     }

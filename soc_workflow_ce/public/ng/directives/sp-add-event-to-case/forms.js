@@ -5,9 +5,18 @@
  * @param spCF
  */
 module.exports = function (scope, $http, $route, spCF) {
+    scope.fields.push({
+        name: 'Select case period',
+        slug: 'case-period',
+        type: scope.fieldType.select,
+        required: true,
+        list: scope.casePeriod,
+        current:[Object.values(scope.casePeriod)[0]]
+    });
+
     // event-severity
     scope.fields.push({
-        name: 'Case (for the last 7d)',
+        name: 'Case (for the last 1d)',
         slug: 'case',
         type: scope.fieldType.select,
         required: true,

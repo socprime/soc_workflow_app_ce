@@ -18,10 +18,6 @@ logsources:
     service: clamav
     conditions:
       deviceVendor: Unix
-  firewall:
-    product: firewall
-    conditions:
-      categoryDeviceGroup: /Firewall
   windows-dns:
     product: windows
     service: dns-server
@@ -89,6 +85,10 @@ logsources:
     conditions:
       deviceProduct: Apache
       categoryDeviceGroup: /Application
+    firewall:
+    product: firewall
+    conditions:
+      categoryDeviceGroup: /Firewall
 
 fieldmappings:
   EventID: externalId

@@ -1,4 +1,4 @@
-const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSanitize']).controller('CasesController', [
+const app = require('ui/modules').get('app/soc_workflow_ce', ['ngSanitize']).controller('CasesController', [
     '$scope',
     '$http',
     '$location',

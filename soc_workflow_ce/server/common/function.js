@@ -2,10 +2,20 @@ let moment = require('moment-timezone');
 let fs = require('fs');
 let path = require("path");
 
-let moduleFolder = require('./../constant/module-folder');
-let getStage = require('./../../' + moduleFolder + '/stage_model/server/get-stage');
+const moduleFolder = require('./../constant/module-folder');
+const getStage = require(`./../../${moduleFolder}/server/models/stage/get`);
 
 let functions = {
+    getCommonSettings: function () {
+        return {
+            'risk_score_entity_alerts_stacking_fields': ["message"],
+            'risk_score_entity_alerts_stacking_fields_timeline': ["message", "user.domain_list"],
+            'risk_score_entity_alerts_stacking_fields_timeline_period': 15 * 60 * 1000,
+        };
+    },
+    getArrayOrEmpty: function (value) {
+        return ((obj) => this.isArray(obj) ? obj : [])(value);
+    },
     getAllStages: function () {
         let allStages = Object.assign({}, getStage.all);
 
@@ -26,6 +36,9 @@ let functions = {
     },
     getCaseStage: function () {
         return getStage.forCase;
+    },
+    getCaseAvailableStage: function (currStage) {
+        return getStage.available(currStage);
     },
     getRandomColor: function () {
         let letters = '0123456789ABCDEF';
@@ -234,6 +247,43 @@ let functions = {
 
         return source;
     },
+    getRisksBaseFields: function () {
+        let data = {};
+        try {
+            data = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/../../config/risks-forensics-base-fields.json'), 'utf8'));
+        } catch (e) {
+            console.log(e);
+        }
+
+        return {
+            cases: this.isArray(data.cases) ? data.cases : [],
+            alerts: this.isArray(data.alerts) ? data.alerts : [],
+        };
+    },
+    sortObjectByArray: function (obj, fields) {
+        let spCF = this;
+        let newObj = {};
+        if (spCF.isObject(obj)) {
+            obj = spCF.makeFlatListFromObject(obj);
+            fields = spCF.isArray(fields) ? fields : [];
+            fields.forEach((oneFiled) => {
+                if (spCF.isSet(obj[oneFiled])) {
+                    newObj[oneFiled] = obj[oneFiled];
+                    delete obj[oneFiled];
+                }
+            });
+
+            for (let fieldName in obj) {
+                newObj[fieldName] = obj[fieldName];
+            }
+
+            newObj = spCF.makeBulkObjectFromList(newObj);
+
+            return newObj;
+        } else {
+            return obj;
+        }
+    },
     createTextLinks: function (text) {
         let result = text;
         try {
@@ -337,14 +387,14 @@ let functions = {
                     let errorMessage = 'Not specified all data for range!';
                     oneRange.errorMessage = undefined;
                     if (!(
-                            spCF.isArray(oneRange.from) && oneRange.from.length > 0 &&
-                            spCF.isArray(oneRange.to) && oneRange.to.length > 0 &&
-                            spCF.isNumber(oneRange.High) &&
-                            spCF.isNumber(oneRange.Medium) &&
-                            spCF.isNumber(oneRange.Low) &&
-                            spCF.isArray(oneRange.fromEntry) && oneRange.fromEntry.length > 0 &&
-                            spCF.isArray(oneRange.toEntry) && oneRange.toEntry.length > 0
-                        )) {
+                        spCF.isArray(oneRange.from) && oneRange.from.length > 0 &&
+                        spCF.isArray(oneRange.to) && oneRange.to.length > 0 &&
+                        spCF.isNumber(oneRange.High) &&
+                        spCF.isNumber(oneRange.Medium) &&
+                        spCF.isNumber(oneRange.Low) &&
+                        spCF.isArray(oneRange.fromEntry) && oneRange.fromEntry.length > 0 &&
+                        spCF.isArray(oneRange.toEntry) && oneRange.toEntry.length > 0
+                    )) {
                         oneRange.errorMessage = errorMessage;
                         hasErrors = true;
                     }
@@ -354,11 +404,13 @@ let functions = {
 
         return hasErrors;
     },
-    makeFlatListFromObject: function (nameDotted, content, fields) {
+    makeFlatListFromObject: function (content, nameDotted, fields) {
+        nameDotted = this.isSet(nameDotted) ? nameDotted : '';
+        fields = this.isSet(fields) ? fields : {};
         let spCF = this;
         if (spCF.isObject(content) && !spCF.isArray(content)) {
             for (let propName in content) {
-                fields = spCF.makeFlatListFromObject((nameDotted == '' ? propName : nameDotted + '.' + propName), content[propName], fields);
+                fields = spCF.makeFlatListFromObject(content[propName], (nameDotted == '' ? propName : nameDotted + '.' + propName), fields);
             }
         } else {
             fields[nameDotted] = content;
@@ -398,6 +450,39 @@ let functions = {
         }
 
         return newContent;
+    },
+    getHitsHits: function (response) {
+        response = response['hits'] || {};
+
+        return response['hits'] || [];
+    },
+    extractArrayFromSource: function (array) {
+        let spCF = this;
+        let response = [];
+        if (spCF.isArray(array)) {
+            array.forEach(function (el) {
+                el._source = el._source || {};
+                if (el["_id"]) el._source['id'] = el["_id"];
+                if (el["_index"]) el._source['index'] = el["_index"];
+                response.push(el._source);
+            });
+        }
+
+        return response;
+    },
+    beautifyName: function (name) {
+        let spCF = this;
+        if (spCF.isString(name)) {
+            name = name.replace(/^[0-9\s]+/gui, '');
+            name = name.replace(/[_]/gui, ' ');
+            name = name.replace('.', ' - ');
+            name = name.toLowerCase()
+                .split(' ')
+                .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                .join(' ');
+        }
+
+        return name;
     }
 };
 

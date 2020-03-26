@@ -23,7 +23,7 @@ class Error(Exception):
         10:{'db_code':1006, 'msg':'Unknown error'},
         1:{'db_code':1006, 'msg':'Running params error'},
         2:{'db_code':1006, 'msg':'File access error'},          ##2:[1,5]
-        3:{'db_code':1006, 'msg':'Configuration error'},        ##3:[6,7,9]
+        3:{'db_code':1001, 'msg':'Configuration error'},        ##3:[6,7,9]
         4:{'db_code':1001, 'msg':'Unsupported feature'},        ##4:[42]
         5:{'db_code':1004, 'msg':'Invalid format of YAML-file'},##5:[3],
         6:{'db_code':1005, 'msg':'Parsing error'},              ##6:[4,8]
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 ##    workdir = os.path.normpath(main_dir + '/workdir/')
 
     sigma_config_path = os.path.normpath(main_dir + '/tools/config/')
-    converter_path = os.path.normpath(main_dir + '/tools/sigmac.py')
+    converter_path = os.path.normpath(main_dir + '/tools/sigmac')
 
 
     logger = Logger('sigma_converter')
@@ -132,12 +132,20 @@ if __name__ == "__main__":
             exit_code = 0
             rezult = ''
 
-            if out_format == 'as':
+            if out_format == 'arcsight':
                 sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/arcsight.yml')
             elif out_format == 'qualys':
                 sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/qualys.yml')
             elif out_format == 'qradar':
-                sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/qradar.yml')    
+                sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/qradar.yml')   
+            elif out_format == "xpack-watcher":
+                sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/elk-winlogbeat.yml')                      
+            elif out_format == "xpack-watcher-sp":
+                sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/elk-winlogbeat.yml')                    
+            elif out_format == "netwitness":
+                sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/netwitness.yml')    
+            elif out_format == "powershell":
+                sigma_config = '-c ' + os.path.normpath(sigma_config_path + '/powershell-windows-all.yml')                   
             else:
                 sigma_config = ''
 

@@ -1,15 +1,17 @@
-let moduleFolder = require('./../../constant/module-folder');
+const moduleFolder = require('./../../constant/module-folder');
 let $cf = require('./../../common/function');
-let getStage = require('./../../../' + moduleFolder + '/stage_model/server/get-stage');
+const getStage = require(`./../../../${moduleFolder}/server/models/stage/get`);
 let helpersCommonPrepare = require('./../../helpers/common/prepare_data_actions');
 let caseEcsGetByIds = require('./../../models/case_ecs/get-by-ids');
 let playbookGetByTerms = require('./../../models/playbook/get-by-terms');
 let commonGetByTerms = require('./../../models/common/get-by-terms');
-let logsGetById = require('./../../../' + moduleFolder + '/workflow_log/server/models/log-get-by-id');
-let commonGetAllUsers = require('./../../../' + moduleFolder + '/users_model/server/get-all-users');
+let ecsGetLogById = require('./../../../server/models/ecs/get-log-by-id');
+let kibanaGetAllUsers = require(`./../../../${moduleFolder}/server/models/kibana/get-all-users`);
 let kibanaGetAllSavedSearches = require('./../../models/kibana/get-all-saved-searches');
-let kibanaGetAllGraphWorkspace = require('./../../../' + moduleFolder + '/graph_integration/server/models/get-all-graph-workspace');
+let kibanaGetAllGraphWorkspace = require(`./../../../${moduleFolder}/server/models/graph_integration/get-all-graph-workspace`);
 let allStages = $cf.getAllStages();
+
+let caseStringifyException = ['playbooks', 'comment', 'alerts_id', 'events_id', 'graph-workspace'];
 
 let emptyResult = {
     success: false,
@@ -81,12 +83,22 @@ const enrichEventsAlerts = function (clientTimezone, data, enrichment) {
 const getCaseWithEnrichment = function (server, req, id) {
     return new Promise((resolve, reject) => {
         caseEcsGetByIds(server, req, id).then(function (data) {
-            data = typeof data[0] == 'object' ? data[0] : {};
+            data = $cf.isObject(data[0]) ? data[0] : {};
             let playbooks = typeof data['playbooks'] == "object" ? data['playbooks'] : [];
             let events = prepareEventsAlerts(data['events_id'], true);
             let alerts = prepareEventsAlerts(data['alerts_id']);
 
-            let clientTimezone = req.headers.client_timezone || "UTC";
+
+            for (let fieldKey in data) {
+                if ($cf.isArray(data[fieldKey]) && !caseStringifyException.includes(fieldKey)) {
+                    data[fieldKey] = data[fieldKey].map((el) => {
+                        return $cf.isObject(el) ? JSON.stringify(el) : el;
+                    });
+                    data[fieldKey] = Object.values(data[fieldKey]).join(', ');
+                }
+            }
+
+            let clientTimezone = req.headers.clienttimezone || "UTC";
 
             Promise.all([
                 playbookGetByTerms(server, req, {"playbook_name.keyword": playbooks, "_id": playbooks}),
@@ -130,8 +142,8 @@ export default function (server, options) {
 
                 Promise.all([
                     getCaseWithEnrichment(server, req, id), // data, data->playbooks
-                    logsGetById(server, req, 'case_logs-*', id),// stageLog
-                    commonGetAllUsers(server, req), // userList
+                    ecsGetLogById(server, req, 'case_logs-*', id),// stageLog
+                    kibanaGetAllUsers(server, req), // userList
                     kibanaGetAllSavedSearches(server, req), // savedSearches
                     kibanaGetAllGraphWorkspace(server, req), // GraphWorkspace
                 ]).then(function (value) {

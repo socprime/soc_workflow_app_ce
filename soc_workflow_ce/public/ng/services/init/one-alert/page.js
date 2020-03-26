@@ -48,7 +48,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneAlertPage
                 // Priority
                 $scope.alertCustomData['priority'] = {
                     color: spCF.isString(newValue['priority_color']) ? newValue['priority_color'] : '',
-                    text: spCF.isString(newValue['event.severity']) ? newValue['event.severity'] : '',
+                    text: spCF.isSet(newValue['event.severity']) ? newValue['event.severity'] : '',
                 };
 
                 // Tags

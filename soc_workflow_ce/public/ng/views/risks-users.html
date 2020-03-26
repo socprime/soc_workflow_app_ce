@@ -1,0 +1,184 @@
+<div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="RisksUsersController">
+    <main class="so-main is-fixed">
+        <div class="so-main__row">
+            <div class="so-main__col so-main__col--left">
+                <div sp-top-nav></div>
+            </div>
+            <div class="so-main__col so-main__col--right">
+                <div datepicker-id="risks-users-reportrange" periods-list="configPeriod" sp-period-switch update-period="updatePeriod"></div>
+            </div>
+        </div>
+        <section class="so-users">
+            <div class="tabs">
+                <ul class="tabs__list">
+                    <li class="tabs__item">
+                        <a class="tabs__link btns is-active" href="#/risks-users">Users</a>
+                    </li>
+                    <li class="tabs__item">
+                        <a class="tabs__link btns" href="#/risks-hosts">Assets</a>
+                    </li>
+                    <li class="tabs__item">
+                        <a class="tabs__link btns disabled">Services</a>
+                    </li>
+                    <li class="tabs__item">
+                        <a class="tabs__link btns disabled">Vulnerabilities</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="so-users__row" data-card-wrap="data-card-wrap">
+                <div class="so-users__col">
+                    <div class="card-slide is-open">
+                        <div class="slide-btn" ng-click="collapseOneCard($event)">
+                            <h5 class="slide-btn__text">User Count</h5>
+                            <span class="border-arrow border-arrow--up"></span>
+                        </div>
+                        <div class="card-slide__main" data-card-body="data-card-body">
+                            <div class="count-box">
+                                <div class="count-box__img">
+                                    <img alt="User" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/user.svg">
+                                </div>
+                                <div class="count-box__quantity">{{ chartsData.usersCount | number:0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="so-users__col">
+                    <div class="card-slide is-open">
+                        <div class="slide-btn" ng-click="collapseOneCard($event)">
+                            <h5 class="slide-btn__text">Alert Count</h5>
+                            <span class="border-arrow border-arrow--up"></span>
+                        </div>
+                        <div class="card-slide__main" data-card-body="data-card-body">
+                            <div class="count-box">
+                                <div class="count-box__img">
+                                    <img alt="User" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/alert.svg">
+                                </div>
+                                <div class="count-box__quantity">{{ chartsData.alertsCount | number:0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="so-users__col">
+                    <div class="card-slide is-open">
+                        <div class="slide-btn" ng-click="collapseOneCard($event)">
+                            <h5 class="slide-btn__text">Hosts Count</h5>
+                            <span class="border-arrow border-arrow--up"></span>
+                        </div>
+                        <div class="card-slide__main" data-card-body="data-card-body">
+                            <div class="count-box">
+                                <div class="count-box__img">
+                                    <img alt="Hosts" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/hosts.svg">
+                                </div>
+                                <div class="count-box__quantity">{{ chartsData.hostsCount | number:0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="so-users__col">
+                    <div class="card-slide is-open">
+                        <div class="slide-btn" ng-click="collapseOneCard($event)">
+                            <h5 class="slide-btn__text">Max Risk Score</h5>
+                            <span class="border-arrow border-arrow--up"></span>
+                        </div>
+                        <div class="card-slide__main" data-card-body="data-card-body">
+                            <div class="count-box">
+                                <div class="count-box__img">
+                                    <img alt="Max-risk" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/max-risk.svg">
+                                </div>
+                                <div class="count-box__quantity">{{ chartsData.maxRiskScore | number:1 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="so-risk">
+            <div class="so-risk__row" data-card-wrap="data-card-wrap">
+                <div class="so-risk__col">
+                    <div class="card-slide is-open">
+                        <div class="slide-btn" ng-click="collapseOneCard($event)">
+                            <h5 class="slide-btn__text">Top Users by risk score</h5>
+                            <span class="border-arrow border-arrow--up"></span>
+                        </div>
+                        <div class="card-slide__main" data-card-body="data-card-body">
+                            <ul class="user-list">
+                                <li class="user-list__item" ng-repeat="oneUser in chartsData.topUsers">
+                                    <div class="user-list__col user-list__col--left">
+                                        <a href="{{ oneRisksUserUrl }}/{{ oneUser.id }}">
+                                            <div class="user-list__icon">
+                                                <img alt="User" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/user-grey.svg">
+                                            </div>
+                                            <span class="user-list__text">{{ oneUser.name }}</span>
+                                        </a>
+                                    </div>
+                                    <div class="user-list__col user-list__col--right">
+                                        <span class="user-list__text">{{ oneUser.value | number:1 }}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="so-risk__col">
+                    <div class="card-slide is-open">
+                        <div class="slide-btn" ng-click="collapseOneCard($event)">
+                            <h5 class="slide-btn__text">top departments by risk score</h5>
+                            <span class="border-arrow border-arrow--up"></span>
+                        </div>
+                        <div class="card-slide__main" data-card-body="data-card-body">
+                            <ul class="user-list">
+                                <li class="user-list__item" ng-repeat="oneDepartment in chartsData.topDepartment">
+                                    <div class="user-list__col user-list__col--left">
+                                        <div class="user-list__icon user-list__icon--mod">
+                                            <img alt="User" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/users-group.svg">
+                                        </div>
+                                        <span class="user-list__text">{{ oneDepartment.name }}</span>
+                                    </div>
+                                    <div class="user-list__col user-list__col--right">
+                                        <span class="user-list__text">{{ oneDepartment.value | number:1 }}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="so-risk__col">
+                    <div class="card-slide is-open">
+                        <div class="slide-btn" ng-click="collapseOneCard($event)">
+                            <h5 class="slide-btn__text">TOP Locations BY RISK SCORE</h5>
+                            <span class="border-arrow border-arrow--up"></span>
+                        </div>
+                        <div class="card-slide__main" data-card-body="data-card-body">
+                            <ul class="user-list">
+                                <li class="user-list__item" ng-repeat="oneLocation in chartsData.topLocations">
+                                    <div class="user-list__col user-list__col--left">
+                                        <div class="user-list__icon">
+                                            <!--<img alt="User" src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/user-grey.svg">-->
+                                        </div>
+                                        <span class="user-list__text">{{ oneLocation.name }}</span>
+                                    </div>
+                                    <div class="user-list__col user-list__col--right">
+                                        <span class="user-list__text">{{ oneLocation.value | number:1 }}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="schedule">
+            <div class="schedule__table schedule__table--risks-user">
+                <div class="soc-channel-table"
+                     one-item-url="{{ oneRisksUserUrl }}"
+                     selected-item="selectedCase"
+                     sp-channel-table
+                     table-allowed-fields="tableFields"
+                     table-id="{{ workflowTableId }}"
+                     table-src="tableSrc"
+                     table-title="All users by risk score"></div>
+            </div>
+        </section>
+        <sp-footer curr-url="currUrl"></sp-footer>
+    </main>
+</div>

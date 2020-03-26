@@ -14,1438 +14,1686 @@ POST _template/ecs_new
         }
       },
       "refresh_interval": "5s",
+      "analysis": {
+        "normalizer": {
+          "useLowercase": {
+            "filter": [
+              "lowercase"
+            ],
+            "type": "custom"
+          }
+        }
+      },
       "number_of_shards": "1",
       "number_of_replicas": "1"
     }
   },
   "mappings": {
-    "doc": {
-      "_meta": {
-        "version": "1.1_socprime"
-      },
-      "date_detection": false,
-      "dynamic": true,
-      "dynamic_templates": [
-        {
-          "strings_as_keyword": {
-            "mapping": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+    "_meta": {
+      "version": "1.1_socprime"
+    },
+    "dynamic": true,
+    "dynamic_templates": [
+      {
+        "strings_as_keyword": {
+          "mapping": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "match_mapping_type": "string",
-            "match": "*"
+            }
+          },
+          "match_mapping_type": "string",
+          "match": "*"
+        }
+      }
+    ],
+    "date_detection": false,
+    "properties": {
+      "container": {
+        "properties": {
+          "image": {
+            "properties": {
+              "name": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "tag": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "runtime": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "labels": {
+            "type": "object"
           }
         }
-      ],
-      "properties": {
-        "@timestamp": {
-          "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
-          "type": "date"
-        },
-        "agent": {
-          "properties": {
-            "ephemeral_id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+      },
+      "server": {
+        "properties": {
+          "address": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "port": {
+            "type": "long"
+          },
+          "bytes": {
+            "type": "long"
+          },
+          "domain": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "ip": {
+            "type": "ip"
+          },
+          "mac": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "packets": {
+            "type": "long"
+          }
+        }
+      },
+      "agent": {
+        "properties": {
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "version": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "ephemeral_id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "client": {
-          "properties": {
-            "address": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "bytes": {
-              "type": "long"
-            },
-            "domain": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "ip": {
-              "type": "ip"
-            },
-            "mac": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "packets": {
-              "type": "long"
-            },
-            "port": {
-              "type": "long"
-            }
-          }
-        },
-        "cloud": {
-          "properties": {
-            "account": {
-              "properties": {
-                "id": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                }
-              }
-            },
-            "availability_zone": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "instance": {
-              "properties": {
-                "id": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                },
-                "name": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                }
-              }
-            },
-            "machine": {
-              "properties": {
-                "type": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                }
-              }
-            },
-            "provider": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "region": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "log": {
+        "properties": {
+          "original": {
+            "ignore_above": 1024,
+            "index": false,
+            "type": "keyword",
+            "doc_values": false
+          },
+          "level": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "container": {
-          "properties": {
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "image": {
-              "properties": {
-                "name": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                },
-                "tag": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                }
-              }
-            },
-            "labels": {
-              "type": "object"
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "runtime": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "alert_data": {
+        "properties": {
+          "@timestamp": {
+            "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
+            "type": "date"
+          },
+          "index": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "message": {
+            "norms": false,
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "destination": {
-          "properties": {
-            "address": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "bytes": {
-              "type": "long"
-            },
-            "domain": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "ip": {
-              "type": "ip"
-            },
-            "mac": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "packets": {
-              "type": "long"
-            },
-            "port": {
-              "type": "long"
-            }
-          }
-        },
-        "ecs": {
-          "properties": {
-            "version": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "destination": {
+        "properties": {
+          "address": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
-          }
-        },
-        "error": {
-          "properties": {
-            "code": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "message": {
-              "norms": false,
-              "type": "text"
-            }
-          }
-        },
-        "event": {
-          "properties": {
-            "action": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "category": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "created": {
-              "type": "date"
-            },
-            "dataset": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "duration": {
-              "type": "long"
-            },
-            "end": {
-              "type": "date"
-            },
-            "hash": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "kind": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "module": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "original": {
-              "doc_values": false,
-              "ignore_above": 1024,
-              "index": false,
-              "type": "keyword"
-            },
-            "outcome": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "risk_score": {
-              "type": "float"
-            },
-            "risk_score_norm": {
-              "type": "float"
-            },
-            "severity": {
-              "type": "short",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "labels": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "start": {
-              "type": "date"
-            },
-            "timezone": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+          },
+          "port": {
+            "type": "long"
+          },
+          "bytes": {
+            "type": "long"
+          },
+          "domain": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
+          },
+          "ip": {
+            "type": "ip"
+          },
+          "mac": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "packets": {
+            "type": "long"
           }
-        },
-        "file": {
-          "properties": {
-            "ctime": {
-              "type": "date"
-            },
-            "device": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "source": {
+        "properties": {
+          "address": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "extension": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "port": {
+            "type": "long"
+          },
+          "bytes": {
+            "type": "long"
+          },
+          "domain": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "gid": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "ip": {
+            "type": "ip"
+          },
+          "mac": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "group": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "packets": {
+            "type": "long"
+          }
+        }
+      },
+      "event_data.User_list": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "normalizer": "useLowercase",
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      },
+      "error": {
+        "properties": {
+          "code": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "inode": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "mode": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "message": {
+            "norms": false,
+            "type": "text"
+          }
+        }
+      },
+      "user.name_list": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "normalizer": "useLowercase",
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      },
+      "network": {
+        "properties": {
+          "community_id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "mtime": {
-              "type": "date"
-            },
-            "owner": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "forwarded_ip": {
+            "type": "ip"
+          },
+          "protocol": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "path": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "application": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "size": {
-              "type": "long"
-            },
-            "target_path": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "bytes": {
+            "type": "long"
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "transport": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "uid": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "iana_number": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "packets": {
+            "type": "long"
+          },
+          "direction": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "geo": {
-          "properties": {
-            "city_name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "cloud": {
+        "properties": {
+          "availability_zone": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "continent_name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "instance": {
+            "properties": {
+              "name": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "id": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "country_iso_code": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "provider": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "country_name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "machine": {
+            "properties": {
+              "type": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "location": {
-              "type": "geo_point"
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "region": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "region_iso_code": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "region_name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "account": {
+            "properties": {
+              "id": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "group": {
-          "properties": {
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "geo": {
+        "properties": {
+          "continent_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "region_iso_code": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "city_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "country_iso_code": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "country_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "location": {
+            "type": "geo_point"
+          },
+          "region_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "host": {
-          "properties": {
-            "architecture": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "observer": {
+        "properties": {
+          "hostname": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "hostname": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "vendor": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "ip": {
+            "type": "ip"
+          },
+          "serial_number": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "ip": {
-              "type": "ip"
-            },
-            "mac": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+            }
+          },
+          "mac": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "http": {
-          "properties": {
-            "request": {
-              "properties": {
-                "body": {
-                  "properties": {
-                    "bytes": {
-                      "type": "long"
-                    },
-                    "content": {
-                      "ignore_above": 1024,
-                      "type": "keyword"
-                    }
+        }
+      },
+      "file": {
+        "properties": {
+          "owner": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "extension": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "gid": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "mtime": {
+            "type": "date"
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "target_path": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "inode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "mode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "path": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "uid": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "size": {
+            "type": "long"
+          },
+          "ctime": {
+            "type": "date"
+          },
+          "device": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "group": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "ecs": {
+        "properties": {
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "related": {
+        "properties": {
+          "ip": {
+            "type": "ip"
+          }
+        }
+      },
+      "host": {
+        "properties": {
+          "hostname": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "ip": {
+            "type": "ip"
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "mac": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "architecture": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "client": {
+        "properties": {
+          "address": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "port": {
+            "type": "long"
+          },
+          "bytes": {
+            "type": "long"
+          },
+          "domain": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "ip": {
+            "type": "ip"
+          },
+          "mac": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "packets": {
+            "type": "long"
+          }
+        }
+      },
+      "first_alert": {
+        "properties": {
+          "@timestamp": {
+            "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
+            "type": "date"
+          },
+          "index": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "message": {
+            "norms": false,
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "event": {
+        "properties": {
+          "severity": {
+            "type": "integer"
+          },
+          "original": {
+            "ignore_above": 1024,
+            "index": false,
+            "type": "keyword",
+            "doc_values": false
+          },
+          "risk_score": {
+            "type": "float"
+          },
+          "created": {
+            "type": "date"
+          },
+          "kind": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "timezone": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "module": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "start": {
+            "type": "date"
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "labels": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "duration": {
+            "type": "long"
+          },
+          "risk_score_norm": {
+            "type": "float"
+          },
+          "action": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "end": {
+            "type": "date"
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "category": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "processed_time": {
+            "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
+            "type": "date"
+          },
+          "dataset": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "hash": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "outcome": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "user_agent": {
+        "properties": {
+          "original": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "device": {
+            "properties": {
+              "name": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "group": {
+        "properties": {
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "user.domain_list": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "normalizer": "useLowercase",
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      },
+      "process": {
+        "properties": {
+          "args": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "start": {
+            "type": "date"
+          },
+          "pid": {
+            "type": "long"
+          },
+          "working_directory": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "thread": {
+            "properties": {
+              "id": {
+                "type": "long"
+              }
+            }
+          },
+          "title": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "executable": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "ppid": {
+            "type": "long"
+          }
+        }
+      },
+      "os": {
+        "properties": {
+          "kernel": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "family": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "platform": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "full": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "message": {
+        "norms": false,
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "normalizer": "useLowercase",
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      },
+      "url": {
+        "properties": {
+          "path": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "fragment": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "password": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "original": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "scheme": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "port": {
+            "type": "long"
+          },
+          "domain": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "query": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "full": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "username": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "labels": {
+        "type": "object"
+      },
+      "tags": {
+        "ignore_above": 1024,
+        "type": "keyword"
+      },
+      "computer_name_list": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "normalizer": "useLowercase",
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      },
+      "@timestamp": {
+        "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
+        "type": "date"
+      },
+      "service": {
+        "properties": {
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "state": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "ephemeral_id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "organization": {
+        "properties": {
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "http": {
+        "properties": {
+          "request": {
+            "properties": {
+              "referrer": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "method": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "bytes": {
+                "type": "long"
+              },
+              "body": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  },
+                  "content": {
+                    "normalizer": "useLowercase",
+                    "ignore_above": 1024,
+                    "type": "keyword"
                   }
-                },
-                "bytes": {
-                  "type": "long"
-                },
-                "method": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                },
-                "referrer": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
                 }
               }
-            },
-            "response": {
-              "properties": {
-                "body": {
-                  "properties": {
-                    "bytes": {
-                      "type": "long"
-                    },
-                    "content": {
-                      "ignore_above": 1024,
-                      "type": "keyword"
-                    }
+            }
+          },
+          "response": {
+            "properties": {
+              "status_code": {
+                "type": "long"
+              },
+              "bytes": {
+                "type": "long"
+              },
+              "body": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  },
+                  "content": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
                   }
-                },
-                "bytes": {
-                  "type": "long"
-                },
-                "status_code": {
-                  "type": "long"
-                }
-              }
-            },
-            "version": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
                 }
               }
             }
-          }
-        },
-        "labels": {
-          "type": "object"
-        },
-        "log": {
-          "properties": {
-            "level": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "original": {
-              "doc_values": false,
-              "ignore_above": 1024,
-              "index": false,
-              "type": "keyword"
-            }
-          }
-        },
-        "message": {
-          "norms": false,
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 1024
-            }
-          }
-        },
-        "network": {
-          "properties": {
-            "application": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "bytes": {
-              "type": "long"
-            },
-            "community_id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "direction": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "forwarded_ip": {
-              "type": "ip"
-            },
-            "iana_number": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "packets": {
-              "type": "long"
-            },
-            "protocol": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "transport": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+          },
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }
-        },
-        "observer": {
-          "properties": {
-            "hostname": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "ip": {
-              "type": "ip"
-            },
-            "mac": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "serial_number": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "vendor": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "version": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+        }
+      },
+      "cv_risk_score_info": {
+        "properties": {
+          "hostname": {
+            "type": "keyword"
+          },
+          "start_timestamp": {
+            "type": "date"
+          },
+          "user_id": {
+            "type": "keyword"
+          },
+          "closed_timestamp": {
+            "type": "date"
+          },
+          "risk_score": {
+            "type": "float"
+          },
+          "case_status": {
+            "type": "keyword"
+          },
+          "organization": {
+            "type": "keyword"
+          }
+        }
+      },
+      "user": {
+        "properties": {
+          "full_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
-          }
-        },
-        "organization": {
-          "properties": {
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+          },
+          "name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
-          }
-        },
-        "os": {
-          "properties": {
-            "family": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "full": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "kernel": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "platform": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "version": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+          },
+          "id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
-          }
-        },
-        "process": {
-          "properties": {
-            "args": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "executable": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "pid": {
-              "type": "long"
-            },
-            "ppid": {
-              "type": "long"
-            },
-            "start": {
-              "type": "date"
-            },
-            "thread": {
-              "properties": {
-                "id": {
-                  "type": "long"
-                }
-              }
-            },
-            "title": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "working_directory": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+          },
+          "email": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
-          }
-        },
-        "related": {
-          "properties": {
-            "ip": {
-              "type": "ip"
-            }
-          }
-        },
-        "server": {
-          "properties": {
-            "address": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "bytes": {
-              "type": "long"
-            },
-            "domain": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "ip": {
-              "type": "ip"
-            },
-            "mac": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "packets": {
-              "type": "long"
-            },
-            "port": {
-              "type": "long"
-            }
-          }
-        },
-        "service": {
-          "properties": {
-            "ephemeral_id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "state": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "type": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "version": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+          },
+          "hash": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
-          }
-        },
-        "source": {
-          "properties": {
-            "address": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "bytes": {
-              "type": "long"
-            },
-            "domain": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "ip": {
-              "type": "ip"
-            },
-            "mac": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "packets": {
-              "type": "long"
-            },
-            "port": {
-              "type": "long"
-            }
-          }
-        },
-        "tags": {
-          "ignore_above": 1024,
-          "type": "keyword"
-        },
-        "url": {
-          "properties": {
-            "domain": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "fragment": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "full": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "original": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "password": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "path": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "port": {
-              "type": "long"
-            },
-            "query": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "scheme": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "username": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            }
-          }
-        },
-        "user": {
-          "properties": {
-            "email": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "full_name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "group": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "hash": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "id": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            }
-          }
-        },
-        "user_agent": {
-          "properties": {
-            "device": {
-              "properties": {
-                "name": {
-                  "ignore_above": 1024,
-                  "type": "keyword"
-                }
-              }
-            },
-            "name": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "original": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
-              }
-            },
-            "version": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword",
-                  "ignore_above": 1024
-                }
+          },
+          "group": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "normalizer": "useLowercase",
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           }

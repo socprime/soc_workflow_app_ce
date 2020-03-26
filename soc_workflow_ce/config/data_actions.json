@@ -11,11 +11,43 @@
             {
                 "name": "Google",
                 "link": "https://www.google.com/search?q=[[value]]"
+            },
+            {
+                "name": "Virus Total IP",
+                "link": "https://www.virustotal.com/#/ip-address/[[value]]"
+            },
+            {
+                "name": "Virus Total Domain",
+                "link": "https://www.virustotal.com/#/domain/[[value]]"
+            },
+            {
+                "name": "Virus Total SHA256",
+                "link": "https://www.virustotal.com/#/file/[[value]]/detection"
+            },
+            {
+                "name": "Elastic Graph",
+                "link": "/app/graph#/home?_g=()"
+            },
+            {
+                "name": "Anomali Threatstream Search",
+                "link": "https://ui.threatstream.com/search?status=active&multiSearchResults=true&value__re=.*[[value]].*"
+            },
+            {
+                "name": "Anomali Enterprise Alert Details",
+                "link": "https://a1490.dp.socprime.com:8080/ki/#/dbview/alerts_db?_a=(query:(query_string:(analyze_wildcard:!t,query:'[[value]]')))"
+            },
+            {
+                "name": "Anomali Enterprise Retrospective Search",
+                "link": "https://a1490.dp.socprime.com:8080/ki/?#/search?forensic=[[value]]&to=now&from=now-1d"
+            },
+            {
+                "name": "Anomali Enterprise Explore",
+                "link": "https://a1490.dp.socprime.com:8080/ki/?#/pivot?pivot=[[value]]&to=now&from=now-1d"
             }
         ]
     },
     {
-        "Responde": [
+        "Respond": [
             {
                 "name": "Anomali threatstream",
                 "link": "https://ui.threatstream.com/settings?action=email"
@@ -33,8 +65,100 @@
                 ]
             },
             {
+                "Service Now": [
+                    {
+                        "name": "Create Ticket",
+                        "command": "echo \"Ticket was added - [[value]]\""
+                    },
+                    {
+                        "name": "Update Ticket",
+                        "command": "echo \"Ticket was updated - [[value]]\""
+                    }
+                ]
+            },
+            {
                 "name": "Blacklist IP",
                 "command": "echo \"Blacklist IP - [[value]]\""
+            },
+            {
+                "name": "Blacklist IP range",
+                "command": "echo \"Blacklist IP range - [[value]]\""
+            },
+            {
+                "name": "Blacklist URL",
+                "command": "echo \"Blacklist URL - [[value]]\""
+            },
+            {
+                "name": "Blacklist Domain",
+                "command": "echo \"Blacklist Domain - [[value]]\""
+            },
+            {
+                "name": "Block Port",
+                "command": "echo \"Block Port - [[value]]\""
+            },
+            {
+                "name": "Block IOC list",
+                "command": "echo \"Block IOC list - [[value]]\""
+            },
+            {
+                "name": "Disable Account",
+                "command": "echo \"Disable Account - [[value]]\""
+            },
+            {
+                "name": "Lockout Account",
+                "command": "echo \"Lockout Account - [[value]]\""
+            },
+            {
+                "name": "Delete Account",
+                "command": "echo \"Delete Account - [[value]]\""
+            },
+            {
+                "name": "Reset Password",
+                "command": "echo \"Reset Password - [[value]]\""
+            },
+            {
+                "name": "Revoke Certificate",
+                "command": "echo \"Revoke Certificate - [[value]]\""
+            },
+            {
+                "name": "Isolate Endpoint",
+                "command": "echo \"Isolate Endpoint - [[value]]\""
+            },
+            {
+                "name": "Re-image Endpoint",
+                "command": "echo \"Re-image Endpoint - [[value]]\""
+            },
+            {
+                "name": "Delete File",
+                "command": "echo \"Delete File - [[value]]\""
+            },
+            {
+                "name": "Delete Email",
+                "command": "echo \"Delete Email - [[value]]\""
+            },
+            {
+                "name": "Stop Process",
+                "command": "echo \"Stop Process - [[value]]\""
+            },
+            {
+                "name": "Disable Service",
+                "command": "echo \"Disable Service - [[value]]\""
+            },
+            {
+                "name": "Uninstall Software",
+                "command": "echo \"Uninstall Software - [[value]]\""
+            },
+            {
+                "name": "Create Ticket",
+                "command": "echo \"Create Ticket - [[value]]\""
+            },
+            {
+                "name": "Update Ticket",
+                "command": "echo \"Update Ticket - [[value]]\""
+            },
+            {
+                "name": "Launch Scan",
+                "command": "echo \"Launch Scan - [[value]]\""
             }
         ]
     },

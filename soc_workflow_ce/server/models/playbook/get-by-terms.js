@@ -14,7 +14,7 @@ inputTerms = {
  */
 module.exports = function (server, req, inputTerms) {
     return new Promise((resolve, reject) => {
-        if (typeof inputTerms != 'object') {
+        if (!$cf.isObject(inputTerms)) {
             resolve([]);
         }
 

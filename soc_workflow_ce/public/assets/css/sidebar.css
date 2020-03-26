@@ -67,7 +67,7 @@ Main Components
 }
 .cd-main-content.is-fixed .cd-tab-filter-wrapper {
   position: fixed;
-  top: 0;
+  top: 49px;
   left: 0;
   width: 100%;
 }

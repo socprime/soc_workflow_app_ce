@@ -7,8 +7,10 @@ let $cf = require('./../../common/function');
  * @param field
  * @param value
  * @param size
+ * @param source
+ * @returns {Promise}
  */
-module.exports = function (server, req, index, field, value, size) {
+module.exports = function (server, req, index, field, value, size, source) {
     return new Promise((resolve, reject) => {
         index = typeof index == 'string' ? index : '*';
         field = typeof field == 'string' ? field : '';
@@ -24,14 +26,20 @@ module.exports = function (server, req, index, field, value, size) {
         let terms = {};
         terms[field] = value;
 
+        let requestBody = {
+            "size": size,
+            "query": {
+                "terms": terms
+            }
+        };
+
+        if ($cf.isArray(source)) {
+            requestBody['_source'] = source;
+        }
+
         server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'search', {
             index: index,
-            body: {
-                "size": size,
-                "query": {
-                    "terms": terms
-                }
-            }
+            body: requestBody
         }).then(function (response) {
             response = response['hits'] || [];
             response = response['hits'] || [];

@@ -29,4 +29,8 @@ $(document).ready(function () {
         $(this).find('.animation-image-overlay').detach();
         $(this).find('.animation-image').detach();
     };
+
+    $('body').on('click', '.modal [data-label=Close], .modal [data-label=Save]', function (e) {
+        $('body').removeClass('modal-open');
+    })
 });

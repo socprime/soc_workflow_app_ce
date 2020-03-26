@@ -1,16 +1,17 @@
 let moment = require('moment-timezone');
 
-let moduleFolder = require('./../../constant/module-folder');
+const moduleFolder = require('./../../constant/module-folder');
 let $cf = require('./../../common/function');
-let getStage = require('../../../' + moduleFolder + '/stage_model/server/get-stage');
+const getStage = require(`../../../${moduleFolder}/server/models/stage/get`);
 let presetColorGlobalPriority = require('./../../constant/priority-colors');
 let allStages = $cf.getAllStages();
-let commonGetAllUsers = require('./../../../' + moduleFolder + '/users_model/server/get-all-users');
+let kibanaGetAllUsers = require(`./../../../${moduleFolder}/server/models/kibana/get-all-users`);
 let kibanaGetAllSavedSearches = require('./../../models/kibana/get-all-saved-searches');
 let ecsGetAggregatedByField = require('./../../models/ecs/get-aggregated-by-field');
-let ecsGetAggregatedBySla = require('./../../../' + moduleFolder + '/sla_settings/server/models/get-aggregated-by-sla');
+let ecsGetAggregatedBySla = require(`./../../../${moduleFolder}/server/models/sla_settings/get-aggregated-by-sla`);
 let ecsGetAggregatedByTimestamp = require('./../../models/ecs/get-aggregated-by-timestamp');
-let helpersGetFieldsFromTemplate = require('./../../../' + moduleFolder + '/channel_table/server/helpers/get-fields-from-template');
+let helpersKibanaGetFieldsFromTemplate = require('./../../../server/helpers/kibana/get-fields-from-template');
+let helpersKibanaGetFieldsFromMapping = require('./../../../server/helpers/kibana/get-fields-from-mapping');
 
 /**
  * @param server
@@ -21,7 +22,7 @@ export default function (server, options) {
     const update = (req) => {
         return (async function () {
             return await new Promise(function (reply) {
-                let clientTimezone = req.headers.client_timezone || 0;
+                let clientTimezone = req.headers.clienttimezone || 0;
 
                 let dateFrom = moment().tz(clientTimezone).subtract(29, 'days');
                 if (typeof req.query.dateFrom != "undefined") {
@@ -36,14 +37,28 @@ export default function (server, options) {
                 dateTo = (dateTo != 'Invalid date') ? dateTo.format('x') : moment().tz(clientTimezone).endOf('day').format('x');
 
                 Promise.all([
-                    commonGetAllUsers(server, req), // userList
+                    kibanaGetAllUsers(server, req), // userList
                     kibanaGetAllSavedSearches(server, req), // savedSearches
-                    ecsGetAggregatedByField(server, req, 'case_ecs-*', 'event.labels.keyword', dateFrom, dateTo, getStage.all), // donutByStage
-                    ecsGetAggregatedByField(server, req, 'case_ecs-*', 'event.severity.keyword', dateFrom, dateTo, presetColorGlobalPriority), // donutByPriority
+                    ecsGetAggregatedByField(server, req, 'case_ecs-*', 'event.labels.keyword', dateFrom, dateTo, getStage.all, getStage.firstForCase), // donutByStage
+                    ecsGetAggregatedByField(server, req, 'case_ecs-*', 'event.severity.keyword', dateFrom, dateTo, presetColorGlobalPriority, '1'), // donutByPriority
                     ecsGetAggregatedBySla(server, req, 'case_ecs-*', dateFrom, dateTo), // donutBySla
-                    ecsGetAggregatedByTimestamp(server, req, 'case_ecs-*', dateFrom, dateTo), // timeline
-                    helpersGetFieldsFromTemplate(server, req, 'ecs_new') // tableFields
+                    ecsGetAggregatedByTimestamp(server, req, 'case_ecs-*', dateFrom, dateTo, getStage.firstForCase), // timeline
+                    helpersKibanaGetFieldsFromTemplate(server, req, 'ecs_new'), // tableFields
+                    helpersKibanaGetFieldsFromMapping(server, req, 'case_ecs-*'), // tableFields
                 ]).then(values => {
+                    let tableFields = {};
+                    $cf.getArrayOrEmpty(values[6]).forEach((field) => {
+                        if ($cf.isString(field.data) && !$cf.isSet(tableFields[field.data])) {
+                            tableFields[field.data] = field;
+                        }
+                    });
+                    $cf.getArrayOrEmpty(values[7]).forEach((field) => {
+                        if ($cf.isString(field.data) && !$cf.isSet(tableFields[field.data])) {
+                            tableFields[field.data] = field;
+                        }
+                    });
+
+                    tableFields = Object.values(tableFields);
 
                     return reply({
                         allStages: allStages,
@@ -54,7 +69,7 @@ export default function (server, options) {
                         donutBySla: $cf.isObject(values[4]) ? values[4] : {},
                         timeline: $cf.isObject(values[5]) ? values[5] : {},
                         caseEnabledFieldList: $cf.getCaseEnabledFieldList(),
-                        tableFields: $cf.isArray(values[6]) ? values[6] : [],
+                        tableFields: tableFields,
                         success: true
                     });
                 }).catch(function (e) {

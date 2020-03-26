@@ -12,14 +12,13 @@ module.exports = function (server, req, index, ids, field, value, makeValueBulk)
             resolve(false);
         } else {
             if (makeValueBulk) field = field.replace(/\./g, "']['");
-            const resp = server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'index', {
-                index: index,
-                type: '_update_by_query',
-                refresh: true,
+            const resp = server.plugins.elasticsearch.getCluster('data').callWithRequest(req, 'transport.request', {
+                method: 'POST',
+                path: index + '/_update_by_query?refresh=true',
                 body: {
                     "query": {
                         "ids": {
-                            "type": "doc",
+                            "type": "_doc",
                             "values": ids
                         }
                     },

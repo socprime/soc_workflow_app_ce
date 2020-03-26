@@ -40,7 +40,7 @@ module.exports = function (server, req, options, makeBulk) {
 
         let request = {
             index: options.index,
-            type: 'doc',
+            type: '_doc',
             body: options.data,
             refresh: true
         };

@@ -21,29 +21,27 @@ POST _template/playbook
     }
   },
   "mappings": {
-    "doc": {
-      "dynamic": true,
-      "properties": {
-        "type": {
-          "type": "keyword"
-        },
-        "@timestamp": {
-          "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
-          "type": "date"
-        },
-        "playbook_name": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256,
-              "normalizer": "useLowercase"
-            }
+    "dynamic": true,
+    "properties": {
+      "type": {
+        "type": "keyword"
+      },
+      "@timestamp": {
+        "format": "epoch_millis||epoch_second||date_time||MMM dd yyyy HH:mm:ss",
+        "type": "date"
+      },
+      "playbook_name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256,
+            "normalizer": "useLowercase"
           }
-        },
-        "playbook_body": {
-          "type": "text"
         }
+      },
+      "playbook_body": {
+        "type": "text"
       }
     }
   },

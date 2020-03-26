@@ -1,0 +1,34 @@
+<div class="card-event">
+    <div class="card-event__row">
+        <div class="card-event__col">
+            <div class="tabs">
+                <ul class="tabs__list nav" id="raw-events-source" role="tablist">
+                    <li class="tabs__item">
+                        <a class="tabs__link btns nav-link active" id="btn-from-saved-search" data-toggle="tab" href=".from-saved-search" role="tab" aria-controls="from-saved-search" aria-selected="true">Saved search</a>
+                    </li>
+                    <li class="tabs__item">
+                        <a class="tabs__link btns nav-link disabled">Share link</a>
+                    </li>
+                </ul>
+                <div class="tabs__content tab-content" id="myTabContent">
+                    <div class="tabs__panel tab-pane show active from-saved-search" id="from-saved-search" role="tabpanel" aria-labelledby="btn-from-saved-search">
+                        <h5 class="tabs__title">Choose saved search</h5>
+                        <div sp-select2
+                             select-name="Saved Searches"
+                             select-id="saved-search"
+                             placeholder="Select Saved Searches"
+                             items="savedSearches"
+                             selected="selectedSavedSearches"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-event__col card-event__col--right">
+            <button class="btns btns--border" type="button" ng-click="rawLogSearch()">Select</button>
+            <button id="{{ datepickerId }}" class="btns btns--border" type="button">
+                <span>Time period</span>
+                <i class="fa fa-calendar"></i>
+            </button>
+        </div>
+    </div>
+</div>

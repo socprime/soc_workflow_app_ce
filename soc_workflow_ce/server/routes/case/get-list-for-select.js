@@ -12,9 +12,27 @@ export default function (server, options) {
     const index = (req) => {
         return (async function () {
             return await new Promise(function (reply) {
-                let clientTimezone = req.headers.client_timezone || "UTC";
+                let clientTimezone = req.headers.clienttimezone || "UTC";
 
-                let dateFrom = moment().tz(clientTimezone).subtract(6, 'days').startOf('day');
+                req.query = req.query || {};
+                let casePeriod = $cf.isString(req.query.casePeriod) ? req.query.casePeriod : false;
+                let daysCount = 0;
+                switch (casePeriod) {
+                    case '1d':
+                        daysCount = 0;
+                        break;
+                    case '7d':
+                        daysCount = 6;
+                        break;
+                    case '14d':
+                        daysCount = 13;
+                        break;
+                    case '30d':
+                        daysCount = 29;
+                        break;
+                }
+
+                let dateFrom = moment().tz(clientTimezone).subtract(daysCount, 'days').startOf('day');
                 let dateTo = moment().tz(clientTimezone).endOf('day');
 
                 ecsGetByPeriod(server, req, 'case_ecs-*', dateFrom, dateTo).then(function (cases) {

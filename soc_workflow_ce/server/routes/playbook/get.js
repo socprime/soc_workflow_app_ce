@@ -21,7 +21,7 @@ export default function (server, options) {
                     id = req.query.id;
                 }
 
-                let clientTimezone = req.headers.client_timezone || "UTC";
+                let clientTimezone = req.headers.clienttimezone || "UTC";
 
                 let body = {
                     "size": 10000
@@ -89,6 +89,7 @@ export default function (server, options) {
                                 if (oneCase['_id'] && oneCase['_source']) {
                                     oneCase['_source']['event'] = oneCase['_source']['event'] || {};
                                     let eventSeverity = oneCase['_source']['event']['severity'] || '';
+                                    eventSeverity = '' + eventSeverity;
                                     formattedCases.push({
                                         'id': oneCase['_id'],
                                         "name": oneCase['_source']['name'] || oneCase['_source']['message'] || '',

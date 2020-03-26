@@ -1,0 +1,80 @@
+import type Moment from 'moment';
+
+declare module 'moment-range' {
+  declare type Base = (
+    'year' | 'years' | 'y' |
+    'month' | 'months' | 'M' |
+    'week' | 'weeks' | 'w' |
+    'day' | 'days' | 'd' |
+    'hour' | 'hours' | 'h' |
+    'minute' | 'minutes' | 'm' |
+    'second' | 'seconds' | 's' |
+    'millisecond' | 'milliseconds' | 'ms'
+  );
+
+  declare type _quarter = 'quarter' | 'quarters' | 'Q';
+
+  declare type UnitOfTimeDiff = Base | _quarter;
+
+  declare function extendMoment(moment: Class<Moment>): Class<Moment>;
+
+  declare class DateRange {
+    start: Moment;
+    end: Moment;
+
+    constructor(start: Date | Moment, end: Date | Moment): void;
+    constructor(range: [Date | Moment, Date | Moment]): void;
+    constructor(range: string): void;
+    constructor(): void;
+
+    adjacent(other: DateRange): bool;
+
+    add(other: DateRange, options?: {| adjacent?: bool |}): ?DateRange;
+
+    by(interval: UnitOfTimeDiff, options?: {| excludeEnd?: bool, step?: number, |}): Iterable<Moment>;
+    // @deprecated 4.0.0
+    by(interval: UnitOfTimeDiff, options?: {| exclusive?: bool, step?: number, |}): Iterable<Moment>;
+
+    byRange(interval: DateRange, options?: {| excludeEnd?: bool; step?: number, |}): Iterable<Moment>;
+    // @deprecated 4.0.0
+    byRange(interval: DateRange, options?: {| exclusive?: bool, step?: number, |}): Iterable<Moment>;
+
+    center(): Moment;
+
+    clone(): DateRange;
+
+    contains(other: Date | DateRange | Moment, options?: {| excludeStart?: bool, excludeEnd?: bool, |}): bool;
+    // @deprecated 4.0.0
+    contains(other: Date | DateRange | Moment, options?: {| exclusive: bool, |}): bool;
+
+    diff(unit: ?UnitOfTimeDiff, precise: ?bool): number;
+
+    duration(unit: ?UnitOfTimeDiff, precise: ?bool): number;
+
+    intersect(other: DateRange): ?DateRange;
+
+    isEqual(other: DateRange): bool;
+
+    isSame(other: DateRange): bool;
+
+    overlaps(other: DateRange, options?: {| adjacent: bool, |}): bool;
+
+    reverseBy(interval: UnitOfTimeDiff, options?: {| excludeStart?: bool, step?: number, |}): Iterable<Moment>;
+    // @deprecated 4.0.0
+    reverseBy(interval: UnitOfTimeDiff, options?: {| exclusive?: bool, step?: number, |}): Iterable<Moment>;
+
+    reverseByRange(interval: DateRange, options?: {| excludeStart?: bool, step?: number, |}): Iterable<Moment>;
+    // @deprecated 4.0.0
+    reverseByRange(interval: DateRange, options?: {| exclusive?: bool, step?: number, |}): Iterable<Moment>;
+
+    snapTo(interval: UnitOfTimeDiff): DateRange;
+
+    subtract(other: DateRange): Array<DateRange>;
+
+    toDate(): [Date, Date];
+
+    toString(): string;
+
+    valueOf(): number;
+  }
+}

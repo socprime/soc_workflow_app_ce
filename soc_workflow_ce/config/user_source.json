@@ -1,4 +1,4 @@
 {
     "_example_of_user_source": "security OR soc_app_users",
-    "user_source": "soc_app_users"
+    "user_source": "security"
 }

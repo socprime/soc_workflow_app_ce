@@ -1,10 +1,11 @@
-<div class="footer">
-    <div class="container-fluid">
-        <div class="col-sm-12 text-center m-t-10">
-            <input type="button" class="btn btn-outline-danger" value="Terms of Use" ng-click="showTosModal()">
+<footer class="footer">
+    <div class="footer__row">
+        <div class="footer__col">
+            <span>Copyright&nbsp;©&nbsp;2019 SOC Prime. All rights reserved</span>
+            <span class="link" ng-click="showTosModal()">Terms of Use</span>
         </div>
-        <div class="col-sm-12  m-t-10">
-            <p class="text-muted text-center">Copyright&nbsp;©&nbsp;2018 SOC Prime. All rights reserved</p>
+        <div class="footer__col">
+            <span class="version">v.{{ appVersion }}</span>
         </div>
     </div>
-</div>
+</footer>

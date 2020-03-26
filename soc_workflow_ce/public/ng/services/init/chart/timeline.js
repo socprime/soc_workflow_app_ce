@@ -1,12 +1,16 @@
 require('ui/modules').get('app/soc_workflow_ce', []).service('spInitChartTimeline', [
-    function () {
-        return function (chartSelector, chartSrc, chartObj) {
+    'spCF',
+    function (spCF) {
+        return function (chartSelector, chartSrc, chartObj, axisXTickFormat, axisYTickOnlyInteger) {
+            axisYTickOnlyInteger = axisYTickOnlyInteger !== false;
             chartSelector = chartSelector || '';
             let chart = {
                 data: chartSrc.data || [],
                 dataGroups: chartSrc.dataGroups || [],
                 colors: chartSrc.colors || []
             };
+
+            axisXTickFormat = spCF.isString(axisXTickFormat) ? axisXTickFormat : '%Y %b %d';
 
             try {
                 chartObj = $(chartSelector).createChart({
@@ -21,7 +25,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitChartTimelin
                     sizeHeight: 400,
                     colorPattern: chart.colors,
                     axisXType: 'timeseries',
-                    axisXTickFormat: '%Y %b %d',
+                    axisXTickFormat: axisXTickFormat,
                     axisXTickFit: true,
                     legendShow: true,
                     paddingLeft: 55,
@@ -30,7 +34,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).service('spInitChartTimelin
                     showTooltipCategoryName: true,
                     showTooltipColor: true,
                     showTooltipCategoryValue: true,
-                    axisYTickOnlyInteger: true,
+                    axisYTickOnlyInteger: axisYTickOnlyInteger,
                     absTooltipCategoryValue: true
                 });
             } catch (e) {

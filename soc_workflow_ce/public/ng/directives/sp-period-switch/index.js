@@ -9,7 +9,7 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spPeriodSwitch',
          * @param controller
          * @param transcludeFn
          */
-        let link = function (scope, element, attrs, controller, transcludeFn) {
+        const link = function (scope, element, attrs, controller, transcludeFn) {
             scope.setNewPeriod = function (period) {
                 scope.updatePeriod = period;
             }

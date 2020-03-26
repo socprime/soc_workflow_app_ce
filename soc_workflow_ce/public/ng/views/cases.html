@@ -1,52 +1,50 @@
 <div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="CasesController">
-    <main class="cd-main-content is-fixed">
-        <div sp-case-fixed-menu selected-item="selectedCase" curr-url="currUrl" user-list="userList" all-stages="allStages"></div>
-
-        <div sp-top-nav></div>
-
-        <section class="plr">
-            <div sp-period-switch datepicker-id="cases-reportrange" update-period="updatePeriod" periods-list="configPeriod"></div>
-
-            <div class="row">
-                <div class="col-lg-4">
-                    <div sp-chart chart-title="Cases by Stage" group-id="donut-chart" chart-type="donut" chart-id="cases-donut-chart1" chart-src="chartsSrc.byStage" chart-obj="charts.byStage"></div>
+    <main class="so-main is-fixed">
+        <div class="so-main__scroll">
+            <div sp-case-fixed-menu selected-item="selectedCase" curr-url="currUrl" user-list="userList" all-stages="allStages"></div>
+            <div class="so-main__wrap so-main--cases">
+                <div class="so-main__row">
+                    <div class="so-main__col so-main__col--left">
+                        <div sp-top-nav></div>
+                    </div>
+                    <div class="so-main__col so-main__col--right">
+                        <div sp-period-switch datepicker-id="cases-reportrange" update-period="updatePeriod" periods-list="configPeriod"></div>
+                    </div>
                 </div>
-
-                <div class="col-lg-4">
-                    <div sp-chart chart-title="Cases by Priority" group-id="donut-chart" chart-type="donut" chart-id="cases-donut-chart2" chart-src="chartsSrc.byPriority" chart-obj="charts.byPriority"></div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div sp-chart chart-title="Cases by SLA" group-id="donut-chart" chart-type="donut" chart-id="cases-donut-chart3" chart-src="chartsSrc.bySla" chart-obj="charts.bySla"></div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div sp-chart chart-title="Cases Timeline" chart-type="timeline" chart-id="cases-combine-chart3" chart-src="chartsSrc.timeline" chart-obj="charts.timeline"></div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card m-t-20">
-                        <div class="card-header">
-                            Case Flow
-                            <button type="button" class="btn btn-outline-danger pull-right" ng-click="createNewCase()">Create Case</button>
+                <section class="schedule">
+                    <div class="schedule__row">
+                        <div class="schedule__col">
+                            <div sp-chart chart-title="Cases by Stage" group-id="donut-chart" chart-type="donut" chart-id="cases-donut-chart1" chart-src="chartsSrc.byStage" chart-obj="charts.byStage"></div>
                         </div>
-
+                        <div class="schedule__col">
+                            <div sp-chart chart-title="Cases by Priority" group-id="donut-chart" chart-type="donut" chart-id="cases-donut-chart2" chart-src="chartsSrc.byPriority" chart-obj="charts.byPriority"></div>
+                        </div>
+                        <div class="schedule__col">
+                            <div sp-chart chart-title="Cases by SLA" group-id="donut-chart" chart-type="donut" chart-id="cases-donut-chart3" chart-src="chartsSrc.bySla" chart-obj="charts.bySla"></div>
+                        </div>
+                    </div>
+                    <div class="schedule__wrap">
+                        <div sp-chart chart-title="Cases Timeline" chart-type="timeline" chart-id="cases-combine-chart3" chart-src="chartsSrc.timeline" chart-obj="charts.timeline"></div>
+                    </div>
+                    <div class="schedule__table">
                         <div sp-channel-table
                              class="soc-channel-table"
+                             table-title="Cases flow"
                              table-id="{{ workflowTableId }}"
                              table-src="tableSrc"
                              table-allowed-fields="tableFields"
                              selected-item="selectedCase"
-                             one-item-url="{{ oneCaseUrl }}"></div>
+                             one-item-url="{{ oneCaseUrl }}"
+                             curr-url="currUrl"
+                             show-create-case-button="true"
+                             user-list="userList"
+                             all-stages="allStages"
+                             saved-searches="savedSearches"
+                             enabled-field-list="caseEnabledFieldList"></div>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
-
+        </div>
         <sp-footer curr-url="currUrl"></sp-footer>
     </main>
 </div>

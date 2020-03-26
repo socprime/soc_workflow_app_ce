@@ -1,5 +1,7 @@
-require('ui/modules').get('app/soc_workflow_ce', [])
-    .service('spInitOneCaseAjax', ['$http', function ($http) {
+require('ui/modules').get('app/soc_workflow_ce', []).service('spInitOneCaseAjax', [
+    '$http',
+    'spCF',
+    function ($http, spCF) {
         return function ($scope) {
             let href = $scope.currUrl || false;
             if (href && $scope.currCaseId) {
@@ -24,6 +26,10 @@ require('ui/modules').get('app/soc_workflow_ce', [])
                         $scope.caseStageLog = response['stageLog'] || [];
                         $scope.caseAvailableStage = response['availableStage'] || [];
                         $scope.caseEnabledFieldList = response['caseEnabledFieldList'] || [];
+
+                        if (!spCF.isString($scope.caseRawData.id)) {
+                            window.location.href = $scope.casesUrl;
+                        }
                     }
                 }, function errorCallback(response) {
                     $('.cd-main-content').waitAnimationStop();

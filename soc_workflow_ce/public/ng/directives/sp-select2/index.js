@@ -1,5 +1,4 @@
 import directiveTemplate from './view.html'
-window.aaaaa = '';
 require('ui/modules').get('app/soc_workflow_ce', []).directive('spSelect2', [
     '$timeout',
     'spCF',
@@ -42,9 +41,15 @@ require('ui/modules').get('app/soc_workflow_ce', []).directive('spSelect2', [
                     //$(element).find('select').select2();
                 }
 
-                if (spCF.isString(scope.selected)) {
+                if (spCF.isString(scope.selected) || spCF.isNumber(scope.selected)) {
                     scope.selected = [scope.selected];
                 }
+
+                setTimeout(function () {
+                    $(element).find('select').select2({
+                        width: '100%'
+                    });
+                }, 400);
             });
 
             setTimeout(function () {

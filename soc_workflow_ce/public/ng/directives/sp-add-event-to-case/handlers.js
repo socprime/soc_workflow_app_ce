@@ -1,3 +1,5 @@
+const initAjax = require('./ajax');
+
 /**
  * @param scope
  * @param $http
@@ -5,6 +7,34 @@
  * @param spCF
  */
 module.exports = function (scope, $http, $route, spCF) {
+    scope.$watch('fields', function (newVal, oldVal) {
+        if (spCF.isArray(newVal) && spCF.isArray(oldVal)) {
+            if (
+                spCF.isObject(newVal[0]) && spCF.isArray(newVal[0].current) && spCF.isString(newVal[0].current[0]) &&
+                spCF.isObject(oldVal[0]) && spCF.isArray(oldVal[0].current) && spCF.isString(oldVal[0].current[0]) &&
+                newVal[0].current[0] != oldVal[0].current[0]
+            ) {
+                if (spCF.isObject(newVal[1]) && spCF.isString(newVal[1].slug) && newVal[1].slug == 'case') {
+                    newVal[1].name = 'Case (for the last ' + newVal[0].current[0] + ')';
+                }
+                if (scope.currUrl) {
+                    let localScope = scope;
+                    initAjax(localScope, $http, spCF, newVal[0].current[0]);
+                }
+            }
+        }
+    }, true);
+
+    scope.$watch('caseList', function () {
+        scope.fields = scope.fields.map((el) => {
+            if (spCF.isString(el.slug) && el.slug == 'case') {
+                el.list = scope.caseList;
+            }
+
+            return el;
+        });
+    });
+
     scope.save = function () {
         let data = {};
         let formConfirmed = true;

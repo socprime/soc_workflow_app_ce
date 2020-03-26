@@ -63,7 +63,7 @@ export default function (server, options) {
 
                     response.forEach(function (row) {
                         if (typeof row['_id'] != 'undefined' && typeof row['_source'] != "undefined") {
-                            row['_source'] = $cf.makeFlatListFromObject('', row['_source'], {});
+                            row['_source'] = $cf.makeFlatListFromObject(row['_source']);
                             Object.keys(row['_source']).forEach(function (key) {
                                 if (typeof row['_source'][key] != 'undefined' && typeof fields[key] != 'undefined') {
                                     if (typeof prevData[fields[key]] == 'undefined') {

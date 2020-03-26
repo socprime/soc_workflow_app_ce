@@ -16,77 +16,71 @@ POST _template/sigma_doc
           }
         }
       },
-      "number_of_shards": "3",
+      "number_of_shards": "1",
       "number_of_replicas": "0"
     }
   },
   "mappings": {
-    "sigma_doc": {
-      "_source": {
-        "enabled": true
+    "_source": {
+      "enabled": true
+    },
+    "properties": {
+      "sigma_text": {
+        "analyzer": "string_analyzer",
+        "type": "text"
       },
-      "properties": {
-        "title": {
-          "type": "text",
-          "analyzer": "string_analyzer"
-        },
-        "author": {
-          "type": "text",
-          "analyzer": "string_analyzer"
-        },
-        "title_keyword": {
-          "type": "keyword"
-        },
-        "author_keyword": {
-          "type": "keyword"
-        },
-        "category": {
-          "type": "integer"
-        },
-        "user_id": {
-          "type": "keyword"
-        },
-        "permission_id": {
-          "type": "integer"
-        },
-        "downloads": {
-          "type": "integer"
-        },
-        "views": {
-          "type": "integer"
-        },
-        "git_filepath": {
-          "type": "keyword"
-        },
-        "hash": {
-          "type": "keyword"
-        },
-        "is_verified": {
-          "type": "keyword"
-        },
-        "level": {
-          "type": "keyword"
-        },
-        "mitre_attack": {
-          "type": "keyword"
-        },
-        "released": {
-          "type": "date"
-        },
-        "sigma_text": {
-          "type": "text",
-          "analyzer": "string_analyzer",
-          "fielddata": true
-        },
-        "sigma_text_keyword": {
-          "type": "keyword"
-        },
-        "status": {
-          "type": "keyword"
-        },
-        "updated": {
-          "type": "date"
-        }
+      "level": {
+        "type": "keyword"
+      },
+      "author": {
+        "analyzer": "string_analyzer",
+        "type": "text"
+      },
+      "git_filepath": {
+        "type": "text"
+      },
+      "mitre_attack": {
+        "type": "keyword"
+      },
+      "title": {
+        "analyzer": "string_analyzer",
+        "type": "text"
+      },
+      "permission_id": {
+        "type": "integer"
+      },
+      "is_verified": {
+        "type": "keyword"
+      },
+      "user_id": {
+        "type": "keyword"
+      },
+      "downloads": {
+        "type": "integer"
+      },
+      "author_keyword": {
+        "type": "keyword"
+      },
+      "category": {
+        "type": "integer"
+      },
+      "updated": {
+        "type": "date"
+      },
+      "views": {
+        "type": "integer"
+      },
+      "hash": {
+        "type": "keyword"
+      },
+      "released": {
+        "type": "date"
+      },
+      "title_keyword": {
+        "type": "keyword"
+      },
+      "status": {
+        "type": "keyword"
       }
     }
   },

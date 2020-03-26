@@ -1,10 +1,10 @@
-let moduleFolder = require('./../../constant/module-folder');
+const moduleFolder = require('./../../constant/module-folder');
 
 let $cf = require('./../../common/function');
 
 let allStages = $cf.getAllStages();
 
-let commonGetAllUsers = require('./../../../' + moduleFolder + '/users_model/server/get-all-users');
+let kibanaGetAllUsers = require(`./../../../${moduleFolder}/server/models/kibana/get-all-users`);
 let kibanaGetAllSavedSearches = require('./../../models/kibana/get-all-saved-searches');
 
 /**
@@ -17,7 +17,7 @@ export default function (server, options) {
         return (async function () {
             return await new Promise(function (reply) {
                 Promise.all([
-                    commonGetAllUsers(server, req), // userList
+                    kibanaGetAllUsers(server, req), // userList
                     kibanaGetAllSavedSearches(server, req), // savedSearches
                 ]).then(values => {
                     return reply({

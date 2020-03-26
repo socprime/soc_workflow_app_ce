@@ -51,9 +51,13 @@ module.exports = function (scope, $http, $route, spCF, spSavedSearchIntegrationS
     scope.saveCase = function () {
         let data = {};
         let formConfirmed = true;
-        let submitBtn = $('.modal .create-case').find('.btn-submit');
+        let submitBtn = $('.modal .modal-footer').find('.btn-submit');
 
         if (!submitBtn.hasClass('disabled')) {
+            submitBtn.addClass('disabled');
+            if (submitBtn.attr('data-saving')) {
+                submitBtn.text(submitBtn.attr('data-saving'));
+            }
             scope.fields.forEach(function (oneField) {
                 scope.$apply(function () {
                     oneField.errors = false;
@@ -87,11 +91,6 @@ module.exports = function (scope, $http, $route, spCF, spSavedSearchIntegrationS
             });
 
             if (formConfirmed) {
-                submitBtn.addClass('disabled');
-                if (submitBtn.attr('data-saving')) {
-                    submitBtn.text(submitBtn.attr('data-saving'));
-                }
-
                 // Add saved search
                 spSavedSearchIntegrationSave(scope, data);
 
@@ -112,8 +111,6 @@ module.exports = function (scope, $http, $route, spCF, spSavedSearchIntegrationS
                         data: data
                     }).then(function successCallback(response) {
                         response = response.data || {};
-                        submitBtn.removeClass('disabled');
-                        submitBtn.text(submitBtn.attr('data-label'));
 
                         if (response.success && response.success == true) {
                             scope.savedSuccess = 'Case successfully created!';
@@ -138,6 +135,11 @@ module.exports = function (scope, $http, $route, spCF, spSavedSearchIntegrationS
 
                         $('.cd-main-content').waitAnimationStop();
                     });
+                }
+            } else {
+                submitBtn.removeClass('disabled');
+                if (submitBtn.attr('data-label')) {
+                    submitBtn.text(submitBtn.attr('data-label'));
                 }
             }
         }

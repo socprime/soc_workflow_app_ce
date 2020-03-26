@@ -68,7 +68,7 @@ const enrichEventsAlerts = function (clientTimezone, data, enrichment) {
  * @param id
  */
 const getCaseWithEnrichment = function (server, req, id) {
-    let clientTimezone = req.headers.client_timezone || "UTC";
+    let clientTimezone = req.headers.clienttimezone || "UTC";
 
     return new Promise((resolve, reject) => {
         caseEcsGetByIds(server, req, id).then(function (data) {

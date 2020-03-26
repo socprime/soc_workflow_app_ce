@@ -22,7 +22,7 @@ module.exports = function (server, req, id) {
                 }
             }
         }).then(function (response) {
-            let clientTimezone = req.headers.client_timezone || "UTC";
+            let clientTimezone = req.headers.clienttimezone || "UTC";
 
             let cases = [];
             response = response['hits']['hits'] || [];

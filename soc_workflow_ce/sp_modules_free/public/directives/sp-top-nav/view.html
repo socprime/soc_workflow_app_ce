@@ -1,0 +1,21 @@
+<div class="header-nav">
+    <div class="logo">
+        <img aria-hidden="true" alt="SOC Prime" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/soc-app-logo.svg"/>
+    </div>
+    <ul class="nav-list nav-list--mod" id="pills-tab">
+        <li class="nav-list__item">
+            <a class="nav-list__btn btns btns--border" ng-class="{'active': currentPage == 'cases'}" id="cases-btn" href="#/cases">Cases</a>
+        </li>
+        <li class="nav-list__item">
+            <a class="nav-list__btn btns btns--border" ng-class="{'active': currentPage == 'alerts'}" id="correlated-btn" href="#/alerts">Alerts</a>
+        </li>
+        <li class="nav-list__item">
+            <a class="nav-list__btn btns btns--border" ng-class="{'active': currentPage == 'events'}" id="raw-btn" href="#/events">Events</a>
+        </li>
+    </ul>
+    <ul class="nav-list">
+        <li class="nav-list__item">
+            <a href="javascript:void(0)" sp-all-playbooks class="nav-list__btn" curr-url="currUrl"></a>
+        </li>
+    </ul>
+</div>

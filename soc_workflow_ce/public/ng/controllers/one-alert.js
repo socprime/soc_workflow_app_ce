@@ -1,4 +1,4 @@
-const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSanitize']).controller('OneAlertController', [
+const app = require('ui/modules').get('app/soc_workflow_ce', ['ngSanitize']).controller('OneAlertController', [
     '$scope',
     '$http',
     '$location',

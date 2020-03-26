@@ -1,4 +1,4 @@
-const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSanitize']).controller('EventsController', [
+const app = require('ui/modules').get('app/soc_workflow_ce', ['ngSanitize']).controller('EventsController', [
     '$scope',
     '$location',
     'spCommonSwitchTheme',

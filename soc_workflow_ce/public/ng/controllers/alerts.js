@@ -1,6 +1,6 @@
 const emptyChart = {"data": [], "names": {}, "colors": [], "total": 0};
 
-const app = require('ui/modules').get('app/soc_workflow_ce', ['ui.select', 'ngSanitize']).controller('AlertsController', [
+const app = require('ui/modules').get('app/soc_workflow_ce', ['ngSanitize']).controller('AlertsController', [
     '$scope',
     '$location',
     'spCommonSwitchTheme',

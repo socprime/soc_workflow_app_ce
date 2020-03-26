@@ -27,7 +27,7 @@ Main Components
 .light-body a.right-close {
     color: #ffffff !important;
     background: #ea553d;
-    border-left: 2px solid #343d42;
+    border-left: 2px solid #e8e8e8;
 }
 
 .light-body a.right-close:hover {
@@ -68,6 +68,10 @@ Main Components
 
 .light-body .footer .text-muted {
     color: #6c757d!important;
+}
+
+.light-body .inner-side {
+    border-left: 2px solid #e8e8e8;
 }
 
 .light-body .kbnGlobalNavLink__iconImage,
@@ -155,10 +159,12 @@ xfilter
  *  STYLE 4
  */
 
+body.light-body::-webkit-scrollbar-track,
 .light-body .scrollbar-slim-line::-webkit-scrollbar-track {
     background-color: #e8e8e8;
 }
 
+body.light-body::-webkit-scrollbar-thumb,
 .light-body .scrollbar-slim-line::-webkit-scrollbar-thumb {
     background-color: #a9a9a9;
 }

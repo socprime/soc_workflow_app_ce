@@ -22,7 +22,7 @@ module.exports = function (server, req, id) {
                 }
             }
         }).then(function (response) {
-            let clientTimezone = req.headers.client_timezone || "UTC";
+            let clientTimezone = req.headers.clienttimezone || "UTC";
 
             let alerts = [];
             response = response['hits'] || [];
@@ -33,7 +33,7 @@ module.exports = function (server, req, id) {
                     doc['_source']['id'] = $cf.isString(doc['_id']) ? doc['_id'] : '';
                     doc['_source']['index'] = $cf.isString(doc['_index']) ? doc['_index'] : '';
                     doc = doc['_source'];
-                    doc = $cf.makeFlatListFromObject('', doc, {});
+                    doc = $cf.makeFlatListFromObject(doc);
 
                     doc['event.timestamp'] = $cf.getDateInFormat(doc['@timestamp'], 'x', '', false, clientTimezone);
                     doc['timestamp'] = $cf.getDateInFormat(doc['@timestamp'], 'YYYY-MM-DD HH:mm.ss', '', false, clientTimezone);
@@ -47,6 +47,7 @@ module.exports = function (server, req, id) {
 
                     if ($cf.isSet(doc['event.severity'])) {
                         let availableEventSeverity = Object.keys(presetColorGlobalPriority);
+                        doc['event.severity'] = '' + doc['event.severity'];
                         if (availableEventSeverity.indexOf(doc['event.severity']) < 0) {
                             doc['event.severity'] = '';
                         }

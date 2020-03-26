@@ -1,0 +1,119 @@
+<div class="app-container" ng-class="{'light-body': isLightThemeChecked}" ng-controller="RisksOneUserController">
+    <main class="so-main so-main--wrap is-fixed">
+        <div class="so-main__scroll">
+            <div class="so-main__wrap">
+                <div class="so-main__form so-main__form--border">
+                    <div class="so-main__form-col">
+                        <a class="so-main__close btns btns--bg btns--icon-right" href="#/risks-users">
+                            <span class="btns__text">Close</span> <i aria-hidden="true" class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="so-main__form-col">
+                        <div curr-url="{{ currUrl }}" sp-search-cv-entity></div>
+                    </div>
+                    <div class="so-main__form-col">
+                        <div datepicker-id="risks-one-user-reportrange" sp-period-switch></div>
+                    </div>
+                </div>
+                <section class="so-users-info">
+                    <div class="so-users-info__wrap">
+                        <div class="card-slide" data-card-wrap="data-card-wrap">
+                            <div class="slide-btn" ng-click="collapseOneCard($event)">
+                                <h5 class="slide-btn__text">User Info</h5>
+                                <span class="border-arrow"></span>
+                            </div>
+                            <div class="card-slide__main" data-card-body="data-card-body">
+                                <div class="user-info">
+                                    <div class="user-info__col user-info__col--left">
+                                        <ul class="list-info">
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">User</h6>
+                                                <div class="list-info__description">
+                                                    <img alt="User" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/user-grey.svg">
+                                                    <span class="list-info__text">{{ userInfo.name }}</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">Email</h6>
+                                                <div class="list-info__description">
+                                                    <span class="list-info__text">{{ userInfo.email }}</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">Department</h6>
+                                                <div class="list-info__description">
+                                                    <span class="list-info__text">{{ userInfo.department }}</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">Logins</h6>
+                                                <div class="list-info__description">
+                                                    <span class="list-info__text">{{ userInfo.logins }}</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="user-info__col user-info__col--right">
+                                        <ul class="list-info">
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">Score</h6>
+                                                <div class="list-info__description">
+                                                    <img alt="chart-grey" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/chart-grey.svg">
+                                                    <span class="list-info__text">{{ userInfo.score }}</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">Alert Count</h6>
+                                                <div class="list-info__description">
+                                                    <img alt="alarm-grey" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/alarm-grey.svg">
+                                                    <span class="list-info__text">{{ counts.alerts }}</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">Case Count</h6>
+                                                <div class="list-info__description">
+                                                    <span class="list-info__text">{{ counts.cases }}</span>
+                                                </div>
+                                            </li>
+                                            <li class="list-info__item">
+                                                <h6 class="list-info__title">Host Count</h6>
+                                                <div class="list-info__description">
+                                                    <img alt="tablet-grey" ng-src="{{ basePath }}/plugins/soc_workflow_ce/assets/img/tablet-grey.svg">
+                                                    <span class="list-info__text">{{ counts.hosts }}</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="so-users-chart">
+                    <div chart-id="{{ charts.timeline.id }}" chart-obj="charts.timeline.obj" chart-src="charts.timeline.src" chart-title="User Score Trend" chart-type="timeline" sp-chart></div>
+                </section>
+                <section class="so-users-tabs">
+                    <div class="tabs">
+                        <ul class="tabs__list nav" role="tablist">
+                            <li class="tabs__item">
+                                <a class="tabs__link btns" ng-class="{'active':selectedViewTab == 'forensics-view'}" ng-click="selectedViewTab = 'forensics-view'">Forensics</a>
+                            </li>
+                            <li class="tabs__item">
+                                <a class="tabs__link btns" ng-class="{'active':selectedViewTab == 'timeline-view'}" ng-click="selectedViewTab = 'timeline-view'">Timeline</a>
+                            </li>
+                        </ul>
+                        <div class="tabs__content tab-content">
+                            <div class="tabs__panel tabs__panel--forensics" ng-if="selectedViewTab == 'forensics-view'">
+                                <div curr-url="{{ currUrl }}" date-from="dateRange.from" date-to="dateRange.to" sp-one-user-forensics user-id="{{ currUserId }}" user-list="userList"></div>
+                            </div>
+                            <div class="tabs__panel tabs__panel--timeline" ng-if="selectedViewTab == 'timeline-view'">
+                                <div curr-url="{{ currUrl }}" date-from="dateRange.from" date-to="dateRange.to" sp-one-user-timeline user-id="{{ currUserId }}" user-list="userList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <sp-footer curr-url="currUrl"></sp-footer>
+    </main>
+</div>

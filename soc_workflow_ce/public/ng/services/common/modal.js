@@ -15,8 +15,9 @@ const prepareElement = function ($scope, $compile, html) {
     return linkFn($scope);
 };
 
-require('ui/modules').get('app/soc_workflow_ce', [])
-    .service('modal', ['$compile', function ($compile) {
+require('ui/modules').get('app/soc_workflow_ce', []).service('modal', [
+    '$compile',
+    function ($compile) {
         return {
             show: function ($scope, options) {
                 let self = this;
@@ -44,7 +45,7 @@ require('ui/modules').get('app/soc_workflow_ce', [])
                 };
 
                 if (self.$modal == undefined) {
-                    self.$modal = prepareElement($scope, $compile, '<div class="modal"><div class="modal-dialog"><div class="modal-content"></div></div></div>');
+                    self.$modal = prepareElement($scope, $compile, '<div class="modal scrollbar-slim-line"><div class="modal-dialog"><div class="modal-content"></div></div></div>');
 
                     $(options.parentDiv).append(self.$modal);
                     self.$modal.on('shown.bs.modal', function (e) {
@@ -72,7 +73,8 @@ require('ui/modules').get('app/soc_workflow_ce', [])
                 let footer = self.$modal.find('.modal-footer');
                 if (Object.prototype.toString.call(options.actions) == "[object Array]") {
                     for (let i = 0, l = options.actions.length; i < l; i++) {
-                        options.actions[i].onClick = typeof options.actions[i].onClick == 'function' ? options.actions[i].onClick : function () {};
+                        options.actions[i].onClick = typeof options.actions[i].onClick == 'function' ? options.actions[i].onClick : function () {
+                        };
                         options.actions[i].label = options.actions[i].label || '{Label Missing!}';
                         options.actions[i].savingLabel = options.actions[i].savingLabel || false;
                         let buttonHtml = '';
